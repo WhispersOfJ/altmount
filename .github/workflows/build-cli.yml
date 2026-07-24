@@ -33,6 +33,7 @@ jobs:
     permissions:
       contents: write
     strategy:
+      fail-fast: false
       matrix:
         include:
           # Linux builds
@@ -44,15 +45,6 @@ jobs:
             goarch: arm64
             runner: ubuntu-latest
             cc: zig cc -target aarch64-linux-musl
-          - goos: linux
-            goarch: 386
-            runner: ubuntu-latest
-            cc: zig cc -target x86-linux-musl
-          - goos: linux
-            goarch: arm
-            goarm: '7'
-            runner: ubuntu-latest
-            cc: zig cc -target arm-linux-musleabihf
           # macOS builds
           - goos: darwin
             goarch: amd64
@@ -67,14 +59,11 @@ jobs:
             goarch: amd64
             runner: ubuntu-latest
             cc: zig cc -target x86_64-windows-gnu
-          - goos: windows
-            goarch: 386
-            runner: ubuntu-latest
-            cc: zig cc -target x86-windows-gnu
-          - goos: windows
-            goarch: arm64
-            runner: ubuntu-latest
-            cc: zig cc -target aarch64-windows-gnu
+          # linux/386, linux/arm, windows/386, windows/arm64 were tried and reverted:
+          # vendor/github.com/mnightingale/rapidyenc (a cgo yEnc encode/decode dependency)
+          # only ships prebuilt static libraries for linux_amd64, linux_arm64,
+          # windows_amd64, and darwin (see its cgo.go LDFLAGS) - no 32-bit or
+          # windows/arm64 build exists upstream, so these targets can never link here.
     steps:
       - uses: mlugg/setup-zig@v2
         if: matrix.cc != ''
@@ -106,7 +95,6 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-          GOARM: ${{ matrix.goarm }}
           CGO_ENABLED: 1
           CC: ${{ matrix.cc }}
         run: |
