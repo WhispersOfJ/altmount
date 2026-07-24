@@ -66,7 +66,7 @@ type Indexer struct {
 }
 
 // GetIndexers returns the usenet indexers configured in Prowlarr, sorted by name.
-// Torrent indexers are omitted because AltMount only queues usenet releases.
+// Torrent indexers are omitted because BearMount only queues usenet releases.
 func (c *Client) GetIndexers(ctx context.Context) ([]Indexer, error) {
 	outputs, err := c.prowlarr.GetIndexersContext(ctx)
 	if err != nil {
