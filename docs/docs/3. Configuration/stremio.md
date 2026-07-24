@@ -1,40 +1,40 @@
 ---
 title: Stremio Integration
-description: Stream Usenet content directly in Stremio using AltMount's built-in addon with automatic Prowlarr search.
-keywords: [altmount, stremio, streaming, usenet, prowlarr, addon, nzb]
+description: Stream Usenet content directly in Stremio using BearMount's built-in addon with automatic Prowlarr search.
+keywords: [bearmount, stremio, streaming, usenet, prowlarr, addon, nzb]
 ---
 
 # Stremio Integration
 
-AltMount provides two complementary ways to stream Usenet content directly through [Stremio](https://www.stremio.com/):
+BearMount provides two complementary ways to stream Usenet content directly through [Stremio](https://www.stremio.com/):
 
 1. **Stremio Addon** — install a personalised addon in Stremio that automatically searches Prowlarr by IMDB ID, downloads the best NZB, and returns stream URLs without any manual steps.
-2. **Manual NZB upload** — POST an NZB file to `POST /api/nzb/streams` from your own Stremio add-on; AltMount queues it and returns stream URLs once the content is ready.
+2. **Manual NZB upload** — POST an NZB file to `POST /api/nzb/streams` from your own Stremio add-on; BearMount queues it and returns stream URLs once the content is ready.
 
 ## Overview
 
 | Mode | How it works | Best for |
 |------|-------------|----------|
-| Stremio Addon | Stremio requests streams → AltMount searches Prowlarr → downloads best NZB → returns streams | Fully automatic playback |
-| Manual endpoint | Your add-on POSTs an NZB → AltMount queues it → returns streams | Custom workflows, hand-picked NZBs |
+| Stremio Addon | Stremio requests streams → BearMount searches Prowlarr → downloads best NZB → returns streams | Fully automatic playback |
+| Manual endpoint | Your add-on POSTs an NZB → BearMount queues it → returns streams | Custom workflows, hand-picked NZBs |
 
 ## Prerequisites
 
 - Stremio integration enabled in your configuration (`stremio.enabled: true`).
 - At least one NNTP provider configured and online.
-- Your AltMount API key (visible in **Settings > API Key**).
-- *(For automatic search)* Prowlarr running and accessible from AltMount.
+- Your BearMount API key (visible in **Settings > API Key**).
+- *(For automatic search)* Prowlarr running and accessible from BearMount.
 
 ## Web UI Configuration
 
 ![Stremio configuration](/images/config-stremio.png)
-_AltMount web interface showing the Stremio Integration settings_
+_BearMount web interface showing the Stremio Integration settings_
 
 The Stremio settings are split into four cards:
 
 - **Endpoint** — toggle the integration on/off and set the Public Base URL.
 - **Addon Install URL** — appears automatically once the integration is enabled. Shows the manifest URL that Stremio needs. Use **Copy** to copy it to your clipboard or **Install** to open Stremio directly.
-- **Cache** — NZB File Cache TTL controls how long AltMount keeps downloaded NZBs on disk.
+- **Cache** — NZB File Cache TTL controls how long BearMount keeps downloaded NZBs on disk.
 - **Prowlarr Indexer** — optional automatic search by IMDB ID (see below).
 
 ## Configuration (YAML)
@@ -59,13 +59,13 @@ stremio:
 |-------|------|---------|-------------|
 | `enabled` | bool | `false` | Enable the Stremio integration |
 | `nzb_ttl_hours` | int | `24` | Hours before a cached NZB result expires. `0` means never expire. |
-| `base_url` | string | `""` | Public base URL used when building stream and manifest links (e.g. `https://altmount.example.com`). When empty, AltMount auto-detects the origin from the incoming request. Set this when running behind a reverse proxy or when the detected origin is wrong. |
+| `base_url` | string | `""` | Public base URL used when building stream and manifest links (e.g. `https://bearmount.example.com`). When empty, BearMount auto-detects the origin from the incoming request. Set this when running behind a reverse proxy or when the detected origin is wrong. |
 
 When `nzb_ttl_hours` is greater than zero, submitting the same NZB filename within the TTL window returns the cached stream URLs immediately without re-queueing or re-downloading.
 
 ### Prowlarr Automatic Search
 
-When `prowlarr.enabled` is `true`, the Stremio addon endpoint searches Prowlarr by IMDB ID before returning streams. AltMount queries `/api/v1/search` on your Prowlarr instance, picks the best NZB, queues it, and returns stream URLs — all within a single Stremio request.
+When `prowlarr.enabled` is `true`, the Stremio addon endpoint searches Prowlarr by IMDB ID before returning streams. BearMount queries `/api/v1/search` on your Prowlarr instance, picks the best NZB, queues it, and returns stream URLs — all within a single Stremio request.
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -86,7 +86,7 @@ The streams endpoint and addon routes do **not** accept your raw API key. Instea
 download_key = sha256(api_key)   # lowercase hex
 ```
 
-This is safe to embed in Stremio stream URLs and the addon manifest URL: it cannot be reversed to recover your API key, and it has no other privileges in AltMount.
+This is safe to embed in Stremio stream URLs and the addon manifest URL: it cannot be reversed to recover your API key, and it has no other privileges in BearMount.
 
 The `download_key` is shown in the **Settings** page. You can also compute it manually:
 
@@ -100,7 +100,7 @@ echo -n "YOUR_API_KEY" | shasum -a 256 | awk '{print $1}'
 
 ## Stremio Addon Install
 
-Once the integration is enabled and the configuration is saved, AltMount generates a personalised manifest URL:
+Once the integration is enabled and the configuration is saved, BearMount generates a personalised manifest URL:
 
 ```
 <base_url>/stremio/<download_key>/manifest.json
@@ -115,12 +115,12 @@ The `download_key` embedded in the URL is the SHA-256 hash of your API key — s
 
 ## Third-Party Addon Integration
 
-If you are building your own Stremio addon you can integrate with AltMount in two ways,
-depending on whether you want AltMount or your addon to handle NZB resolution.
+If you are building your own Stremio addon you can integrate with BearMount in two ways,
+depending on whether you want BearMount or your addon to handle NZB resolution.
 
-### Pattern A — AltMount resolves the NZB (Prowlarr required)
+### Pattern A — BearMount resolves the NZB (Prowlarr required)
 
-Your addon proxies AltMount's stream endpoint. AltMount searches Prowlarr by IMDB ID and
+Your addon proxies BearMount's stream endpoint. BearMount searches Prowlarr by IMDB ID and
 returns ready-to-use stream options; your addon just passes them to Stremio.
 
 ```
@@ -129,7 +129,7 @@ GET <base_url>/stremio/<download_key>/stream/<type>/<id>.json
 
 | Parameter | Description |
 |-----------|-------------|
-| `download_key` | SHA-256 of your AltMount API key |
+| `download_key` | SHA-256 of your BearMount API key |
 | `type` | `movie` or `series` |
 | `id` | IMDB ID (`tt1234567`) or `tt1234567:season:episode` for series |
 
@@ -139,7 +139,7 @@ GET <base_url>/stremio/<download_key>/stream/<type>/<id>.json
 {
   "streams": [
     {
-      "name":  "AltMount 🇬🇧 1080p - My Movie (2024) [1080p][Eng]",
+      "name":  "BearMount 🇬🇧 1080p - My Movie (2024) [1080p][Eng]",
       "title": "My.Movie.2024.1080p.BluRay.x264\n💾 8.50 GB 🌐 NZBgeek",
       "url":   "<base_url>/stremio/<download_key>/play?url=<prowlarr_nzb_url>&title=..."
     }
@@ -147,7 +147,7 @@ GET <base_url>/stremio/<download_key>/stream/<type>/<id>.json
 }
 ```
 
-When Stremio follows a `url`, AltMount downloads the NZB, queues it at high priority, waits
+When Stremio follows a `url`, BearMount downloads the NZB, queues it at high priority, waits
 for the download, and 302-redirects to the WebDAV media file. Your addon has no further work.
 
 **JavaScript example:**
@@ -155,7 +155,7 @@ for the download, and 302-redirects to the WebDAV media file. Your addon has no 
 ```javascript
 const { addonBuilder } = require("stremio-addon-sdk");
 
-const ALTMOUNT = "http://altmount.example.com";
+const BEARMOUNT = "http://bearmount.example.com";
 const KEY      = "YOUR_DOWNLOAD_KEY"; // sha256(api_key)
 
 const builder = new addonBuilder({
@@ -164,7 +164,7 @@ const builder = new addonBuilder({
 });
 
 builder.defineStreamHandler(async ({ type, id }) => {
-  const res  = await fetch(`${ALTMOUNT}/stremio/${KEY}/stream/${type}/${id}.json`);
+  const res  = await fetch(`${BEARMOUNT}/stremio/${KEY}/stream/${type}/${id}.json`);
   const data = await res.json();
   return { streams: data.streams ?? [] };
 });
@@ -176,8 +176,8 @@ module.exports = builder.getInterface();
 
 ### Pattern B — Your addon resolves the NZB
 
-Your addon finds the NZB file itself (from any indexer or source) and hands it to AltMount.
-AltMount queues the download, waits for it to complete (long-poll), and returns stream URLs
+Your addon finds the NZB file itself (from any indexer or source) and hands it to BearMount.
+BearMount queues the download, waits for it to complete (long-poll), and returns stream URLs
 your addon passes directly to `callback({ streams })`.
 
 ```
@@ -187,9 +187,9 @@ Content-Type: multipart/form-data
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `download_key` | Yes | SHA-256 of your AltMount API key (alternatively, send the raw key in the `X-Api-Key` header) |
+| `download_key` | Yes | SHA-256 of your BearMount API key (alternatively, send the raw key in the `X-Api-Key` header) |
 | `file` | Conditional | The `.nzb` file (max 100 MB). Provide this **or** `nzb_url` |
-| `nzb_url` | Conditional | URL AltMount downloads the NZB from. Provide this **or** `file` |
+| `nzb_url` | Conditional | URL BearMount downloads the NZB from. Provide this **or** `file` |
 | `category` | No | Download category (e.g. `movies`, `tv`) |
 | `timeout` | No | Seconds to wait before returning 408 (default: `300`) |
 | `season` | No | Season number — see [Selecting one episode from a season pack](#selecting-one-episode-from-a-season-pack) |
@@ -202,9 +202,9 @@ Content-Type: multipart/form-data
 {
   "streams": [
     {
-      "url":   "http://altmount.example.com/webdav/movies/My.Movie.2024.mkv",
+      "url":   "http://bearmount.example.com/webdav/movies/My.Movie.2024.mkv",
       "title": "My.Movie.2024.mkv",
-      "name":  "AltMount"
+      "name":  "BearMount"
     }
   ],
   "_queue_item_id": 42,
@@ -228,7 +228,7 @@ builder.defineStreamHandler(async ({ type, id }) => {
   form.append("category", type === "movie" ? "movies" : "tv");
   form.append("timeout", "300");
 
-  const res  = await fetch(`${ALTMOUNT}/api/nzb/streams`, { method: "POST", body: form });
+  const res  = await fetch(`${BEARMOUNT}/api/nzb/streams`, { method: "POST", body: form });
   if (!res.ok) return { streams: [] };
 
   const data = await res.json();
@@ -236,14 +236,14 @@ builder.defineStreamHandler(async ({ type, id }) => {
 });
 ```
 
-> **Caching:** AltMount deduplicates by NZB filename within the configured TTL
+> **Caching:** BearMount deduplicates by NZB filename within the configured TTL
 > (`nzb_ttl_hours`). Submitting the same filename a second time returns cached stream URLs
 > immediately without re-downloading.
 
 ### Selecting one episode from a season pack
 
 When a series request resolves to a **season pack** (a single NZB containing every
-episode), AltMount needs to know which episode to serve — otherwise it cannot tell the
+episode), BearMount needs to know which episode to serve — otherwise it cannot tell the
 requested episode from the others in the pack.
 
 Provide the episode context in any one of these forms (checked in this order):
@@ -252,14 +252,14 @@ Provide the episode context in any one of these forms (checked in this order):
 2. a combined Stremio content id via `id` (or `stremio_id`), e.g. `tt1234567:1:5`;
 3. `season`/`episode` query parameters embedded in the `nzb_url` value.
 
-AltMount then returns only the matching episode's stream. If a multi-episode pack is
-submitted **without** any episode context, AltMount responds with `400 Bad Request`
+BearMount then returns only the matching episode's stream. If a multi-episode pack is
+submitted **without** any episode context, BearMount responds with `400 Bad Request`
 (`"Episode not specified"`) rather than silently returning the first episode — so make
 sure your addon forwards the season/episode (or `id`) from the Stremio request.
 
 Single-file releases (movies, single-episode releases) do not need this and are unaffected.
 
-**AIOStreams / proxy example** — append the Stremio id when handing the NZB to AltMount:
+**AIOStreams / proxy example** — append the Stremio id when handing the NZB to BearMount:
 
 ```
 POST <base_url>/api/nzb/streams
@@ -300,7 +300,7 @@ Submit an NZB manually and receive stream URLs. The request blocks (long-polls) 
     {
       "url":   "http://192.168.1.10:8080/webdav/movies/Movie.Name.2024.mkv",
       "title": "Movie.Name.2024.mkv",
-      "name":  "AltMount"
+      "name":  "BearMount"
     }
   ],
   "_queue_item_id": 42,
@@ -312,7 +312,7 @@ Submit an NZB manually and receive stream URLs. The request blocks (long-polls) 
 |-------|-------------|
 | `streams[].url` | Direct HTTP URL to the media file, playable by Stremio |
 | `streams[].title` | Filename shown in Stremio |
-| `streams[].name` | Source label shown in Stremio (`"AltMount"`) |
+| `streams[].name` | Source label shown in Stremio (`"BearMount"`) |
 | `_queue_item_id` | Internal queue ID (useful for debugging or manual follow-up) |
 | `_queue_status` | Final queue status at the time of the response |
 
@@ -346,7 +346,7 @@ Use `_queue_item_id` / `queue_item_id` from the error details to check progress 
 
 ## Caching
 
-To avoid re-downloading the same release, AltMount caches the stream URLs keyed by the NZB filename. If a second request arrives with the same filename within the TTL window, the cached streams are returned immediately.
+To avoid re-downloading the same release, BearMount caches the stream URLs keyed by the NZB filename. If a second request arrives with the same filename within the TTL window, the cached streams are returned immediately.
 
 Set `nzb_ttl_hours: 0` to cache forever (useful if your library is stable and disk space is not a concern).
 
@@ -372,7 +372,7 @@ Example output:
     {
       "url":   "http://localhost:8080/webdav/movies/My.Movie.2024.mkv",
       "title": "My.Movie.2024.mkv",
-      "name":  "AltMount"
+      "name":  "BearMount"
     }
   ],
   "_queue_item_id": 7,
@@ -383,5 +383,5 @@ Example output:
 ## Limitations
 
 - **Synchronous long-poll**: The request blocks for up to `timeout` seconds (default 300 s). Stremio add-ons should set an appropriate HTTP timeout on their end.
-- **408 on timeout**: If the download is still in progress when the timeout fires, AltMount returns 408. You can use the returned `queue_item_id` to poll the queue API and retry the streams request once the item completes.
+- **408 on timeout**: If the download is still in progress when the timeout fires, BearMount returns 408. You can use the returned `queue_item_id` to poll the queue API and retry the streams request once the item completes.
 - **Single endpoint**: There is no separate "check status" endpoint for the streams workflow; use the standard queue endpoints (`GET /api/queue/:id`) for manual follow-up.

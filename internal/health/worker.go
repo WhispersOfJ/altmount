@@ -12,16 +12,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/arrs"
-	"github.com/javi11/altmount/internal/arrs/model"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/holes"
-	"github.com/javi11/altmount/internal/importer"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/progress"
-	"github.com/javi11/altmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/internal/arrs"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/model"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	"github.com/WhispersOfJ/bearmount/internal/importer"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/sourcegraph/conc/pool"
 	"golang.org/x/sync/singleflight"
 )
@@ -1181,16 +1181,16 @@ func (hw *HealthWorker) triggerFileRepair(ctx context.Context, item *database.Fi
 	err := hw.arrsService.TriggerFileRescan(ctx, pathForRescan, filePath, metadataStr)
 	if err != nil {
 		// ErrEpisodeAlreadySatisfied is an ID-based confirmation from the ARR (Smart Repair
-		// Guard) that this title was upgraded/replaced by a *different* file, so the AltMount
+		// Guard) that this title was upgraded/replaced by a *different* file, so the BearMount
 		// copy is genuinely redundant and safe to remove.
 		if errors.Is(err, arrs.ErrEpisodeAlreadySatisfied) {
-			slog.WarnContext(ctx, "File replaced by a different file in ARR, removing redundant copy from AltMount",
+			slog.WarnContext(ctx, "File replaced by a different file in ARR, removing redundant copy from BearMount",
 				"file_path", filePath, "arr_error", err)
 			hw.cleanupZombieRecord(ctx, item)
 			return repairOutcomeDeleted, nil
 		}
 
-		// ErrPathMatchFailed only means AltMount could not match its rescan path against the
+		// ErrPathMatchFailed only means BearMount could not match its rescan path against the
 		// ARR library/queue. The ARR routinely renames and reorganizes imported files (symlink
 		// libraries, custom naming), so a path miss is NOT a reliable orphan signal: treating
 		// it as one deletes the user's library symlink and the underlying virtual file. Leave
@@ -1251,10 +1251,10 @@ func (hw *HealthWorker) retriggerFileRepair(ctx context.Context, item *database.
 	err := hw.arrsService.TriggerFileRescan(ctx, pathForRescan, filePath, metadataStr)
 	if err != nil {
 		// See triggerFileRepair: only an ID-confirmed replacement (ErrEpisodeAlreadySatisfied)
-		// justifies deleting the AltMount copy. ErrPathMatchFailed is an ambiguous path miss
+		// justifies deleting the BearMount copy. ErrPathMatchFailed is an ambiguous path miss
 		// (e.g. an ARR-renamed library) and must not delete the user's library file.
 		if errors.Is(err, arrs.ErrEpisodeAlreadySatisfied) {
-			slog.WarnContext(ctx, "File replaced by a different file in ARR, removing redundant copy from AltMount",
+			slog.WarnContext(ctx, "File replaced by a different file in ARR, removing redundant copy from BearMount",
 				"file_path", filePath, "arr_error", err)
 			hw.cleanupZombieRecord(ctx, item)
 			return repairOutcomeDeleted, nil

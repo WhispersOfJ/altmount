@@ -1,12 +1,12 @@
 ---
 title: Common Issues and Solutions
-description: Troubleshoot common AltMount problems including connection errors, download failures, and WebDAV issues.
-keywords: [altmount, troubleshoot, issues, errors, webdav, connection, download, fix]
+description: Troubleshoot common BearMount problems including connection errors, download failures, and WebDAV issues.
+keywords: [bearmount, troubleshoot, issues, errors, webdav, connection, download, fix]
 ---
 
 # Common Issues and Solutions
 
-This guide covers the most frequently encountered issues with AltMount and their solutions, organized by category for quick diagnosis and resolution.
+This guide covers the most frequently encountered issues with BearMount and their solutions, organized by category for quick diagnosis and resolution.
 
 ## Installation Issues
 
@@ -15,13 +15,13 @@ This guide covers the most frequently encountered issues with AltMount and their
 #### Symptoms
 
 ```
-./altmount: permission denied
+./bearmount: permission denied
 ```
 
 or
 
 ```
-./altmount: cannot execute binary file
+./bearmount: cannot execute binary file
 ```
 
 **Solutions:**
@@ -29,7 +29,7 @@ or
 1. **Fix Permissions**:
 
    ```bash
-   chmod +x altmount
+   chmod +x bearmount
    ```
 
 2. **Check Architecture**: Ensure you downloaded the correct binary for your system:
@@ -46,7 +46,7 @@ or
 
    ```bash
    # Check if file is corrupted
-   file altmount
+   file bearmount
 
    # Should show: ELF 64-bit LSB executable...
    ```
@@ -66,14 +66,14 @@ Error: config file "config.yaml" not found
 1. **Specify Config Path**:
 
    ```bash
-   ./altmount serve --config=/full/path/to/config.yaml
+   ./bearmount serve --config=/full/path/to/config.yaml
    ```
 
 2. **Create Config from Sample**:
 
    ```bash
    # Download sample configuration
-   wget https://raw.githubusercontent.com/javi11/altmount/main/config.sample.yaml -O config.yaml
+   wget https://raw.githubusercontent.com/WhispersOfJ/bearmount/main/config.sample.yaml -O config.yaml
 
    # Edit with your settings
    nano config.yaml
@@ -82,8 +82,8 @@ Error: config file "config.yaml" not found
 3. **Check Working Directory**:
    ```bash
    # Run from directory containing config.yaml
-   cd /path/to/altmount/config
-   ./altmount serve
+   cd /path/to/bearmount/config
+   ./bearmount serve
    ```
 
 ### Docker Container Won't Start
@@ -185,7 +185,7 @@ ERROR Provider "primary": connection failed: dial tcp: i/o timeout
        # ... other settings
    ```
 
-_[Screenshot placeholder: AltMount logs showing successful provider connections after troubleshooting]_
+_[Screenshot placeholder: BearMount logs showing successful provider connections after troubleshooting]_
 
 ### WebDAV Cannot Be Accessed
 
@@ -197,11 +197,11 @@ _[Screenshot placeholder: AltMount logs showing successful provider connections 
 
 **Diagnosis:**
 
-1. **Check AltMount Status**:
+1. **Check BearMount Status**:
 
    ```bash
-   # Verify AltMount is running
-   ps aux | grep altmount
+   # Verify BearMount is running
+   ps aux | grep bearmount
 
    # Check if port is listening
    netstat -ln | grep 8080
@@ -221,7 +221,7 @@ _[Screenshot placeholder: AltMount logs showing successful provider connections 
 3. **Check Network Access**:
    ```bash
    # Test from remote machine
-   curl http://altmount-server-ip:8080/
+   curl http://bearmount-server-ip:8080/
    ```
 
 **Solutions:**
@@ -246,7 +246,7 @@ _[Screenshot placeholder: AltMount logs showing successful provider connections 
    # If running in Docker, ensure proper port mapping
    ports:
      - "8080:8080"
-   # For CLI, AltMount binds to all interfaces by default
+   # For CLI, BearMount binds to all interfaces by default
    ```
 
 3. **Router/NAT Configuration**:
@@ -255,7 +255,7 @@ _[Screenshot placeholder: AltMount logs showing successful provider connections 
    # Router settings: External Port 8080 -> Internal IP:8080
    ```
 
-_[Screenshot placeholder: Network diagnostic tools showing successful connections to AltMount WebDAV server]_
+_[Screenshot placeholder: Network diagnostic tools showing successful connections to BearMount WebDAV server]_
 
 ## Authentication Issues
 
@@ -388,7 +388,7 @@ _[Screenshot placeholder: Performance monitoring dashboard showing improved spee
 
 #### Symptoms
 
-- AltMount using excessive memory
+- BearMount using excessive memory
 - System becomes unresponsive
 - Out of memory errors
 
@@ -404,8 +404,8 @@ _[Screenshot placeholder: Performance monitoring dashboard showing improved spee
 2. **Monitor Memory Leaks**:
 
    ```bash
-   # Monitor AltMount memory usage over time
-   watch -n 5 'ps aux | grep altmount'
+   # Monitor BearMount memory usage over time
+   watch -n 5 'ps aux | grep bearmount'
 
    # Check for gradual increases indicating leaks
    ```
@@ -448,15 +448,15 @@ _[Screenshot placeholder: Performance monitoring dashboard showing improved spee
 3. **Clear Metadata Cache**:
 
    ```bash
-   # Stop AltMount
-   ./altmount stop
+   # Stop BearMount
+   ./bearmount stop
 
    # Clear metadata cache (backup first!)
    cp -r metadata metadata.backup
    rm -rf metadata/*
 
-   # Restart AltMount
-   ./altmount serve
+   # Restart BearMount
+   ./bearmount serve
    ```
 
 4. **Enable Auto-Repair**:
@@ -496,7 +496,7 @@ or
    ls -la metadata/
 
    # Fix ownership if needed
-   sudo chown -R altmount:altmount metadata/
+   sudo chown -R bearmount:bearmount metadata/
    ```
 
 2. **Docker Permission Issues**:
@@ -538,24 +538,24 @@ SQLITE_BUSY: database is locked
 1. **Check for Multiple Instances**:
 
    ```bash
-   # Ensure only one AltMount instance is running
-   ps aux | grep altmount
+   # Ensure only one BearMount instance is running
+   ps aux | grep bearmount
 
    # Kill any extra processes
-   sudo pkill altmount
+   sudo pkill bearmount
    ```
 
 2. **Database Recovery**:
 
    ```bash
-   # Stop AltMount
-   ./altmount stop
+   # Stop BearMount
+   ./bearmount stop
 
    # Check database integrity
-   sqlite3 altmount.db "PRAGMA integrity_check;"
+   sqlite3 bearmount.db "PRAGMA integrity_check;"
 
    # Repair if needed
-   sqlite3 altmount.db ".backup altmount.db.backup"
+   sqlite3 bearmount.db ".backup bearmount.db.backup"
    ```
 
 3. **File System Issues**:
@@ -563,7 +563,7 @@ SQLITE_BUSY: database is locked
    ```bash
    # Check if database is on network storage
    # Move to local storage if needed
-   mv altmount.db /local/storage/altmount.db
+   mv bearmount.db /local/storage/bearmount.db
 
    # Update config to point to new location
    ```
@@ -590,10 +590,10 @@ SQLITE_READONLY: attempt to write a readonly database
 
    ```bash
    # Make database writable
-   chmod +w altmount.db
+   chmod +w bearmount.db
 
    # Verify permissions
-   ls -la altmount.db
+   ls -la bearmount.db
    # Should show: -rw-rw-rw- or similar with write permissions
    ```
 
@@ -601,17 +601,17 @@ SQLITE_READONLY: attempt to write a readonly database
 
    ```bash
    # Ensure the directory containing the database is writable
-   chmod +w /path/to/altmount/directory
+   chmod +w /path/to/bearmount/directory
 
    # Check directory permissions
-   ls -ld /path/to/altmount/directory
+   ls -ld /path/to/bearmount/directory
    ```
 
 3. **Docker Permission Issues**:
 
    ```bash
    # If running in Docker, fix ownership
-   sudo chown -R 1000:1000 ./altmount.db
+   sudo chown -R 1000:1000 ./bearmount.db
 
    # Or ensure proper PUID/PGID in docker-compose.yml
    environment:
@@ -623,13 +623,13 @@ SQLITE_READONLY: attempt to write a readonly database
 
    ```bash
    # Check if database is on a read-only filesystem
-   mount | grep $(dirname $(realpath altmount.db))
+   mount | grep $(dirname $(realpath bearmount.db))
 
    # If mounted read-only, remount as read-write
    sudo mount -o remount,rw /path/to/mount/point
    ```
 
-_[Screenshot placeholder: Terminal showing database permission fix and successful AltMount startup]_
+_[Screenshot placeholder: Terminal showing database permission fix and successful BearMount startup]_
 
 ## Import Issues
 
@@ -662,7 +662,7 @@ _[Screenshot placeholder: Terminal showing database permission fix and successfu
 2. **Restart the container**:
 
    ```bash
-   docker restart altmount
+   docker restart bearmount
    ```
 
 3. **Check system memory**:
@@ -692,11 +692,11 @@ _[Screenshot placeholder: Terminal showing database permission fix and successfu
 
 **Solutions:**
 
-1. **Ensure consistent volume mappings**: Both AltMount and ARR containers must see the same paths. The symlink target must resolve inside both containers:
+1. **Ensure consistent volume mappings**: Both BearMount and ARR containers must see the same paths. The symlink target must resolve inside both containers:
 
    ```yaml
    services:
-     altmount:
+     bearmount:
        volumes:
          - /data/imports:/data/imports
          - /data/media:/data/media:rshared  # rshared for FUSE mounts
@@ -712,8 +712,8 @@ _[Screenshot placeholder: Terminal showing database permission fix and successfu
 3. **Verify path alignment**:
 
    ```bash
-   # Inside AltMount container, check symlink targets
-   docker exec altmount ls -la /data/imports/
+   # Inside BearMount container, check symlink targets
+   docker exec bearmount ls -la /data/imports/
 
    # Inside ARR container, verify the target exists
    docker exec sonarr ls -la /data/media/
@@ -733,11 +733,11 @@ _[Screenshot placeholder: Terminal showing database permission fix and successfu
 
 **Solutions:**
 
-1. **Pull the latest AltMount image**:
+1. **Pull the latest BearMount image**:
 
    ```bash
    docker pull javi11/altmount:latest
-   docker restart altmount
+   docker restart bearmount
    ```
 
 2. **Verify provider configuration**:
@@ -749,7 +749,7 @@ _[Screenshot placeholder: Terminal showing database permission fix and successfu
 
 3. **Check provider credentials**: Some providers rotate hostnames or require password resets. Verify your credentials on the provider's website.
 
-4. **Check connection limits**: If you're running AltMount alongside other Usenet clients, you may be exceeding the provider's maximum connection limit. Reduce `max_connections` in your config.
+4. **Check connection limits**: If you're running BearMount alongside other Usenet clients, you may be exceeding the provider's maximum connection limit. Reduce `max_connections` in your config.
 
 5. **Try alternative endpoints**: Many providers offer multiple server hostnames. Switch to a different endpoint if your current one is unreachable.
 
@@ -804,7 +804,7 @@ When reporting connection issues, always mention your `inflight_requests` value.
 
 **Cause:**
 
-AltMount pings the server using the `DATE` NNTP command to verify connectivity before the connection pool is fully started. Some servers don't implement this command, causing the connection test to fail even though the server is otherwise functional.
+BearMount pings the server using the `DATE` NNTP command to verify connectivity before the connection pool is fully started. Some servers don't implement this command, causing the connection test to fail even though the server is otherwise functional.
 
 **Solution:**
 
@@ -821,7 +821,7 @@ providers:
     skip_ping: true  # Skip DATE command ping for servers that don't support it
 ```
 
-This instructs AltMount to skip the `DATE` ping on startup for that provider. The provider will still be used normally for all downloads; only the initial handshake ping is skipped.
+This instructs BearMount to skip the `DATE` ping on startup for that provider. The provider will still be used normally for all downloads; only the initial handshake ping is skipped.
 
 ## Logging and Debugging
 
@@ -832,7 +832,7 @@ For detailed troubleshooting, enable debug logging:
 ```yaml
 log:
   level: "debug"
-  file: "/var/log/altmount/debug.log"
+  file: "/var/log/bearmount/debug.log"
   max_size: 100
   max_backups: 5
 ```
@@ -841,13 +841,13 @@ log:
 
 ```bash
 # Real-time log monitoring
-tail -f /var/log/altmount/altmount.log
+tail -f /var/log/bearmount/bearmount.log
 
 # Search for specific errors
-grep -i "error" /var/log/altmount/altmount.log
+grep -i "error" /var/log/bearmount/bearmount.log
 
 # Check recent entries
-journalctl -u altmount -f --since "1 hour ago"
+journalctl -u bearmount -f --since "1 hour ago"
 
 # API health check
 curl -u user:pass http://localhost:8080/api/health/detailed | jq .
@@ -870,8 +870,8 @@ Before seeking help, gather this information:
 1. **System Information**:
 
    ```bash
-   # AltMount version
-   ./altmount --version
+   # BearMount version
+   ./bearmount --version
 
    # System information
    uname -a
@@ -892,7 +892,7 @@ Before seeking help, gather this information:
 
    ```bash
    # Last 100 lines with timestamps
-   tail -n 100 /var/log/altmount/altmount.log
+   tail -n 100 /var/log/bearmount/bearmount.log
    ```
 
 4. **Health Status**:
@@ -903,8 +903,8 @@ Before seeking help, gather this information:
 
 ### Support Channels
 
-- **GitHub Issues**: [https://github.com/javi11/altmount/issues](https://github.com/javi11/altmount/issues)
-- **GitHub Discussions**: [https://github.com/javi11/altmount/discussions](https://github.com/javi11/altmount/discussions)
+- **GitHub Issues**: [https://github.com/WhispersOfJ/bearmount/issues](https://github.com/WhispersOfJ/bearmount/issues)
+- **GitHub Discussions**: [https://github.com/WhispersOfJ/bearmount/discussions](https://github.com/WhispersOfJ/bearmount/discussions)
 - **Documentation**: This documentation site
 
 ### Issue Reporting Template
@@ -916,7 +916,7 @@ Brief description of the issue
 
 ## Environment
 
-- AltMount Version:
+- BearMount Version:
 - OS:
 - Installation Method: (CLI/Docker)
 
@@ -998,7 +998,7 @@ Any other relevant information
    df -h | grep metadata
 
    # Monitor memory usage
-   ps aux | grep altmount | awk '{print $4}'
+   ps aux | grep bearmount | awk '{print $4}'
    ```
 
 ### Update Strategy
@@ -1012,5 +1012,5 @@ Any other relevant information
 
 ## Next Steps
 
-- **[Performance Optimization](performance.md)** - Optimize AltMount performance
+- **[Performance Optimization](performance.md)** - Optimize BearMount performance
 - **[Health Monitoring](../3. Configuration/health-monitoring.md)** - Set up comprehensive monitoring

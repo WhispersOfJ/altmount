@@ -9,14 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/errors"
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/filesystem"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/errors"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/filesystem"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
 	"github.com/javi11/rardecode/v2"
 )
 

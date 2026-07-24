@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/javi11/altmount/internal/arrs/clients"
-	"github.com/javi11/altmount/internal/arrs/instances"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/clients"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/instances"
 	"golift.io/starr"
 	"golift.io/starr/lidarr"
 	"golift.io/starr/radarr"
@@ -15,20 +15,20 @@ import (
 	"golift.io/starr/sonarr"
 )
 
-// AltmountDownloadClientName is the name AltMount registers itself under as a
+// BearmountDownloadClientName is the name BearMount registers itself under as a
 // SABnzbd-compatible download client in Radarr/Sonarr/Lidarr/etc. Other code
-// (e.g. the queue cleanup worker) imports this to distinguish AltMount's own
+// (e.g. the queue cleanup worker) imports this to distinguish BearMount's own
 // queue items from those owned by other download clients.
-const AltmountDownloadClientName = "AltMount (SABnzbd)"
+const BearmountDownloadClientName = "BearMount (SABnzbd)"
 
-// IsAltmountDownloadClient reports whether a download client name belongs to
-// AltMount. AltMount auto-registers under AltmountDownloadClientName, but users
+// IsBearmountDownloadClient reports whether a download client name belongs to
+// BearMount. BearMount auto-registers under BearmountDownloadClientName, but users
 // frequently add the SABnzbd client manually under a different name (e.g.
-// "Altmount"), so queue cleanup matches case-insensitively on the "altmount"
+// "Bearmount"), so queue cleanup matches case-insensitively on the "bearmount"
 // token rather than requiring the exact registered name — otherwise it would
 // never recognize, and never clean up, items owned by a renamed client.
-func IsAltmountDownloadClient(name string) bool {
-	return strings.Contains(strings.ToLower(name), "altmount")
+func IsBearmountDownloadClient(name string) bool {
+	return strings.Contains(strings.ToLower(name), "bearmount")
 }
 
 type Manager struct {
@@ -43,13 +43,13 @@ func NewManager(instances *instances.Manager, clients *clients.Manager) *Manager
 	}
 }
 
-// EnsureWebhookRegistration ensures that the AltMount webhook is registered in all enabled ARR instances
-func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL string, apiKey string) error {
+// EnsureWebhookRegistration ensures that the BearMount webhook is registered in all enabled ARR instances
+func (m *Manager) EnsureWebhookRegistration(ctx context.Context, bearmountURL string, apiKey string) error {
 	allInstances := m.instances.GetAllInstances()
-	webhookName := "AltMount Webhook"
-	webhookURL := fmt.Sprintf("%s/api/arrs/webhook?apikey=%s", altmountURL, apiKey)
+	webhookName := "BearMount Webhook"
+	webhookURL := fmt.Sprintf("%s/api/arrs/webhook?apikey=%s", bearmountURL, apiKey)
 	// Redact the API key when logging; the real webhookURL is still used for registration.
-	redactedWebhookURL := fmt.Sprintf("%s/api/arrs/webhook?apikey=***", altmountURL)
+	redactedWebhookURL := fmt.Sprintf("%s/api/arrs/webhook?apikey=***", bearmountURL)
 
 	slog.InfoContext(ctx, "Ensuring webhook registration in ARR instances", "webhook_url", redactedWebhookURL)
 
@@ -139,7 +139,7 @@ func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL str
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Radarr webhook", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount webhook to Radarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount webhook to Radarr", "instance", instance.Name)
 				}
 			}
 
@@ -221,7 +221,7 @@ func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL str
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Sonarr webhook", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount webhook to Sonarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount webhook to Sonarr", "instance", instance.Name)
 				}
 			}
 
@@ -297,7 +297,7 @@ func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL str
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Lidarr webhook", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount webhook to Lidarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount webhook to Lidarr", "instance", instance.Name)
 				}
 			}
 
@@ -381,7 +381,7 @@ func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL str
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Readarr webhook", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount webhook to Readarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount webhook to Readarr", "instance", instance.Name)
 				}
 			}
 		}
@@ -390,14 +390,14 @@ func (m *Manager) EnsureWebhookRegistration(ctx context.Context, altmountURL str
 	return nil
 }
 
-// EnsureDownloadClientRegistration ensures that AltMount is registered as a SABnzbd download client in all enabled ARR instances
-func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmountHost string, altmountPort int, urlBase string, apiKey string) error {
+// EnsureDownloadClientRegistration ensures that BearMount is registered as a SABnzbd download client in all enabled ARR instances
+func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, bearmountHost string, bearmountPort int, urlBase string, apiKey string) error {
 	allInstances := m.instances.GetAllInstances()
-	clientName := AltmountDownloadClientName
+	clientName := BearmountDownloadClientName
 
-	slog.InfoContext(ctx, "Ensuring AltMount download client registration in ARR instances",
-		"host", altmountHost,
-		"port", altmountPort,
+	slog.InfoContext(ctx, "Ensuring BearMount download client registration in ARR instances",
+		"host", bearmountHost,
+		"port", bearmountPort,
 		"url_base", urlBase)
 
 	for _, instance := range allInstances {
@@ -446,7 +446,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					}
 				}
 
-				if currentKey != apiKey || currentHost != altmountHost {
+				if currentKey != apiKey || currentHost != bearmountHost {
 					slog.InfoContext(ctx, "Updating Radarr download client API key/Host", "instance", instance.Name)
 					category := instance.Category
 					if category == "" {
@@ -463,8 +463,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 						Priority:                 1,
 						Protocol:                 "Usenet",
 						Fields: []*starr.FieldInput{
-							{Name: "host", Value: altmountHost},
-							{Name: "port", Value: altmountPort},
+							{Name: "host", Value: bearmountHost},
+							{Name: "port", Value: bearmountPort},
 							{Name: "urlBase", Value: urlBase},
 							{Name: "apiKey", Value: apiKey},
 							{Name: "movieCategory", Value: category},
@@ -491,8 +491,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					Priority:                 1,
 					Protocol:                 "Usenet",
 					Fields: []*starr.FieldInput{
-						{Name: "host", Value: altmountHost},
-						{Name: "port", Value: altmountPort},
+						{Name: "host", Value: bearmountHost},
+						{Name: "port", Value: bearmountPort},
 						{Name: "urlBase", Value: urlBase},
 						{Name: "apiKey", Value: apiKey},
 						{Name: "movieCategory", Value: category},
@@ -503,7 +503,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add download client to "+instance.Type, "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount download client to "+instance.Type, "instance", instance.Name, "category", category)
+					slog.InfoContext(ctx, "Added BearMount download client to "+instance.Type, "instance", instance.Name, "category", category)
 				}
 			}
 
@@ -545,7 +545,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					}
 				}
 
-				if currentKey != apiKey || currentHost != altmountHost {
+				if currentKey != apiKey || currentHost != bearmountHost {
 					slog.InfoContext(ctx, "Updating Sonarr download client API key/Host", "instance", instance.Name)
 					category := instance.Category
 					if category == "" {
@@ -562,8 +562,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 						Priority:                 1,
 						Protocol:                 "Usenet",
 						Fields: []*starr.FieldInput{
-							{Name: "host", Value: altmountHost},
-							{Name: "port", Value: altmountPort},
+							{Name: "host", Value: bearmountHost},
+							{Name: "port", Value: bearmountPort},
 							{Name: "urlBase", Value: urlBase},
 							{Name: "apiKey", Value: apiKey},
 							{Name: "tvCategory", Value: category},
@@ -590,8 +590,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					Priority:                 1,
 					Protocol:                 "Usenet",
 					Fields: []*starr.FieldInput{
-						{Name: "host", Value: altmountHost},
-						{Name: "port", Value: altmountPort},
+						{Name: "host", Value: bearmountHost},
+						{Name: "port", Value: bearmountPort},
 						{Name: "urlBase", Value: urlBase},
 						{Name: "apiKey", Value: apiKey},
 						{Name: "tvCategory", Value: category},
@@ -602,7 +602,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Sonarr download client", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount download client to Sonarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount download client to Sonarr", "instance", instance.Name)
 				}
 			}
 
@@ -644,7 +644,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					}
 				}
 
-				if currentKey != apiKey || currentHost != altmountHost {
+				if currentKey != apiKey || currentHost != bearmountHost {
 					slog.InfoContext(ctx, "Updating Lidarr download client API key/Host", "instance", instance.Name)
 					category := instance.Category
 					if category == "" {
@@ -661,8 +661,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 						Priority:                 1,
 						Protocol:                 "Usenet",
 						Fields: []*starr.FieldInput{
-							{Name: "host", Value: altmountHost},
-							{Name: "port", Value: altmountPort},
+							{Name: "host", Value: bearmountHost},
+							{Name: "port", Value: bearmountPort},
 							{Name: "urlBase", Value: urlBase},
 							{Name: "apiKey", Value: apiKey},
 							{Name: "musicCategory", Value: category},
@@ -689,8 +689,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					Priority:                 1,
 					Protocol:                 "Usenet",
 					Fields: []*starr.FieldInput{
-						{Name: "host", Value: altmountHost},
-						{Name: "port", Value: altmountPort},
+						{Name: "host", Value: bearmountHost},
+						{Name: "port", Value: bearmountPort},
 						{Name: "urlBase", Value: urlBase},
 						{Name: "apiKey", Value: apiKey},
 						{Name: "musicCategory", Value: category},
@@ -701,7 +701,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Lidarr download client", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount download client to Lidarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount download client to Lidarr", "instance", instance.Name)
 				}
 			}
 
@@ -743,7 +743,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					}
 				}
 
-				if currentKey != apiKey || currentHost != altmountHost {
+				if currentKey != apiKey || currentHost != bearmountHost {
 					slog.InfoContext(ctx, "Updating Readarr download client API key/Host", "instance", instance.Name)
 					category := instance.Category
 					if category == "" {
@@ -758,8 +758,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 						Priority:       1,
 						Protocol:       "Usenet",
 						Fields: []*starr.FieldInput{
-							{Name: "host", Value: altmountHost},
-							{Name: "port", Value: altmountPort},
+							{Name: "host", Value: bearmountHost},
+							{Name: "port", Value: bearmountPort},
 							{Name: "urlBase", Value: urlBase},
 							{Name: "apiKey", Value: apiKey},
 							{Name: "musicCategory", Value: category},
@@ -785,8 +785,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 					Priority:       1,
 					Protocol:       "Usenet",
 					Fields: []*starr.FieldInput{
-						{Name: "host", Value: altmountHost},
-						{Name: "port", Value: altmountPort},
+						{Name: "host", Value: bearmountHost},
+						{Name: "port", Value: bearmountPort},
 						{Name: "urlBase", Value: urlBase},
 						{Name: "apiKey", Value: apiKey},
 						{Name: "musicCategory", Value: category},
@@ -798,7 +798,7 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 				if err != nil {
 					slog.ErrorContext(ctx, "Failed to add Readarr download client", "instance", instance.Name, "error", err)
 				} else {
-					slog.InfoContext(ctx, "Added AltMount download client to Readarr", "instance", instance.Name)
+					slog.InfoContext(ctx, "Added BearMount download client to Readarr", "instance", instance.Name)
 				}
 			}
 		}
@@ -807,8 +807,8 @@ func (m *Manager) EnsureDownloadClientRegistration(ctx context.Context, altmount
 	return nil
 }
 
-// TestDownloadClientRegistration tests the connection from ARR instances back to AltMount
-func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHost string, altmountPort int, urlBase string, apiKey string) (map[string]string, error) {
+// TestDownloadClientRegistration tests the connection from ARR instances back to BearMount
+func (m *Manager) TestDownloadClientRegistration(ctx context.Context, bearmountHost string, bearmountPort int, urlBase string, apiKey string) (map[string]string, error) {
 	allInstances := m.instances.GetAllInstances()
 	results := make(map[string]string)
 
@@ -832,7 +832,7 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 			}
 
 			dc := &radarr.DownloadClientInput{
-				Name:                     "AltMount Test",
+				Name:                     "BearMount Test",
 				Implementation:           "SABnzbd",
 				ConfigContract:           "SABnzbdSettings",
 				Enable:                   true,
@@ -841,8 +841,8 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 				Priority:                 1,
 				Protocol:                 "Usenet",
 				Fields: []*starr.FieldInput{
-					{Name: "host", Value: altmountHost},
-					{Name: "port", Value: altmountPort},
+					{Name: "host", Value: bearmountHost},
+					{Name: "port", Value: bearmountPort},
 					{Name: "urlBase", Value: urlBase},
 					{Name: "apiKey", Value: apiKey},
 					{Name: "movieCategory", Value: category},
@@ -864,7 +864,7 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 			}
 
 			dc := &sonarr.DownloadClientInput{
-				Name:                     "AltMount Test",
+				Name:                     "BearMount Test",
 				Implementation:           "SABnzbd",
 				ConfigContract:           "SABnzbdSettings",
 				Enable:                   true,
@@ -873,8 +873,8 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 				Priority:                 1,
 				Protocol:                 "Usenet",
 				Fields: []*starr.FieldInput{
-					{Name: "host", Value: altmountHost},
-					{Name: "port", Value: altmountPort},
+					{Name: "host", Value: bearmountHost},
+					{Name: "port", Value: bearmountPort},
 					{Name: "urlBase", Value: urlBase},
 					{Name: "apiKey", Value: apiKey},
 					{Name: "tvCategory", Value: category},
@@ -896,7 +896,7 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 			}
 
 			dc := &lidarr.DownloadClientInput{
-				Name:                     "AltMount Test",
+				Name:                     "BearMount Test",
 				Implementation:           "SABnzbd",
 				ConfigContract:           "SABnzbdSettings",
 				Enable:                   true,
@@ -905,8 +905,8 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 				Priority:                 1,
 				Protocol:                 "Usenet",
 				Fields: []*starr.FieldInput{
-					{Name: "host", Value: altmountHost},
-					{Name: "port", Value: altmountPort},
+					{Name: "host", Value: bearmountHost},
+					{Name: "port", Value: bearmountPort},
 					{Name: "urlBase", Value: urlBase},
 					{Name: "apiKey", Value: apiKey},
 					{Name: "musicCategory", Value: category},
@@ -928,15 +928,15 @@ func (m *Manager) TestDownloadClientRegistration(ctx context.Context, altmountHo
 			}
 
 			dc := &readarr.DownloadClientInput{
-				Name:           "AltMount Test",
+				Name:           "BearMount Test",
 				Implementation: "SABnzbd",
 				ConfigContract: "SABnzbdSettings",
 				Enable:         true,
 				Priority:       1,
 				Protocol:       "Usenet",
 				Fields: []*starr.FieldInput{
-					{Name: "host", Value: altmountHost},
-					{Name: "port", Value: altmountPort},
+					{Name: "host", Value: bearmountHost},
+					{Name: "port", Value: bearmountPort},
 					{Name: "urlBase", Value: urlBase},
 					{Name: "apiKey", Value: apiKey},
 					{Name: "musicCategory", Value: category},

@@ -65,7 +65,7 @@ export function MountConfigSection({ config, onUpdate, isUpdating }: MountConfig
 			subSectionDataRef.current = {
 				rc_enabled: true,
 				rc_url: config.rclone.rc_url || "",
-				vfs_name: config.rclone.vfs_name || "altmount",
+				vfs_name: config.rclone.vfs_name || "bearmount",
 				rc_port: config.rclone.rc_port || 5572,
 				rc_user: config.rclone.rc_user || "",
 				rc_pass: "",
@@ -155,7 +155,7 @@ export function MountConfigSection({ config, onUpdate, isUpdating }: MountConfig
 			subSectionDataRef.current = {
 				rc_enabled: true,
 				rc_url: config.rclone.rc_url || "",
-				vfs_name: config.rclone.vfs_name || "altmount",
+				vfs_name: config.rclone.vfs_name || "bearmount",
 				rc_port: config.rclone.rc_port || 5572,
 				rc_user: config.rclone.rc_user || "",
 				rc_pass: "",
@@ -377,7 +377,7 @@ export function MountConfigSection({ config, onUpdate, isUpdating }: MountConfig
 		},
 		{
 			value: "fuse",
-			label: "AltMount Native",
+			label: "BearMount Native",
 			description: "High-performance native FUSE mount",
 		},
 		{
@@ -451,7 +451,7 @@ export function MountConfigSection({ config, onUpdate, isUpdating }: MountConfig
 									className="input input-bordered w-full min-w-0 max-w-full bg-base-100 font-mono text-sm"
 									value={mountPath}
 									onChange={(e) => handleMountPathChange(e.target.value)}
-									placeholder="/mnt/remotes/altmount"
+									placeholder="/mnt/remotes/bearmount"
 								/>
 								<p className="label min-w-0 max-w-full whitespace-normal break-words text-base-content/50 text-xs">
 									Path where the virtual filesystem will be attached to your system.
@@ -1190,7 +1190,7 @@ interface ExternalSubSectionProps {
 function ExternalRCloneSubSection({ config, onFormDataChange }: ExternalSubSectionProps) {
 	const [formData, setFormData] = useState({
 		rc_url: config.rclone.rc_url || "",
-		vfs_name: config.rclone.vfs_name || "altmount",
+		vfs_name: config.rclone.vfs_name || "bearmount",
 		rc_port: config.rclone.rc_port || 5572,
 		rc_user: config.rclone.rc_user || "",
 		rc_pass: "",
@@ -1202,7 +1202,7 @@ function ExternalRCloneSubSection({ config, onFormDataChange }: ExternalSubSecti
 	useEffect(() => {
 		setFormData({
 			rc_url: config.rclone.rc_url || "",
-			vfs_name: config.rclone.vfs_name || "altmount",
+			vfs_name: config.rclone.vfs_name || "bearmount",
 			rc_port: config.rclone.rc_port || 5572,
 			rc_user: config.rclone.rc_user || "",
 			rc_pass: "",
@@ -1288,7 +1288,7 @@ function ExternalRCloneSubSection({ config, onFormDataChange }: ExternalSubSecti
 						className="input input-bordered w-full bg-base-100 text-sm"
 						value={formData.vfs_name}
 						onChange={(e) => handleChange("vfs_name", e.target.value)}
-						placeholder="altmount"
+						placeholder="bearmount"
 					/>
 				</fieldset>
 

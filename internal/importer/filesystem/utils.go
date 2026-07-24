@@ -7,10 +7,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/javi11/altmount/internal/importer/parser"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 // normalizeAndSplitFilename normalizes a poster/NZB-controlled filename

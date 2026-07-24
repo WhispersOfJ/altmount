@@ -3,10 +3,10 @@ package nzbfilesystem
 import (
 	"log/slog"
 
-	"github.com/javi11/altmount/internal/holes"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 )
 
 // holeMetaSnapshot holds the mvf.meta fields the hole path needs, captured

@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/pkg/rclonecli"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/pkg/rclonecli"
 )
 
 // RepairCoalescer throttles per-file streaming-failure repair triggers and
@@ -28,9 +28,9 @@ type RepairCoalescer struct {
 	rclone       rclonecli.RcloneRcClient
 	configGetter config.ConfigGetter
 
-	debounceTTL  time.Duration
-	flushDelay   time.Duration
-	refreshTO    time.Duration
+	debounceTTL time.Duration
+	flushDelay  time.Duration
+	refreshTO   time.Duration
 
 	mu      sync.Mutex
 	seen    map[string]time.Time

@@ -8,10 +8,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/rclone"
+	"github.com/WhispersOfJ/bearmount/pkg/rclonecli"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/rclone"
-	"github.com/javi11/altmount/pkg/rclonecli"
 )
 
 // RCloneHandlers handles RClone-related API endpoints

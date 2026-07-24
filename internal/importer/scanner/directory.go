@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
 )
 
 // QueueAdder defines the interface for adding items to the queue

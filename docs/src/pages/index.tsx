@@ -15,7 +15,7 @@ function HomepageHeader() {
       <div className="container">
         <img
           src="/img/logo.png"
-          alt="AltMount Logo"
+          alt="BearMount Logo"
           className={styles.heroLogo}
         />
         <Heading as="h1" className="hero__title">
@@ -39,7 +39,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} - WebDAV server backed by NZB/Usenet`}
-      description="AltMount provides a WebDAV interface to Usenet content with streaming capabilities and ARR integration">
+      description="BearMount provides a WebDAV interface to Usenet content with streaming capabilities and ARR integration">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

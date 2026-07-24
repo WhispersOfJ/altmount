@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/slogutil"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/slogutil"
 	"github.com/javi11/nntppool/v4"
 )
 
@@ -80,7 +80,7 @@ func RegisterLogLevelHandler(ctx context.Context, configManager *config.Manager,
 // handleGetConfig returns the current configuration
 //
 //	@Summary		Get configuration
-//	@Description	Returns the current AltMount configuration with sensitive values masked.
+//	@Description	Returns the current BearMount configuration with sensitive values masked.
 //	@Tags			Config
 //	@Produce		json
 //	@Success		200	{object}	APIResponse{data=ConfigAPIResponse}
@@ -107,7 +107,7 @@ func (s *Server) handleGetConfig(c *fiber.Ctx) error {
 // handleUpdateConfig updates the entire configuration
 //
 //	@Summary		Update configuration
-//	@Description	Replaces the entire AltMount configuration. Triggers restart if required.
+//	@Description	Replaces the entire BearMount configuration. Triggers restart if required.
 //	@Tags			Config
 //	@Accept			json
 //	@Produce		json
@@ -277,7 +277,7 @@ func (s *Server) handlePatchConfigSection(c *fiber.Ctx) error {
 // handleReloadConfig reloads configuration from file
 //
 //	@Summary		Reload configuration
-//	@Description	Reloads the AltMount configuration from disk without restarting.
+//	@Description	Reloads the BearMount configuration from disk without restarting.
 //	@Tags			Config
 //	@Produce		json
 //	@Success		200	{object}	APIResponse

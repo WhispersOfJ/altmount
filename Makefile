@@ -69,11 +69,11 @@ git-hooks:
 
 .PHONY: docker-build
 docker-build:
-	docker build -f docker/Dockerfile -t altmount:$(DOCKER_IMAGE_TAG) .
+	docker build -f docker/Dockerfile -t bearmount:$(DOCKER_IMAGE_TAG) .
 
 .PHONY: docker-build-ci
 docker-build-ci: build-frontend
-	docker build -f docker/Dockerfile.ci -t altmount:ci-latest .
+	docker build -f docker/Dockerfile.ci -t bearmount:ci-latest .
 
 .PHONY: build-frontend
 build-frontend:
@@ -94,41 +94,41 @@ build-cli: build-frontend
 	@VERSION=$$(git describe --tags --always --dirty 2>/dev/null || echo "dev"); \
 	COMMIT=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown"); \
 	TIMESTAMP=$$(date -u '+%Y-%m-%dT%H:%M:%SZ'); \
-	echo "Building altmount CLI (version: $$VERSION, commit: $$COMMIT)..."; \
+	echo "Building bearmount CLI (version: $$VERSION, commit: $$COMMIT)..."; \
 	CGO_ENABLED=1 $(GO) build \
 		-trimpath \
 		-tags=cli \
-		-ldflags="-s -w -X 'github.com/javi11/altmount/internal/version.Version=$$VERSION' -X 'github.com/javi11/altmount/internal/version.GitCommit=$$COMMIT' -X 'github.com/javi11/altmount/internal/version.Timestamp=$$TIMESTAMP'" \
-		-o altmount \
-		./cmd/altmount/main.go
+		-ldflags="-s -w -X 'github.com/WhispersOfJ/bearmount/internal/version.Version=$$VERSION' -X 'github.com/WhispersOfJ/bearmount/internal/version.GitCommit=$$COMMIT' -X 'github.com/WhispersOfJ/bearmount/internal/version.Timestamp=$$TIMESTAMP'" \
+		-o bearmount \
+		./cmd/bearmount/main.go
 
 .PHONY: build-cli-windows
 build-cli-windows: build-frontend
 	@VERSION=$$(git describe --tags --always --dirty 2>/dev/null || echo "dev"); \
 	COMMIT=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown"); \
 	TIMESTAMP=$$(date -u '+%Y-%m-%dT%H:%M:%SZ'); \
-	echo "Building altmount CLI for Windows (version: $$VERSION, commit: $$COMMIT)..."; \
+	echo "Building bearmount CLI for Windows (version: $$VERSION, commit: $$COMMIT)..."; \
 	CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc \
 		$(GO) build \
 		-trimpath \
 		-tags=cli \
-		-ldflags="-s -w -X 'github.com/javi11/altmount/internal/version.Version=$$VERSION' -X 'github.com/javi11/altmount/internal/version.GitCommit=$$COMMIT' -X 'github.com/javi11/altmount/internal/version.Timestamp=$$TIMESTAMP'" \
-		-o altmount.exe \
-		./cmd/altmount/main.go
+		-ldflags="-s -w -X 'github.com/WhispersOfJ/bearmount/internal/version.Version=$$VERSION' -X 'github.com/WhispersOfJ/bearmount/internal/version.GitCommit=$$COMMIT' -X 'github.com/WhispersOfJ/bearmount/internal/version.Timestamp=$$TIMESTAMP'" \
+		-o bearmount.exe \
+		./cmd/bearmount/main.go
 # Prerequisites for Windows build:
 #   Cross-compilation (Linux/macOS): MinGW-w64 (apt install gcc-mingw-w64-x86-64 / brew install mingw-w64)
 #   Native Windows build: replace CC with your toolchain (MSVC or clang-cl); remove CC=... above
 #   WinFsp must be installed on the target machine: https://winfsp.dev/
 #   WinFsp headers for cgofuse (if building natively): C:\Program Files (x86)\WinFsp\inc\fuse
 
-# Regenerate the Windows resource (.syso) files from versioninfo.json + altmount.exe.manifest.
-# The generated cmd/altmount/resource_windows_*.syso files are committed and the Go linker
+# Regenerate the Windows resource (.syso) files from versioninfo.json + bearmount.exe.manifest.
+# The generated cmd/bearmount/resource_windows_*.syso files are committed and the Go linker
 # picks them up automatically for GOOS=windows builds — embedding the long-path-aware
-# manifest. Re-run this target after editing versioninfo.json or altmount.exe.manifest.
+# manifest. Re-run this target after editing versioninfo.json or bearmount.exe.manifest.
 # Requires: go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest
 .PHONY: windows-resources
 windows-resources:
-	cd cmd/altmount && goversioninfo -platform-specific versioninfo.json
+	cd cmd/bearmount && goversioninfo -platform-specific versioninfo.json
 
 .PHONY: build
 build: build-cli

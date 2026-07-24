@@ -17,24 +17,24 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/arrs"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/httpclient"
-	"github.com/javi11/altmount/internal/importer/filesystem"
-	"github.com/javi11/altmount/internal/importer/parser"
-	"github.com/javi11/altmount/internal/importer/postprocessor"
-	"github.com/javi11/altmount/internal/importer/queue"
-	"github.com/javi11/altmount/internal/importer/scanner"
-	importerutils "github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	"github.com/javi11/altmount/internal/metadata"
-	"github.com/javi11/altmount/internal/nzbfile"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/progress"
-	"github.com/javi11/altmount/internal/sabnzbd"
-	"github.com/javi11/altmount/internal/utils"
-	"github.com/javi11/altmount/pkg/rclonecli"
+	"github.com/WhispersOfJ/bearmount/internal/arrs"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
+	"github.com/WhispersOfJ/bearmount/internal/importer/filesystem"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/postprocessor"
+	"github.com/WhispersOfJ/bearmount/internal/importer/queue"
+	"github.com/WhispersOfJ/bearmount/internal/importer/scanner"
+	importerutils "github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfile"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/sabnzbd"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/pkg/rclonecli"
 	"github.com/javi11/nzbparser"
 )
 
@@ -765,7 +765,7 @@ func (s *Service) AddToQueue(ctx context.Context, filePath string, relativePath 
 // its category-independent base filename and updates its category/priority in place. Returns nil if none.
 func (s *Service) FindAndUpdatePendingUpload(ctx context.Context, filename string, category *string, priority *database.QueuePriority) (*database.ImportQueueItem, error) {
 	// NZBs uploaded via the API are persisted into the OS temp queue dir.
-	queueDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	queueDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 
 	base := nzbtrim.TrimNzbExtension(sanitizeFilename(filepath.Base(filename)))
 	if base == "" {
@@ -787,7 +787,7 @@ func (s *Service) FindAndUpdatePendingUpload(ctx context.Context, filename strin
 	// Also search the Stremio upload staging directory: handleNzbStreams writes there
 	// before calling AddToQueue, so without this scan Stremio-submitted NZBs are never
 	// found by FindAndUpdatePendingUpload and always create a new queue entry.
-	stremioUploadDir := filepath.Join(os.TempDir(), "altmount-uploads")
+	stremioUploadDir := filepath.Join(os.TempDir(), "bearmount-uploads")
 	stremioItems, err := s.database.Repository.GetPendingQueueItemsByPathPrefix(ctx, stremioUploadDir+string(filepath.Separator))
 	if err != nil {
 		return nil, err
@@ -871,7 +871,7 @@ func (s *Service) calculateProcessVirtualDir(item *database.ImportQueueItem, bas
 	// return early here: the category resolution and CompleteDir prepend below still
 	// need to run, otherwise category-tagged uploads (SABnzbd/manual/Stremio) would
 	// land at the mount root instead of inside their category folder.
-	tempQueueDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	tempQueueDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 	inTempQueue := strings.HasPrefix(item.NzbPath, tempQueueDir+string(filepath.Separator)) || item.NzbPath == tempQueueDir
 
 	// Fix for issue where files moved to persistent .nzbs directory end up with exposed paths (like /config) in virtual directory
@@ -1022,14 +1022,14 @@ func sanitizeVirtualPath(p string) string {
 // worker can process it.
 func (s *Service) ensurePersistentNzb(ctx context.Context, item *database.ImportQueueItem) error {
 	// Use OS temp queue dir; itemID ensures uniqueness so no category subfolder needed.
-	nzbDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	nzbDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 
 	// Check if current path is already in the persistent directory
 	absNzbPath, _ := filepath.Abs(item.NzbPath)
 	absNzbDir, _ := filepath.Abs(nzbDir)
 
 	// Simple check: if path starts with persistent dir (with separator) or equals it, assume it's fine.
-	// The trailing separator prevents a false match like /tmp/.altmount-queue-other/ matching /tmp/.altmount-queue.
+	// The trailing separator prevents a false match like /tmp/.bearmount-queue-other/ matching /tmp/.bearmount-queue.
 	if strings.HasPrefix(absNzbPath, absNzbDir+string(os.PathSeparator)) || absNzbPath == absNzbDir {
 		if _, err := os.Stat(item.NzbPath); err == nil {
 			return nil
@@ -1135,7 +1135,7 @@ func (s *Service) regenerateNzbFile(ctx context.Context, item *database.ImportQu
 		return fmt.Errorf("raw NZB file is missing and no store was found at %q to regenerate it", storeRef)
 	}
 
-	nzbDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	nzbDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 	if err := os.MkdirAll(nzbDir, 0755); err != nil {
 		return fmt.Errorf("failed to create persistent NZB directory: %w", err)
 	}
@@ -1946,4 +1946,3 @@ func joinPathsMergingOverlap(parent, child string) string {
 	}
 	return result
 }
-

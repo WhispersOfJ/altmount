@@ -1,8 +1,8 @@
 package metadata
 
 import (
-	"github.com/javi11/altmount/internal/holes"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 // AddKnownHoles merges newly confirmed missing-segment runs into a file's

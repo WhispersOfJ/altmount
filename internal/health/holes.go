@@ -4,10 +4,10 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/javi11/altmount/internal/holes"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 )
 
 // classifyHoles turns a check's missing segments into a playback-impact

@@ -1,12 +1,12 @@
 ---
 title: Streaming Configuration
-description: Configure AltMount's streaming system for direct media playback from Usenet with intelligent prefetching.
-keywords: [altmount, streaming, media, usenet, prefetch, playback, configuration]
+description: Configure BearMount's streaming system for direct media playback from Usenet with intelligent prefetching.
+keywords: [bearmount, streaming, media, usenet, prefetch, playback, configuration]
 ---
 
 # Streaming Configuration
 
-AltMount's streaming system enables direct media playback from Usenet without waiting for complete downloads. It uses intelligent prefetching to keep playback smooth.
+BearMount's streaming system enables direct media playback from Usenet without waiting for complete downloads. It uses intelligent prefetching to keep playback smooth.
 
 ## Configuration
 
@@ -35,9 +35,9 @@ Higher values improve playback smoothness for high-bitrate content but increase 
 
 Failure masking is a reliability feature that prevents "Phantom TX" traffic loops by automatically hiding problematic files from your WebDAV and FUSE mounts.
 
-If a file fails to stream (e.g., due to DMCA'd articles or provider errors) more than the configured `threshold` times, AltMount will:
+If a file fails to stream (e.g., due to DMCA'd articles or provider errors) more than the configured `threshold` times, BearMount will:
 1. **Mask the file**: It will no longer appear in your network mounts (Plex/VLC won't see it).
-2. **Flag as MASKED**: The file will remain visible in the AltMount Web UI with a `MASKED` badge.
+2. **Flag as MASKED**: The file will remain visible in the BearMount Web UI with a `MASKED` badge.
 3. **Prevent retry loops**: Media players like Plex won't keep trying to read a file that is destined to fail, saving your outbound bandwidth and SSD life.
 
 ### Manual Override
@@ -46,11 +46,11 @@ If a file is masked, you can manually unmask it from the **Health Monitoring** p
 
 ## FUSE Mount Recommended Settings
 
-If you use AltMount's built-in FUSE mount (`mount_type: fuse`), tuning the FUSE and VFS disk cache settings is critical for smooth streaming playback. The built-in FUSE mount avoids the need for an external rclone process and provides an integrated caching layer with intelligent prefetching.
+If you use BearMount's built-in FUSE mount (`mount_type: fuse`), tuning the FUSE and VFS disk cache settings is critical for smooth streaming playback. The built-in FUSE mount avoids the need for an external rclone process and provides an integrated caching layer with intelligent prefetching.
 
 ```yaml
 mount_type: fuse
-mount_path: /mnt/altmount
+mount_path: /mnt/bearmount
 
 fuse:
   allow_other: true
@@ -61,7 +61,7 @@ fuse:
 
 segment_cache:
   enabled: true
-  cache_path: /mnt/cache/altmount-segcache
+  cache_path: /mnt/cache/bearmount-segcache
   max_size_gb: 150
   expiry_hours: 72
 ```
@@ -88,7 +88,7 @@ The segment cache provides a persistent on-disk caching layer shared by both FUS
 | Parameter      | Default                    | Description                                                      |
 | -------------- | -------------------------- | ---------------------------------------------------------------- |
 | `enabled`      | `false`                    | Enables the segment cache — **set to `true` for streaming**      |
-| `cache_path`   | `/tmp/altmount-segcache`   | Directory for cached data (use a fast disk for best results)     |
+| `cache_path`   | `/tmp/bearmount-segcache`   | Directory for cached data (use a fast disk for best results)     |
 | `max_size_gb`  | `10`                       | Maximum disk space for the cache (adjust to your available disk) |
 | `expiry_hours` | `24`                       | How long cached segments are kept before eviction                |
 
@@ -107,17 +107,17 @@ Cache eviction runs automatically every 5 minutes, removing expired entries and 
 - **Use a fast disk** for `cache_path`. An SSD or NVMe drive significantly improves cache read performance. Avoid placing the cache on the same slow storage you're mounting.
 - Increase `max_size_gb` based on your available disk space. For large libraries, `50`–`150` GB prevents frequent cache evictions during heavy usage.
 - Increase `expiry_hours` to `72` if you re-watch content frequently — this keeps popular segments cached longer.
-- **`allow_other: true`** is required if media players run as a different user than the AltMount process.
+- **`allow_other: true`** is required if media players run as a different user than the BearMount process.
 - Keep `attr_timeout_seconds` at `30` for stable libraries. Lower it (e.g., `5`) if files change frequently and you need faster metadata refresh.
 
 ---
 
 ## Rclone VFS Recommended Settings
 
-If you use rclone to mount AltMount's WebDAV endpoint, tuning VFS settings is critical for smooth playback. Below are community-tested recommendations:
+If you use rclone to mount BearMount's WebDAV endpoint, tuning VFS settings is critical for smooth playback. Below are community-tested recommendations:
 
 ```bash
-rclone mount altmount: /mnt/remotes/altmount \
+rclone mount bearmount: /mnt/remotes/bearmount \
   --vfs-cache-mode full \
   --vfs-read-chunk-size 56M \
   --vfs-cache-max-size 150G \

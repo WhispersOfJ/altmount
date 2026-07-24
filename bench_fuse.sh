@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-#  AltMount Media Streaming Benchmark — macOS
+#  BearMount Media Streaming Benchmark — macOS
 #  Compares FUSE mount vs rclone mount side-by-side
 # ============================================================
 

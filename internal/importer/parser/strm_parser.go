@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/javi11/altmount/internal/encryption"
-	"github.com/javi11/altmount/internal/encryption/rclone"
-	"github.com/javi11/altmount/internal/errors"
-	"github.com/javi11/altmount/internal/importer/parser/fileinfo"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/encryption"
+	"github.com/WhispersOfJ/bearmount/internal/encryption/rclone"
+	"github.com/WhispersOfJ/bearmount/internal/errors"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser/fileinfo"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 	"github.com/javi11/nxg"
 )
 

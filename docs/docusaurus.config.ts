@@ -6,7 +6,7 @@ import webpack from "webpack";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-	title: "AltMount Documentation",
+	title: "BearMount Documentation",
 	tagline: "WebDAV server backed by NZB/Usenet",
 	favicon: "img/favicon.ico",
 
@@ -16,15 +16,19 @@ const config: Config = {
 	},
 
 	// Set the production url of your site here
-	url: "https://altmount.kipsilabs.top",
+	// NOTE: upstream (javi11/altmount) deploys to a custom domain it owns
+	// (altmount.kipsilabs.top) - this fork has no equivalent custom domain, so
+	// this defaults to the standard GitHub Pages project-pages URL instead of
+	// guessing at one. Replace with a real custom domain if/when one exists.
+	url: "https://whispersofj.github.io",
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
-	baseUrl: "/",
+	baseUrl: "/bearmount/",
 
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
-	organizationName: "javi11", // Usually your GitHub org/user name.
-	projectName: "altmount", // Usually your repo name.
+	organizationName: "WhispersOfJ", // Usually your GitHub org/user name.
+	projectName: "bearmount", // Usually your repo name.
 
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
@@ -45,7 +49,7 @@ const config: Config = {
 					sidebarPath: "./sidebars.ts",
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
-					editUrl: "https://github.com/javi11/altmount/tree/main/docs/",
+					editUrl: "https://github.com/WhispersOfJ/bearmount/tree/main/docs/",
 				},
 				blog: false,
 				theme: {
@@ -82,9 +86,9 @@ const config: Config = {
 
 	themeConfig: {
 		navbar: {
-			title: "AltMount",
+			title: "BearMount",
 			logo: {
-				alt: "AltMount Logo",
+				alt: "BearMount Logo",
 				src: "img/logo.png",
 			},
 			items: [
@@ -100,7 +104,7 @@ const config: Config = {
 					position: "left",
 				},
 				{
-					href: "https://github.com/javi11/altmount",
+					href: "https://github.com/WhispersOfJ/bearmount",
 					label: "GitHub",
 					position: "right",
 				},
@@ -127,11 +131,11 @@ const config: Config = {
 					items: [
 						{
 							label: "GitHub Issues",
-							href: "https://github.com/javi11/altmount/issues",
+							href: "https://github.com/WhispersOfJ/bearmount/issues",
 						},
 						{
 							label: "GitHub Discussions",
-							href: "https://github.com/javi11/altmount/discussions",
+							href: "https://github.com/WhispersOfJ/bearmount/discussions",
 						},
 					],
 				},
@@ -140,7 +144,7 @@ const config: Config = {
 					items: [
 						{
 							label: "GitHub",
-							href: "https://github.com/javi11/altmount",
+							href: "https://github.com/WhispersOfJ/bearmount",
 						},
 						{
 							label: "Docker Hub",
@@ -149,17 +153,17 @@ const config: Config = {
 					],
 				},
 			],
-			copyright: `Copyright © ${new Date().getFullYear()} AltMount. Built with Docusaurus.`,
+			copyright: `Copyright © ${new Date().getFullYear()} BearMount. Built with Docusaurus.`,
 		},
 		metadata: [
-			{ name: 'description', content: 'AltMount is a high-performance WebDAV server backed by Usenet with streaming, ARR integration, rclone support, and native FUSE mounting.' },
+			{ name: 'description', content: 'BearMount is a high-performance WebDAV server backed by Usenet with streaming, ARR integration, rclone support, and native FUSE mounting.' },
 			{ property: 'og:type', content: 'website' },
-			{ property: 'og:site_name', content: 'AltMount Documentation' },
+			{ property: 'og:site_name', content: 'BearMount Documentation' },
 			{ property: 'og:description', content: 'Mount Usenet as a local drive. Stream media directly, integrate with Sonarr/Radarr, and use rclone — all in a single binary.' },
 			{ name: 'twitter:card', content: 'summary' },
-			{ name: 'twitter:title', content: 'AltMount Documentation' },
+			{ name: 'twitter:title', content: 'BearMount Documentation' },
 			{ name: 'twitter:description', content: 'Mount Usenet as a local drive. Stream media directly, integrate with Sonarr/Radarr, and use rclone — all in a single binary.' },
-			{ name: 'keywords', content: 'altmount, usenet, webdav, nzb, nntp, sabnzbd, sonarr, radarr, streaming, rclone, fuse, mount, docker' },
+			{ name: 'keywords', content: 'bearmount, usenet, webdav, nzb, nntp, sabnzbd, sonarr, radarr, streaming, rclone, fuse, mount, docker' },
 		],
 		prism: {
 			theme: prismThemes.github,

@@ -11,11 +11,11 @@ import (
 	"runtime"
 	"time"
 
-	aescipher "github.com/javi11/altmount/internal/encryption/aes"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/usenet"
-	"github.com/javi11/altmount/internal/utils"
+	aescipher "github.com/WhispersOfJ/bearmount/internal/encryption/aes"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 )
 
 // Compile-time interface checks

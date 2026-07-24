@@ -22,8 +22,8 @@ export function Navbar() {
 
 			<div className="navbar-center lg:hidden">
 				<div className="flex items-center gap-2">
-					<img src="/logo.png" alt="AltMount Logo" className="h-7 w-7 object-contain" />
-					<h1 className="font-bold text-base-content text-lg">AltMount</h1>
+					<img src="/logo.png" alt="BearMount Logo" className="h-7 w-7 object-contain" />
+					<h1 className="font-bold text-base-content text-lg">BearMount</h1>
 				</div>
 			</div>
 

@@ -8,10 +8,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/go-pkgz/auth/v2"
 	"github.com/go-pkgz/auth/v2/avatar"
 	"github.com/go-pkgz/auth/v2/token"
-	"github.com/javi11/altmount/internal/database"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -51,8 +51,8 @@ func DefaultConfig() *Config {
 		CookieSecureAutoDetect: true,                 // Auto-detect Secure flag from request protocol
 		CookieSameSite:         http.SameSiteLaxMode, // Use Lax mode for Safari compatibility
 		DirectAuthEnabled:      true,
-		Issuer:                 "altmount",
-		Audience:               "altmount-api",
+		Issuer:                 "bearmount",
+		Audience:               "bearmount-api",
 	}
 }
 
@@ -144,7 +144,7 @@ func NewService(config *Config, userRepo *database.UserRepository) (*Service, er
 func (s *Service) SetupProviders(config *Config) error {
 	// Direct authentication provider (username/password)
 	if config.DirectAuthEnabled {
-		s.authService.AddDirectProvider("altmount", &directCredChecker{service: s})
+		s.authService.AddDirectProvider("bearmount", &directCredChecker{service: s})
 	}
 
 	return nil
@@ -426,4 +426,3 @@ func (d *directCredChecker) Check(user, password string) (bool, error) {
 
 	return true, nil
 }
-

@@ -15,11 +15,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/metadata"
-	"github.com/javi11/altmount/internal/utils"
-	"github.com/javi11/altmount/pkg/rclonecli"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/pkg/rclonecli"
 	"github.com/sourcegraph/conc/pool"
 )
 
@@ -914,7 +914,7 @@ func (lsw *LibrarySyncWorker) SyncLibrary(ctx context.Context, dryRun bool) *Dry
 							continue
 						}
 
-						// Protect symlinks that have import history (AltMount imported this file)
+						// Protect symlinks that have import history (BearMount imported this file)
 						target, readlinkErr := os.Readlink(file)
 						if readlinkErr == nil {
 							mountRelPath := strings.TrimPrefix(filepath.ToSlash(target), filepath.ToSlash(cfg.MountPath))

@@ -6,8 +6,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
 )
 
 // usenet_reader_lane_test.go pins the lane and budget invariants introduced by

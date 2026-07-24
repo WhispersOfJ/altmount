@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 	"syscall"
 
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
 	"github.com/hanwen/go-fuse/v2/fs"
 	"github.com/hanwen/go-fuse/v2/fuse"
-	"github.com/javi11/altmount/internal/fuse/backend"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
 )
 
 // ensure Dir implements fs.Node* interfaces
@@ -37,7 +37,7 @@ type Dir struct {
 	isRootDir     bool
 	uid           uint32
 	gid           uint32
-	asyncBufSize  int  // read-ahead buffer size in bytes, propagated to File nodes
+	asyncBufSize  int // read-ahead buffer size in bytes, propagated to File nodes
 	noModTime     bool
 }
 

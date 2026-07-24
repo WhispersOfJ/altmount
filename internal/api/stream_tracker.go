@@ -8,9 +8,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 	"github.com/google/uuid"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
-	"github.com/javi11/altmount/internal/usenet"
 )
 
 // Default timeout for stale streams (4 hours - covers most movie lengths)

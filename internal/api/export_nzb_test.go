@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/nzb"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/nzb"
 )
 
 // buildStoreNZB renders a minimal store-backed NZB (no <head>), mirroring what

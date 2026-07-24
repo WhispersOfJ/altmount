@@ -1,9 +1,9 @@
 services:
-  altmount:
+  bearmount:
     extra_hosts:
       - "host.docker.internal:host-gateway" # Optional if you rclone is outside the container
-    image: ghcr.io/javi11/altmount:latest
-    container_name: altmount
+    image: ghcr.io/WhispersOfJ/bearmount:latest
+    container_name: bearmount
     environment:
       - PUID=1000
       - PGID=1000
@@ -19,10 +19,10 @@ services:
     restart: unless-stopped
 
 volumes:
-  altmount:
+  bearmount:
     driver: rclone # Make sure you have the rclone volume plugin installed
     driver_opts:
-      remote: 'altmount:'
+      remote: 'bearmount:'
       uid: 1000
       gid: 1000
       async_read: "true"

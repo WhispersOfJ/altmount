@@ -273,7 +273,7 @@ export function ImportConfigSection({
 								{formData.import_strategy === "NONE" &&
 									"Files are only visible through the virtual FUSE/WebDAV mount."}
 								{formData.import_strategy === "SYMLINK" &&
-									"Creates real .mkv/.mp4 files in a target folder that point to AltMount."}
+									"Creates real .mkv/.mp4 files in a target folder that point to BearMount."}
 								{formData.import_strategy === "STRM" &&
 									"Generates small .strm text files containing streaming URLs."}
 							</p>

@@ -1,18 +1,18 @@
 ---
 title: Frequently Asked Questions
-description: Answers to common questions about AltMount setup, Usenet providers, streaming, ARR integration, and more.
-keywords: [altmount, faq, questions, usenet, streaming, arr, setup, providers]
+description: Answers to common questions about BearMount setup, Usenet providers, streaming, ARR integration, and more.
+keywords: [bearmount, faq, questions, usenet, streaming, arr, setup, providers]
 ---
 
 # Frequently Asked Questions
 
-Answers to the most common questions from the AltMount community.
+Answers to the most common questions from the BearMount community.
 
 ## General
 
-### What's the difference between AltMount and similar tools?
+### What's the difference between BearMount and similar tools?
 
-AltMount is an all-in-one solution that combines NZB downloading, WebDAV serving, and media streaming. Compared to other tools, AltMount adds:
+BearMount is an all-in-one solution that combines NZB downloading, WebDAV serving, and media streaming. Compared to other tools, BearMount adds:
 
 - **Built-in rclone mounting** (FUSE) — no separate rclone setup needed
 - **Web UI** for configuration, queue management, and health monitoring
@@ -39,13 +39,13 @@ Imports stuck in purple/processing state are usually caused by:
 2. **Memory exhaustion** on the host system
 3. **A degraded container** state
 
-**Quick fix**: Restart the container (`docker restart altmount`). If that doesn't help, check for stuck ffprobe processes and review system memory.
+**Quick fix**: Restart the container (`docker restart bearmount`). If that doesn't help, check for stuck ffprobe processes and review system memory.
 
 See [Stuck Imports Troubleshooting](../5.%20Troubleshooting/common-issues.md#imports-stuck-in-processing-state-purple) for full details.
 
 ### Why does my library size change after a health repair?
 
-When AltMount detects a corrupted file and triggers a repair through Sonarr/Radarr, the ARR app searches for a replacement. The new release may be a different encode with a slightly different file size. This is normal — the content is the same, but the specific release may differ.
+When BearMount detects a corrupted file and triggers a repair through Sonarr/Radarr, the ARR app searches for a replacement. The new release may be a different encode with a slightly different file size. This is normal — the content is the same, but the specific release may differ.
 
 ### My playback keeps freezing. What should I do?
 
@@ -64,11 +64,11 @@ See [Choosing the Right Percentage](../3. Configuration/health-monitoring.md#cho
 
 ### How do I configure symlink paths with Docker?
 
-The key requirement is that both AltMount and your ARR containers must see the same paths. Mount `import_dir` and `mount_path` as shared Docker volumes:
+The key requirement is that both BearMount and your ARR containers must see the same paths. Mount `import_dir` and `mount_path` as shared Docker volumes:
 
 ```yaml
 services:
-  altmount:
+  bearmount:
     volumes:
       - /mnt:/mnt:rshared
   sonarr:
@@ -82,7 +82,7 @@ See [Symlink Paths with Docker](../5.%20Troubleshooting/common-issues.md#symlink
 
 Provider connectivity issues can be caused by:
 
-1. Running an outdated AltMount image — always pull the latest version
+1. Running an outdated BearMount image — always pull the latest version
 2. Incorrect or expired credentials — verify on your provider's website
 3. Exceeding connection limits — reduce `max_connections` if running other Usenet clients
 4. Network issues — try alternative provider endpoints

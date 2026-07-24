@@ -65,7 +65,7 @@ export function ArrsConfigSection({
 	const [newStuckPattern, setNewStuckPattern] = useState("");
 
 	const registerWebhooks = useRegisterArrsWebhooks();
-	const defaultWebhookUrl = `http://${config.webdav.host || "altmount"}:${config.webdav.port}`;
+	const defaultWebhookUrl = `http://${config.webdav.host || "bearmount"}:${config.webdav.port}`;
 
 	// Sync form data when config changes from external sources (reload)
 	useEffect(() => {
@@ -268,7 +268,7 @@ export function ArrsConfigSection({
 						<div className="min-w-0 flex-1">
 							<h4 className="break-words font-bold text-base-content text-sm">Service Engine</h4>
 							<p className="mt-1 break-words text-[11px] text-base-content/50 leading-relaxed">
-								Allows AltMount to talk to Radarr/Sonarr for repairs and updates.
+								Allows BearMount to talk to Radarr/Sonarr for repairs and updates.
 							</p>
 						</div>
 						<input
@@ -293,16 +293,16 @@ export function ArrsConfigSection({
 
 						<div className="space-y-6">
 							<div>
-								<h5 className="font-bold text-sm">AltMount Webhooks</h5>
+								<h5 className="font-bold text-sm">BearMount Webhooks</h5>
 								<p className="mt-1 break-words text-[11px] text-base-content/50 leading-relaxed">
-									Automatically configure hooks in ARR applications to notify AltMount of upgrades
+									Automatically configure hooks in ARR applications to notify BearMount of upgrades
 									and renames.
 								</p>
 							</div>
 
 							<div className="flex flex-col gap-4 sm:flex-row sm:items-end">
 								<fieldset className="fieldset flex-1">
-									<legend className="fieldset-legend font-semibold">AltMount Callback URL</legend>
+									<legend className="fieldset-legend font-semibold">BearMount Callback URL</legend>
 									<input
 										type="url"
 										className="input input-bordered w-full bg-base-100 font-mono text-sm"

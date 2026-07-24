@@ -1,7 +1,7 @@
 ---
 title: Rclone Docker Volume Plugin
-description: Mount WebDAV and remote storage as native Docker volumes using the rclone Docker Volume Plugin with AltMount.
-keywords: [altmount, rclone, docker, docker volume, webdav, mount, plugin]
+description: Mount WebDAV and remote storage as native Docker volumes using the rclone Docker Volume Plugin with BearMount.
+keywords: [bearmount, rclone, docker, docker volume, webdav, mount, plugin]
 ---
 
 # Rclone Docker Volume Plugin
@@ -53,7 +53,7 @@ docker plugin install rclone/docker-volume-rclone:amd64 \
 Create `rclone.conf` in `/var/lib/docker-plugins/rclone/config/`:
 
 ```ini
-[altmount]
+[bearmount]
 type = webdav
 url = <your_endpoint>
 vendor = other
@@ -71,25 +71,25 @@ The Ubuntu container is only used to test the volume and is not required otherwi
 
 ```yaml
 services:
-  altmount:
+  bearmount:
     image: ...
 
   sonarr:
     image: ...
     volumes:
-      - altmount:/mnt/remotes/altmount
+      - bearmount:/mnt/remotes/bearmount
 
   ubuntu:
     image: ubuntu
     command: sleep infinity
     volumes:
-      - altmount:/mnt/remotes/altmount
+      - bearmount:/mnt/remotes/bearmount
     environment:
       - PUID=1000
       - PGID=1000
 
 volumes:
-  altmount:
+  bearmount:
     driver: rclone
     ...
 ```
@@ -110,7 +110,7 @@ Example output:
 
 ```
 DRIVER              VOLUME NAME
-rclone:latest       arr-stack_altmount
+rclone:latest       arr-stack_bearmount
 ```
 
 Reference that volume in the second stack as an external volume:
@@ -121,13 +121,13 @@ services:
     image: ubuntu
     command: sleep infinity
     volumes:
-      - altmount:/mnt/remotes/altmount
+      - bearmount:/mnt/remotes/bearmount
     environment:
       - PUID=1000 # Must match UID value from the volume in the stack creating the volume (driver_opts)
       - PGID=1000 # Must match GID value from the volume in the stack creating the volume (driver_opts)
 
 volumes:
-  altmount:
-    name: arr-stack_altmount
+  bearmount:
+    name: arr-stack_bearmount
     external: true
 ```

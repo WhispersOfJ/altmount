@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
 	"github.com/javi11/nntppool/v4"
 )
 

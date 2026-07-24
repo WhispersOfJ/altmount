@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 )
 
 // CreateStrmFiles creates STRM files for an imported file or directory
@@ -200,4 +200,3 @@ func (c *Coordinator) CreateSingleStrmFile(ctx context.Context, strmResultingPat
 
 	return nil
 }
-

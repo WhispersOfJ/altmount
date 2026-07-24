@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/importer"
+	"github.com/WhispersOfJ/bearmount/internal/importer/migration"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/importer"
-	"github.com/javi11/altmount/internal/importer/migration"
 )
 
 // handleImportNzbdav handles POST /import/nzbdav
@@ -113,7 +113,7 @@ func (s *Server) handleGetNzbdavImportStatus(c *fiber.Ctx) error {
 // handleMigrateNzbdavSymlinks handles POST /import/nzbdav/migrate-symlinks
 //
 //	@Summary		Migrate NZBDav library symlinks
-//	@Description	Walks a library directory and rewrites symlinks that target the nzbdav mount to point at the altmount path instead.
+//	@Description	Walks a library directory and rewrites symlinks that target the nzbdav mount to point at the bearmount path instead.
 //	@Tags			Import
 //	@Accept			json
 //	@Produce		json
@@ -257,7 +257,7 @@ func (s *Server) handleClearPendingNzbdavMigrations(c *fiber.Ctx) error {
 // handleClearAllNzbdavMigrations handles DELETE /import/nzbdav/migrations
 //
 //	@Summary		Clear ALL NZBDav migration rows
-//	@Description	Deletes every import_migrations row for source='nzbdav' regardless of status. Use to force a full re-import after the imported files have been deleted from AltMount. This will cause the scanner to re-process every blob on the next import.
+//	@Description	Deletes every import_migrations row for source='nzbdav' regardless of status. Use to force a full re-import after the imported files have been deleted from BearMount. This will cause the scanner to re-process every blob on the next import.
 //	@Tags			Import
 //	@Produce		json
 //	@Success		200	{object}	APIResponse

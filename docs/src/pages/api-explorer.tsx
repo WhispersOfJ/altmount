@@ -29,7 +29,7 @@ export default function ApiExplorerPage() {
 	return (
 		<Layout
 			title="API Reference"
-			description="Interactive AltMount REST API reference — explore endpoints, schemas, and try requests live."
+			description="Interactive BearMount REST API reference — explore endpoints, schemas, and try requests live."
 		>
 			<main>
 				<SwaggerUI />

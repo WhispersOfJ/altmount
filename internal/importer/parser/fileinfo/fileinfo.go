@@ -6,8 +6,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/javi11/altmount/internal/importer/parser/par2"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser/par2"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
 )
 
 var (

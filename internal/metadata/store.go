@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"sort"
 
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/nzb"
 	lru "github.com/hashicorp/golang-lru/v2"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/nzb"
 	"github.com/klauspost/compress/zstd"
 	"google.golang.org/protobuf/proto"
 )

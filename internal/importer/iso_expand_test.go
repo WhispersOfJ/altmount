@@ -7,9 +7,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 func TestParsedFileToISOContent_MapsAllFields(t *testing.T) {

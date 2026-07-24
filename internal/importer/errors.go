@@ -2,7 +2,7 @@
 package importer
 
 import (
-	sharedErrors "github.com/javi11/altmount/internal/errors"
+	sharedErrors "github.com/WhispersOfJ/bearmount/internal/errors"
 )
 
 // Re-export error types and functions from shared errors package

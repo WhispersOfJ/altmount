@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
 )
 
 // SABnzbd-compatible API response structures
@@ -222,7 +222,7 @@ type SABnzbdCompleteHistoryResponse struct {
 	History SABnzbdHistoryObject `json:"history"`
 }
 
-// Helper functions to convert AltMount data to SABnzbd format
+// Helper functions to convert BearMount data to SABnzbd format
 
 // formatSizeMB formats bytes as megabytes string (like C# FormatSizeMB)
 func formatSizeMB(bytes int64) string {
@@ -247,13 +247,13 @@ func formatHumanSize(bytes int64) string {
 	return fmt.Sprintf("%.1f %cB", float64(bytes)/float64(div), "KMGTPE"[exp])
 }
 
-// ToSABnzbdQueueSlot converts an AltMount ImportQueueItem to SABnzbd format
+// ToSABnzbdQueueSlot converts an BearMount ImportQueueItem to SABnzbd format
 func ToSABnzbdQueueSlot(item *database.ImportQueueItem, index int, progressBroadcaster *progress.ProgressBroadcaster) SABnzbdQueueSlot {
 	if item == nil {
 		return SABnzbdQueueSlot{}
 	}
 
-	// Map AltMount status to SABnzbd status
+	// Map BearMount status to SABnzbd status
 	var status string
 	switch item.Status {
 	case database.QueueStatusPending:
@@ -387,13 +387,13 @@ func ToSABnzbdQueueSlot(item *database.ImportQueueItem, index int, progressBroad
 	}
 }
 
-// ToSABnzbdHistorySlot converts an AltMount ImportQueueItem to SABnzbd history format
+// ToSABnzbdHistorySlot converts an BearMount ImportQueueItem to SABnzbd history format
 func ToSABnzbdHistorySlot(item *database.ImportQueueItem, index int, finalPath string) SABnzbdHistorySlot {
 	if item == nil {
 		return SABnzbdHistorySlot{}
 	}
 
-	// Map AltMount status to SABnzbd history status
+	// Map BearMount status to SABnzbd history status
 	var status string
 	switch item.Status {
 	case database.QueueStatusCompleted:
@@ -579,7 +579,7 @@ func markHistorySlotMissing(slot *SABnzbdHistorySlot, missingPath string) {
 	slot.Status = "Failed"
 	slot.ActionLine = "Failed: reported path missing on disk"
 	if slot.Fail_message == "" {
-		slot.Fail_message = fmt.Sprintf("altmount: reported path does not exist on disk (%s)", missingPath)
+		slot.Fail_message = fmt.Sprintf("bearmount: reported path does not exist on disk (%s)", missingPath)
 	}
 	slot.Downloaded = 0
 }

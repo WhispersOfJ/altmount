@@ -3,7 +3,7 @@ package health
 import (
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 

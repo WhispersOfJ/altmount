@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	ixml "github.com/javi11/altmount/internal/webdav/propfind/xml"
+	ixml "github.com/WhispersOfJ/bearmount/internal/webdav/propfind/xml"
 )
 
 type countingReader struct {

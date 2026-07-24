@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/fuse"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/fuse"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
 )
 
 const (

@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "altmount-docs",
+      "name": "bearmount-docs",
       "dependencies": {
         "@docusaurus/core": "3.8.1",
         "@docusaurus/preset-classic": "3.8.1",

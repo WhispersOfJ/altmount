@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/parser"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/javi11/altmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
 )
 
 // MainFeaturePlaylist is the result of analysing a Blu-ray's BDMV.

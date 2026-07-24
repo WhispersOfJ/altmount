@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 )
 
 // QueueEventListener receives notifications about queue item lifecycle events.

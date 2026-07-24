@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/database"
-	importerutils "github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/nzbdav"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	importerutils "github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/nzbdav"
 )
 
 // BatchQueueAdder defines the interface for batch queue operations
@@ -166,7 +166,7 @@ func (n *NzbDavImporter) performImport(ctx context.Context, epoch int64, dbPath 
 	}()
 
 	// Create temp dir for NZBs
-	nzbTempDir, err := os.MkdirTemp(os.TempDir(), "altmount-nzbdav-imports-")
+	nzbTempDir, err := os.MkdirTemp(os.TempDir(), "bearmount-nzbdav-imports-")
 	if err != nil {
 		n.log.ErrorContext(ctx, "Failed to create temp directory for NZBs", "error", err)
 		n.mu.Lock()
@@ -277,8 +277,8 @@ func (n *NzbDavImporter) processBatch(ctx context.Context, batchChan <-chan *dat
 
 	// extractMeta reads nzbdav-specific fields from the item metadata JSON.
 	type nzbdavMeta struct {
-		NzbdavID     string        `json:"nzbdav_id"`
-		DavItemName  string        `json:"nzbdav_dav_item_name"`
+		NzbdavID      string        `json:"nzbdav_id"`
+		DavItemName   string        `json:"nzbdav_dav_item_name"`
 		NzbdavAliases []nzbdavAlias `json:"nzbdav_aliases"`
 	}
 	extractMeta := func(item *database.ImportQueueItem) nzbdavMeta {

@@ -12,13 +12,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/javi11/altmount/internal/importer/filesystem"
-	"github.com/javi11/altmount/internal/importer/parser"
-	"github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/importer/validation"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/importer/filesystem"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/importer/validation"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
 	concpool "github.com/sourcegraph/conc/pool"
 )
 

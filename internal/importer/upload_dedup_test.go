@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,7 +25,7 @@ const dedupNzbContent = `<?xml version="1.0" encoding="UTF-8"?>
 func newDedupTestService(t *testing.T) (*Service, string) {
 	t.Helper()
 	configDir := t.TempDir()
-	dbPath := filepath.Join(configDir, "altmount.db")
+	dbPath := filepath.Join(configDir, "bearmount.db")
 
 	db, err := database.NewDB(database.Config{Type: "sqlite", DatabasePath: dbPath})
 	require.NoError(t, err)
@@ -95,8 +95,8 @@ func countQueueRows(t *testing.T, dbPath string) []struct {
 // existing pending item, not create a duplicate.
 func TestReuploadSetsCategoryInPlace(t *testing.T) {
 	s, configDir := newDedupTestService(t)
-	uploadDir := filepath.Join(configDir, "altmount-uploads")
-	dbPath := filepath.Join(configDir, "altmount.db")
+	uploadDir := filepath.Join(configDir, "bearmount-uploads")
+	dbPath := filepath.Join(configDir, "bearmount.db")
 
 	first := uploadViaHandlerFlow(t, s, uploadDir, "Movie.nzb", nil)
 	cat := "movies"
@@ -114,8 +114,8 @@ func TestReuploadSetsCategoryInPlace(t *testing.T) {
 // TestReuploadDifferentFileIsNotDeduped: distinct files must each get their own queue entry.
 func TestReuploadDifferentFileIsNotDeduped(t *testing.T) {
 	s, configDir := newDedupTestService(t)
-	uploadDir := filepath.Join(configDir, "altmount-uploads")
-	dbPath := filepath.Join(configDir, "altmount.db")
+	uploadDir := filepath.Join(configDir, "bearmount-uploads")
+	dbPath := filepath.Join(configDir, "bearmount.db")
 
 	cat := "movies"
 	uploadViaHandlerFlow(t, s, uploadDir, "Movie.nzb", nil)

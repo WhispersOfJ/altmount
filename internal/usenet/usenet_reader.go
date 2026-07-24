@@ -11,10 +11,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/slogutil"
 	"github.com/avast/retry-go/v4"
-	"github.com/javi11/altmount/internal/holes"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/slogutil"
 	"github.com/javi11/nntppool/v4"
 )
 

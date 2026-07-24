@@ -1,12 +1,12 @@
 ---
 title: Performance Optimization
-description: Tune AltMount for maximum download speeds and streaming quality with storage, connection, and cache settings.
-keywords: [altmount, performance, optimization, speed, cache, connection, tuning]
+description: Tune BearMount for maximum download speeds and streaming quality with storage, connection, and cache settings.
+keywords: [bearmount, performance, optimization, speed, cache, connection, tuning]
 ---
 
 # Performance Optimization
 
-Tips for tuning AltMount to maximize download speeds and streaming quality.
+Tips for tuning BearMount to maximize download speeds and streaming quality.
 
 ## Storage
 
@@ -14,10 +14,10 @@ Use an SSD or NVMe drive for metadata storage. This is the single biggest perfor
 
 ```yaml
 metadata:
-  root_path: "/ssd/altmount/metadata" # Use SSD/NVMe for metadata
+  root_path: "/ssd/bearmount/metadata" # Use SSD/NVMe for metadata
 ```
 
-## AltMount Configuration Optimization
+## BearMount Configuration Optimization
 
 ### Streaming Performance Tuning
 
@@ -108,11 +108,11 @@ If media playback freezes or buffers frequently:
 
 **Check these first:**
 
-1. **Update to the latest AltMount version**: Playback improvements are shipped regularly. Pull the latest image:
+1. **Update to the latest BearMount version**: Playback improvements are shipped regularly. Pull the latest image:
 
    ```bash
    docker pull javi11/altmount:latest
-   docker restart altmount
+   docker restart bearmount
    ```
 
 2. **Increase prefetch**: A low `max_prefetch` value can cause buffering on high-bitrate content:
@@ -122,12 +122,12 @@ If media playback freezes or buffers frequently:
      max_prefetch: 45 # Increase from default 30
    ```
 
-3. **Tune rclone VFS settings** (if using rclone mount): Playback freezing is often caused by rclone VFS settings rather than AltMount itself. See the [Streaming Configuration rclone section](../3.%20Configuration/streaming.md#rclone-vfs-recommended-settings) for recommended settings. Key parameters:
+3. **Tune rclone VFS settings** (if using rclone mount): Playback freezing is often caused by rclone VFS settings rather than BearMount itself. See the [Streaming Configuration rclone section](../3.%20Configuration/streaming.md#rclone-vfs-recommended-settings) for recommended settings. Key parameters:
    - Set `--vfs-cache-mode full` (required for smooth playback)
    - Increase `--vfs-read-chunk-size` to `56M` or higher
    - Increase `--vfs-read-ahead` to `80G`
 
-4. **Check for corruption**: Playback freezing on specific files may indicate corruption. AltMount detects corruption during playback and flags the file for health checking. Check the health dashboard to see if the file has been flagged.
+4. **Check for corruption**: Playback freezing on specific files may indicate corruption. BearMount detects corruption during playback and flags the file for health checking. Check the health dashboard to see if the file has been flagged.
 
 5. **Provider speed**: If freezing affects all content, the issue may be provider bandwidth. Try:
    - Adding a second provider for load distribution

@@ -6,7 +6,7 @@ import (
 	"io/fs"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
 )
 
 func TestUsenetFileSystemResolvesWidthMismatchVolume(t *testing.T) {

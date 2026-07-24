@@ -65,7 +65,7 @@ export function StreamingConfigSection({
 			<div>
 				<h3 className="font-bold text-base-content text-lg">Playback Tuning</h3>
 				<p className="text-base-content/50 text-sm">
-					Optimize how AltMount streams media to your players.
+					Optimize how BearMount streams media to your players.
 				</p>
 			</div>
 
@@ -247,7 +247,7 @@ export function StreamingConfigSection({
 								className="input input-bordered w-full"
 								value={cacheData.cache_path}
 								disabled={isReadOnly}
-								placeholder="/tmp/altmount-segcache"
+								placeholder="/tmp/bearmount-segcache"
 								onChange={(e) => handleCacheChange("cache_path", e.target.value)}
 							/>
 						</div>

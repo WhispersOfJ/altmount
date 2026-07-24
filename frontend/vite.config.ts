@@ -31,8 +31,8 @@ export default defineConfig({
 			registerType: "prompt",
 			includeAssets: ["favicon.ico", "logo.png", "apple-touch-icon-180x180.png"],
 			manifest: {
-				name: "AltMount",
-				short_name: "AltMount",
+				name: "BearMount",
+				short_name: "BearMount",
 				description: "A NZB mounting application",
 				theme_color: "#1d1d1d",
 				background_color: "#1d1d1d",
@@ -111,7 +111,7 @@ export default defineConfig({
 	define: {
 		__APP_VERSION__: JSON.stringify(getAppVersion()),
 		__GIT_COMMIT__: JSON.stringify(getGitCommit()),
-		__GITHUB_URL__: JSON.stringify("https://github.com/javi11/altmount"),
+		__GITHUB_URL__: JSON.stringify("https://github.com/WhispersOfJ/bearmount"),
 	},
 	server: {
 		port: 5173,

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
-	"github.com/javi11/altmount/internal/testsupport/segments"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/segments"
 	"github.com/javi11/nntppool/v4"
 	"github.com/javi11/nzbparser"
 )

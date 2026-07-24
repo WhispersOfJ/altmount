@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
 	"github.com/hanwen/go-fuse/v2/fs"
 	"github.com/hanwen/go-fuse/v2/fuse"
-	"github.com/javi11/altmount/internal/fuse/backend"
 )
 
 const mountTimeout = 120 * time.Second
@@ -71,7 +71,7 @@ func (b *Backend) Mount(ctx context.Context, onReady func()) error {
 	opts := &fs.Options{
 		MountOptions: fuse.MountOptions{
 			AllowOther:           b.cfg.FuseConfig.AllowOther,
-			Name:                 "altmount",
+			Name:                 "bearmount",
 			Debug:                b.cfg.FuseConfig.Debug,
 			MaxReadAhead:         maxReadAhead,
 			MaxBackground:        64,

@@ -15,17 +15,17 @@ import (
 
 	concpool "github.com/sourcegraph/conc/pool"
 
-	"github.com/javi11/altmount/internal/encryption/aes"
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/filesystem"
-	"github.com/javi11/altmount/internal/importer/parser"
-	"github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	"github.com/javi11/altmount/internal/importer/validation"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/encryption/aes"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/filesystem"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/importer/validation"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
 )
 
 var (

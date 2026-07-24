@@ -12,7 +12,7 @@ import (
 
 	cgofuse "github.com/winfsp/cgofuse/fuse"
 
-	"github.com/javi11/altmount/internal/fuse/backend"
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
 )
 
 func init() {
@@ -152,7 +152,7 @@ func (b *Backend) mountOptions() []string {
 	switch runtime.GOOS {
 	case "darwin":
 		opts = append(opts,
-			"-o", "volname=altmount",
+			"-o", "volname=bearmount",
 			"-o", "noapplexattr",
 			"-o", "noappledouble",
 			"-o", "iosize=1048576", // 1MB I/O size (macOS default is 64KB)
@@ -163,7 +163,7 @@ func (b *Backend) mountOptions() []string {
 	case "windows":
 		// WinFsp options
 		opts = append(opts,
-			fmt.Sprintf("--VolumePrefix=%s", "altmount"),
+			fmt.Sprintf("--VolumePrefix=%s", "bearmount"),
 			"-o", "uid=-1",
 			"-o", "gid=-1",
 		)

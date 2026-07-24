@@ -29,20 +29,20 @@ func TestProvidersFieldsEqual_StorageGroup(t *testing.T) {
 		},
 		{
 			name: "same storage group are equal",
-			a: func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
-			b: func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
+			a:    func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
+			b:    func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
 			want: true,
 		},
 		{
 			name: "different storage group are not equal",
-			a: func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
-			b: func() ProviderConfig { p := baseProvider(); p.StorageGroup = "highwinds"; return p }(),
+			a:    func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
+			b:    func() ProviderConfig { p := baseProvider(); p.StorageGroup = "highwinds"; return p }(),
 			want: false,
 		},
 		{
 			name: "adding a storage group is not equal",
 			a:    baseProvider(),
-			b: func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
+			b:    func() ProviderConfig { p := baseProvider(); p.StorageGroup = "omicron"; return p }(),
 			want: false,
 		},
 	}

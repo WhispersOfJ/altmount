@@ -7,9 +7,9 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/javi11/altmount/internal/encryption"
-	"github.com/javi11/altmount/internal/usenet"
-	"github.com/javi11/altmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/internal/encryption"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 )
 
 var (

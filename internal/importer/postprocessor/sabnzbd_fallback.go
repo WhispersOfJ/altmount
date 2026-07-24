@@ -7,11 +7,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/httpclient"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	"github.com/javi11/altmount/internal/nzbfile"
-	"github.com/javi11/altmount/internal/sabnzbd"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfile"
+	"github.com/WhispersOfJ/bearmount/internal/sabnzbd"
 )
 
 // AttemptFallback tries to send a failed import to external SABnzbd
@@ -92,7 +92,7 @@ func (c *Coordinator) AttemptFallback(ctx context.Context, item *database.Import
 	return nil
 }
 
-// convertPriorityToSABnzbd converts AltMount queue priority to SABnzbd priority format
+// convertPriorityToSABnzbd converts BearMount queue priority to SABnzbd priority format
 func convertPriorityToSABnzbd(priority database.QueuePriority) string {
 	switch priority {
 	case database.QueuePriorityHigh:

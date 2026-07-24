@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 // seg builds a SegmentData covering [0, size-1].

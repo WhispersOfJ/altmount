@@ -16,12 +16,12 @@ import (
 
 	"github.com/spf13/afero"
 
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/progress"
-	"github.com/javi11/altmount/internal/slogutil"
-	"github.com/javi11/altmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/slogutil"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 )
 
 // Compile-time interface checks

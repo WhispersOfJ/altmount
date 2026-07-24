@@ -43,9 +43,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 ```
 
@@ -62,9 +62,9 @@ import (
 
 	concpool "github.com/sourcegraph/conc/pool"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 ```
 
@@ -171,9 +171,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 ```
 
@@ -186,9 +186,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 ```
 
@@ -296,8 +296,8 @@ go test -race ./internal/importer/...
 
 Expected output (all green, no races):
 ```
-ok  	github.com/javi11/altmount/internal/importer	0.XXXs
-ok  	github.com/javi11/altmount/internal/importer/multifile	0.XXXs
+ok  	github.com/WhispersOfJ/bearmount/internal/importer	0.XXXs
+ok  	github.com/WhispersOfJ/bearmount/internal/importer/multifile	0.XXXs
 ...
 ```
 

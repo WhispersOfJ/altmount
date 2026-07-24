@@ -8,10 +8,10 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/javi11/altmount/internal/holes"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
-	"github.com/javi11/altmount/internal/testsupport/segments"
+	"github.com/WhispersOfJ/bearmount/internal/holes"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/segments"
 	"github.com/javi11/nntppool/v4"
 )
 

@@ -1,10 +1,10 @@
 package auth
 
 import (
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/go-pkgz/auth/v2/token"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
-	"github.com/javi11/altmount/internal/database"
 )
 
 type contextKey string

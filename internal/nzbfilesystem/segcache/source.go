@@ -3,8 +3,8 @@ package segcache
 import (
 	"sync/atomic"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 )
 
 // Source is a thin wrapper around an atomic Manager pointer that resolves the

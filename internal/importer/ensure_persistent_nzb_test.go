@@ -14,10 +14,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 // newMinimalServiceForPersistTest builds just enough of *Service to exercise
@@ -105,8 +105,8 @@ func TestEnsurePersistentNzb_UsesOSTempQueueDir(t *testing.T) {
 	// always runs even if an assertion fails).
 	t.Cleanup(func() { os.Remove(item.NzbPath) })
 
-	// Assert: item.NzbPath must be inside os.TempDir()/.altmount-queue/
-	expected := filepath.Join(os.TempDir(), ".altmount-queue")
+	// Assert: item.NzbPath must be inside os.TempDir()/.bearmount-queue/
+	expected := filepath.Join(os.TempDir(), ".bearmount-queue")
 	assert.True(t, strings.HasPrefix(item.NzbPath, expected),
 		"expected OS temp queue dir prefix %q, got %q", expected, item.NzbPath)
 	assert.False(t, strings.Contains(item.NzbPath, ".nzbs"),
@@ -148,7 +148,7 @@ func sampleNzbStoreForTest() *metapb.NzbStore {
 func TestEnsurePersistentNzb_RegeneratesFromStore_WhenRawFileMissing(t *testing.T) {
 	// Arrange: item.NzbPath already points inside the persistent temp queue dir (as it would
 	// after a prior successful import), but the raw file was deleted by handleProcessingSuccess.
-	queueDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	queueDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 	require.NoError(t, os.MkdirAll(queueDir, 0755))
 	missingPath := filepath.Join(queueDir, "regen-movie.nzb")
 	t.Cleanup(func() { os.Remove(missingPath) })
@@ -179,7 +179,7 @@ func TestEnsurePersistentNzb_RegeneratesFromStore_WhenRawFileMissing(t *testing.
 
 func TestEnsurePersistentNzb_RegenerateFails_WhenNoStoreFound(t *testing.T) {
 	// Arrange: raw file missing, and no .nzbz store was ever written for this item.
-	queueDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	queueDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 	require.NoError(t, os.MkdirAll(queueDir, 0755))
 	missingPath := filepath.Join(queueDir, "regen-nostore.nzb")
 
@@ -197,7 +197,7 @@ func TestEnsurePersistentNzb_RegenerateFails_WhenNoStoreFound(t *testing.T) {
 
 func TestEnsurePersistentNzb_AlreadyInTempQueueDir_IsNoop(t *testing.T) {
 	// Arrange: NZB is already in the target queue dir — should be a no-op.
-	queueDir := filepath.Join(os.TempDir(), ".altmount-queue")
+	queueDir := filepath.Join(os.TempDir(), ".bearmount-queue")
 	require.NoError(t, os.MkdirAll(queueDir, 0755))
 
 	existingPath := filepath.Join(queueDir, "movie.nzb")

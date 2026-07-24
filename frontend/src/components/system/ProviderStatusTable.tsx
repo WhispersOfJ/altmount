@@ -48,7 +48,7 @@ const SORT_FIELDS: SortField[] = [
 	"expiration",
 ];
 
-const SORT_STORAGE_KEY = "altmount.providerStatus.sort";
+const SORT_STORAGE_KEY = "bearmount.providerStatus.sort";
 
 function getProviderDisplayName(provider: ProviderStatus): string {
 	const nickname = provider.name?.trim();

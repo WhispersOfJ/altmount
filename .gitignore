@@ -31,8 +31,8 @@ go.work.sum
 # .idea/
 example/
 
-/altmount
-/altmount.exe
+/bearmount
+/bearmount.exe
 *.db*
 *node_modules*
 .git

@@ -325,7 +325,7 @@ func (c *Client) searchWithID(ctx context.Context, idField, idValue, searchType 
 // DownloadNZB fetches the NZB file content from the given download URL.
 //
 // downloadURL comes from a Prowlarr search result and is indexer-supplied
-// data, not something AltMount controls - depending on an indexer's own
+// data, not something BearMount controls - depending on an indexer's own
 // "download link resolution" setting in Prowlarr, it can be a link proxied
 // through Prowlarr itself, or a direct link straight to that indexer's own
 // host. Prowlarr's own API key is only ever sent when the URL's host still

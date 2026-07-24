@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/javi11/altmount/internal/importer/archive"
-	"github.com/javi11/altmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/archive"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
 )
 
 var (

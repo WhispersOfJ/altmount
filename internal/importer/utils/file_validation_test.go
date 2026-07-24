@@ -3,7 +3,7 @@ package utils
 import (
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/parser"
+	"github.com/WhispersOfJ/bearmount/internal/importer/parser"
 	"github.com/stretchr/testify/assert"
 )
 

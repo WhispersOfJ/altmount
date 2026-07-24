@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/metadata"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
 )
 
 func TestSkipARRNotificationFromField(t *testing.T) {

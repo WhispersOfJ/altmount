@@ -773,7 +773,7 @@ export const CONFIG_SECTIONS: Record<ConfigSection | "system", ConfigSectionInfo
 	},
 	metadata: {
 		title: "Metadata",
-		description: "Configure how AltMount stores and manages virtual file metadata.",
+		description: "Configure how BearMount stores and manages virtual file metadata.",
 		icon: "Folder",
 		canEdit: true,
 	},
@@ -824,7 +824,7 @@ export const CONFIG_SECTIONS: Record<ConfigSection | "system", ConfigSectionInfo
 	},
 	sabnzbd: {
 		title: "SABnzbd API",
-		description: "Emulate a SABnzbd server to allow ARR applications to send NZBs to AltMount.",
+		description: "Emulate a SABnzbd server to allow ARR applications to send NZBs to BearMount.",
 		icon: "Download",
 		canEdit: true,
 	},

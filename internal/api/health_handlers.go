@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/utils"
 )
 
 // handleListHealth handles GET /api/health
@@ -284,7 +284,6 @@ func (s *Server) handleDeleteHealthBulk(c *fiber.Ctx) error {
 		return RespondValidationError(c, "At least one file path is required", "")
 	}
 
-
 	metaDeletedCount := 0
 	symlinkDeletedCount := 0
 
@@ -487,7 +486,6 @@ func (s *Server) handleRepairHealthBulk(c *fiber.Ctx) error {
 	if len(req.FilePaths) == 0 {
 		return RespondValidationError(c, "At least one file path is required", "")
 	}
-
 
 	ctx := c.Context()
 	cfg := s.configManager.GetConfig()
@@ -1018,7 +1016,6 @@ func (s *Server) handleRestartHealthChecksBulk(c *fiber.Ctx) error {
 	if len(req.FilePaths) == 0 {
 		return RespondValidationError(c, "At least one file path is required", "")
 	}
-
 
 	// Cancel any active checks for these files
 	if s.healthWorker != nil {

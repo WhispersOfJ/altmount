@@ -11,8 +11,8 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "altmount",
-	Short: "AltMount WebDAV server backed by NZB/Usenet",
+	Use:   "bearmount",
+	Short: "BearMount WebDAV server backed by NZB/Usenet",
 }
 
 func init() {

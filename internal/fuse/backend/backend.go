@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
 )
 
 // Type identifies a FUSE backend implementation.
@@ -89,7 +89,7 @@ func Create(t Type, cfg Config) (Backend, error) {
 // Linux uses hanwen (pure Go). macOS uses cgo (Fuse-T).
 // Windows FUSE support via WinFsp requires a native Windows build; cross-compiled
 // Windows binaries default to cgo but FUSE mounting is not supported without WinFsp.
-// Override with ALTMOUNT_FUSE_BACKEND env var (checked by caller).
+// Override with BEARMOUNT_FUSE_BACKEND env var (checked by caller).
 func DefaultType() Type {
 	switch runtime.GOOS {
 	case "linux":

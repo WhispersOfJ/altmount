@@ -54,7 +54,7 @@ func TestSanitizeNzbFilenames_Traversal(t *testing.T) {
 			{Filename: "'../../etc/passwd'"}, // quoted traversal
 			{Filename: "movies/../../etc/passwd"},
 			{Filename: "safe/subdir/movie.mkv"}, // legitimate nesting untouched
-			{Filename: "movie..2024.mkv"},        // traversal-looking but safe
+			{Filename: "movie..2024.mkv"},       // traversal-looking but safe
 		},
 	}
 

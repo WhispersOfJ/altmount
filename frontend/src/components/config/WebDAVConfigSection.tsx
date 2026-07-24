@@ -167,7 +167,7 @@ export function WebDAVConfigSection({
 								value={formData.mount_path}
 								disabled={isReadOnly}
 								onChange={(e) => handleInputChange("mount_path", e.target.value)}
-								placeholder="/mnt/remotes/altmount"
+								placeholder="/mnt/remotes/bearmount"
 							/>
 							<div className="mt-2 whitespace-normal text-base-content/50 text-xs leading-relaxed">
 								Path where WebDAV is mounted. This is used to resolve ARR paths back to virtual

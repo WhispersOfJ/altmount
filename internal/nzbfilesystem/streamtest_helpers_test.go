@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
-	"github.com/javi11/altmount/internal/testsupport/segments"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/segments"
 	"github.com/javi11/nntppool/v4"
 )
 

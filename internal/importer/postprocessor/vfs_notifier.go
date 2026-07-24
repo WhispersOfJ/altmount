@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/pkg/rclonecli"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/pkg/rclonecli"
 )
 
 // NotifyVFS notifies rclone VFS about file changes

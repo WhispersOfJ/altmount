@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"io"
 
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 )
 
 // clipSpan is one clip's absolute byte range in the virtual file plus the

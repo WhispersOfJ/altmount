@@ -13,13 +13,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
+	"github.com/WhispersOfJ/bearmount/internal/prowlarr"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/httpclient"
-	"github.com/javi11/altmount/internal/prowlarr"
 )
 
 // stremioDownloadIDPrefix marks queue items originating from the Stremio addon.
@@ -93,9 +93,9 @@ func (s *Server) handleStremioManifest(c *fiber.Ctx) error {
 	slog.InfoContext(ctx, "Stremio addon manifest requested")
 
 	return c.JSON(stremioManifest{
-		ID:          "community.altmount",
+		ID:          "community.bearmount",
 		Version:     "1.0.0",
-		Name:        "AltMount Usenet",
+		Name:        "BearMount Usenet",
 		Description: "Stream from Usenet via Prowlarr",
 		Resources:   []string{"stream"},
 		Types:       []string{"movie", "series"},
@@ -247,8 +247,8 @@ func (s *Server) handleStremioAddonStream(c *fiber.Ctx) error {
 
 		meta := prowlarr.InferReleaseMeta(r.Title)
 
-		// Badge: "AltMount 🇪🇸 4K"
-		badge := "AltMount"
+		// Badge: "BearMount 🇪🇸 4K"
+		badge := "BearMount"
 		if meta.FlagEmoji != "" {
 			badge += " " + meta.FlagEmoji
 		}
@@ -388,7 +388,7 @@ func (s *Server) handleStremioAddonPlay(c *fiber.Ctx) error {
 		workCtx := context.WithoutCancel(ctx)
 
 		// Unique per-request staging dir so concurrent plays never share a temp file.
-		uploadDir := filepath.Join(os.TempDir(), "altmount-uploads")
+		uploadDir := filepath.Join(os.TempDir(), "bearmount-uploads")
 		if err := os.MkdirAll(uploadDir, 0755); err != nil {
 			return nil, fmt.Errorf("failed to create upload directory: %w", err)
 		}

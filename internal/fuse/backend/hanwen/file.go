@@ -9,11 +9,11 @@ import (
 	"os"
 	"syscall"
 
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/hanwen/go-fuse/v2/fs"
 	"github.com/hanwen/go-fuse/v2/fuse"
-	"github.com/javi11/altmount/internal/fuse/backend"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
-	"github.com/javi11/altmount/internal/utils"
 )
 
 // ensure File implements fs.Node* interfaces

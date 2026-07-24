@@ -8,17 +8,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/javi11/altmount/internal/arrs/clients"
-	"github.com/javi11/altmount/internal/arrs/data"
-	"github.com/javi11/altmount/internal/arrs/failures"
-	"github.com/javi11/altmount/internal/arrs/instances"
-	"github.com/javi11/altmount/internal/arrs/model"
-	"github.com/javi11/altmount/internal/arrs/registrar"
-	"github.com/javi11/altmount/internal/arrs/scanner"
-	"github.com/javi11/altmount/internal/arrs/worker"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/httpclient"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/clients"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/data"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/failures"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/instances"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/model"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/registrar"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/scanner"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/worker"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
 	"golift.io/starr"
 )
 
@@ -86,7 +86,7 @@ func NewService(configGetter config.ConfigGetter, configManager model.ConfigMana
 	instManager := instances.NewManager(configGetter, configManager)
 	clientManager := clients.NewManager(httpclient.NewForExternal(configGetter().Network, 30*time.Second))
 	dataManager := data.NewManager()
-	// One failure tracker shared by every AltMount→arr re-acquire producer: the
+	// One failure tracker shared by every BearMount→arr re-acquire producer: the
 	// queue-cleanup worker and the scanner (repair re-triggers) count the same
 	// per-target keys.
 	failureTracker := failures.NewTracker()
@@ -290,7 +290,6 @@ func (s *Service) ClearInstanceCache(ctx context.Context, instanceName string) {
 	s.data.ClearSeriesCache(instanceName)
 }
 
-
 // DiscoverFileMetadata attempts to discover the rich metadata for a file through the appropriate ARR instance
 func (s *Service) DiscoverFileMetadata(ctx context.Context, filePath, relativePath, nzbName, libraryPath string) (*model.WebhookMetadata, error) {
 	return s.scanner.DiscoverFileMetadata(ctx, filePath, relativePath, nzbName, libraryPath)
@@ -306,19 +305,19 @@ func (s *Service) TriggerDownloadScan(ctx context.Context, instanceType string) 
 	s.scanner.TriggerDownloadScan(ctx, instanceType)
 }
 
-// EnsureWebhookRegistration ensures that the AltMount webhook is registered in all enabled ARR instances
-func (s *Service) EnsureWebhookRegistration(ctx context.Context, altmountURL string, apiKey string) error {
-	return s.registrar.EnsureWebhookRegistration(ctx, altmountURL, apiKey)
+// EnsureWebhookRegistration ensures that the BearMount webhook is registered in all enabled ARR instances
+func (s *Service) EnsureWebhookRegistration(ctx context.Context, bearmountURL string, apiKey string) error {
+	return s.registrar.EnsureWebhookRegistration(ctx, bearmountURL, apiKey)
 }
 
-// EnsureDownloadClientRegistration ensures that AltMount is registered as a SABnzbd download client in all enabled ARR instances
-func (s *Service) EnsureDownloadClientRegistration(ctx context.Context, altmountHost string, altmountPort int, urlBase string, apiKey string) error {
-	return s.registrar.EnsureDownloadClientRegistration(ctx, altmountHost, altmountPort, urlBase, apiKey)
+// EnsureDownloadClientRegistration ensures that BearMount is registered as a SABnzbd download client in all enabled ARR instances
+func (s *Service) EnsureDownloadClientRegistration(ctx context.Context, bearmountHost string, bearmountPort int, urlBase string, apiKey string) error {
+	return s.registrar.EnsureDownloadClientRegistration(ctx, bearmountHost, bearmountPort, urlBase, apiKey)
 }
 
-// TestDownloadClientRegistration tests the connection from ARR instances back to AltMount
-func (s *Service) TestDownloadClientRegistration(ctx context.Context, altmountHost string, altmountPort int, urlBase string, apiKey string) (map[string]string, error) {
-	return s.registrar.TestDownloadClientRegistration(ctx, altmountHost, altmountPort, urlBase, apiKey)
+// TestDownloadClientRegistration tests the connection from ARR instances back to BearMount
+func (s *Service) TestDownloadClientRegistration(ctx context.Context, bearmountHost string, bearmountPort int, urlBase string, apiKey string) (map[string]string, error) {
+	return s.registrar.TestDownloadClientRegistration(ctx, bearmountHost, bearmountPort, urlBase, apiKey)
 }
 
 // TestConnection tests the connection to an arrs instance

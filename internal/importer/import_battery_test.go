@@ -11,11 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/javi11/altmount/internal/importer/multifile"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
-	"github.com/javi11/altmount/internal/testsupport/nzbbuild"
-	"github.com/javi11/altmount/internal/testsupport/par2gen"
+	"github.com/WhispersOfJ/bearmount/internal/importer/multifile"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/nzbbuild"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/par2gen"
 	"github.com/javi11/nntppool/v4"
 	"google.golang.org/protobuf/proto"
 )

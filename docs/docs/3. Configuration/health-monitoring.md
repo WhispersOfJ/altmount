@@ -1,12 +1,12 @@
 ---
 title: Health Monitoring
 description: Detect corrupted files and automatically coordinate repairs via Sonarr/Radarr.
-keywords: [altmount, health monitoring, corrupted files, repair, arr, sonarr, radarr, usenet]
+keywords: [bearmount, health monitoring, corrupted files, repair, arr, sonarr, radarr, usenet]
 ---
 
 # Health Monitoring
 
-AltMount monitors your media files for corruption and can automatically trigger re-downloads through Sonarr/Radarr when issues are found.
+BearMount monitors your media files for corruption and can automatically trigger re-downloads through Sonarr/Radarr when issues are found.
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ AltMount monitors your media files for corruption and can automatically trigger 
 3. Set your **Library Parent Directory** (where symlinks/STRM files live)
 4. Optionally enable the **Repair Engine** for automatic ARR re-downloads
 
-That's it — AltMount will start discovering and validating files automatically.
+That's it — BearMount will start discovering and validating files automatically.
 
 ---
 
@@ -79,7 +79,7 @@ Library sync keeps the health database, metadata files, and library directory in
 
 ### How Sync Works
 
-During each sync, AltMount:
+During each sync, BearMount:
 
 1. Scans the library directory for symlinks/STRM files
 2. Scans the metadata directory for `.meta` and `.id` sidecar files
@@ -160,7 +160,7 @@ By default, 5% of segments are randomly sampled — statistically sufficient sin
 ### Automatic Repair
 
 1. File fails validation after 2 retries → marked for repair
-2. AltMount sends rescan to Sonarr/Radarr (AltMount never deletes files)
+2. BearMount sends rescan to Sonarr/Radarr (BearMount never deletes files)
 3. ARR searches indexers and re-downloads
 4. New file enters health check queue
 
@@ -172,17 +172,17 @@ Repair uses exponential backoff (up to 3 attempts). Files that can't be repaired
 
 ### Path Configuration
 
-AltMount uses three paths that must be configured correctly for health monitoring, repair, and webhook cleanup to work:
+BearMount uses three paths that must be configured correctly for health monitoring, repair, and webhook cleanup to work:
 
 | Path | Config Key | Purpose | Example |
 |------|-----------|---------|---------|
-| **Mount Path** | `mount_path` (root level) | Where ARRs access the WebDAV mount | `/mnt/remotes/altmount` |
+| **Mount Path** | `mount_path` (root level) | Where ARRs access the WebDAV mount | `/mnt/remotes/bearmount` |
 | **Library Directory** | `health.library_dir` | Where symlinks/STRM files are created | `/mnt/library` |
 | **Import Directory** | `import.dir` | Where import strategy places links | `/mnt/imports` |
 
-When AltMount receives a webhook from Sonarr/Radarr, it normalizes the incoming path by stripping the longest matching prefix from these three paths. This converts absolute ARR paths into relative paths that AltMount uses internally.
+When BearMount receives a webhook from Sonarr/Radarr, it normalizes the incoming path by stripping the longest matching prefix from these three paths. This converts absolute ARR paths into relative paths that BearMount uses internally.
 
-**Example**: ARR sends `/mnt/remotes/altmount/complete/movies/Movie.2024.mkv` → AltMount normalizes to `complete/movies/Movie.2024.mkv`.
+**Example**: ARR sends `/mnt/remotes/bearmount/complete/movies/Movie.2024.mkv` → BearMount normalizes to `complete/movies/Movie.2024.mkv`.
 
 :::warning Path Alignment
 The `mount_path` must exactly match where your ARR applications access the WebDAV mount. If these don't match, webhooks won't be able to find the correct health records or metadata to clean up.
@@ -191,8 +191,8 @@ The `mount_path` must exactly match where your ARR applications access the WebDA
 **Correct configuration example:**
 
 ```yaml
-# Root level — where ARRs mount AltMount via WebDAV/rclone
-mount_path: "/mnt/remotes/altmount"
+# Root level — where ARRs mount BearMount via WebDAV/rclone
+mount_path: "/mnt/remotes/bearmount"
 
 # Import — where symlinks/STRM files are placed after import processing
 import:
@@ -221,15 +221,15 @@ arrs:
 
 In Sonarr/Radarr, your root folders should point under `mount_path`:
 ```
-Radarr Root Folder:  /mnt/remotes/altmount/movies/
-Sonarr Root Folder:  /mnt/remotes/altmount/tv/
+Radarr Root Folder:  /mnt/remotes/bearmount/movies/
+Sonarr Root Folder:  /mnt/remotes/bearmount/tv/
 ```
 
 ### ARR Webhook Events
 
-AltMount automatically registers a webhook with each configured ARR instance. When Sonarr/Radarr performs actions, it sends events that AltMount handles:
+BearMount automatically registers a webhook with each configured ARR instance. When Sonarr/Radarr performs actions, it sends events that BearMount handles:
 
-| Event | Trigger | What AltMount Does |
+| Event | Trigger | What BearMount Does |
 |-------|---------|-------------------|
 | **Download** | File imported | Adds health record with high priority |
 | **Upgrade** | File replaced by better quality | Adds new file to health, deletes old file's metadata + health record |
@@ -241,22 +241,22 @@ AltMount automatically registers a webhook with each configured ARR instance. Wh
 
 ### How Webhook Deletion Works
 
-When Sonarr/Radarr deletes a file or series/movie, AltMount automatically cleans up:
+When Sonarr/Radarr deletes a file or series/movie, BearMount automatically cleans up:
 
 1. **Receives the webhook** with the absolute file/folder path from ARR
 2. **Looks up the health record** — first by `library_path` (the absolute ARR path), falling back to the normalized `file_path`
 3. **Deletes the health record** from the database
 4. **Deletes the metadata** (`.meta` and `.id` sidecar files) and optionally the source NZB
 
-For directory deletions (MovieDelete, SeriesDelete), AltMount deletes all health records and metadata within that directory prefix.
+For directory deletions (MovieDelete, SeriesDelete), BearMount deletes all health records and metadata within that directory prefix.
 
 :::tip
-This means when you delete a movie in Radarr or a series in Sonarr, AltMount automatically cleans up all associated metadata and health tracking — no manual cleanup needed.
+This means when you delete a movie in Radarr or a series in Sonarr, BearMount automatically cleans up all associated metadata and health tracking — no manual cleanup needed.
 :::
 
 ### STRM File Handling
 
-When using the STRM import strategy, ARR may send webhook paths ending in `.strm`. AltMount reads the `.strm` file content, extracts the actual file path from the URL query parameter, and uses that for health record matching. This is transparent — no special configuration needed.
+When using the STRM import strategy, ARR may send webhook paths ending in `.strm`. BearMount reads the `.strm` file content, extracts the actual file path from the URL query parameter, and uses that for health record matching. This is transparent — no special configuration needed.
 
 ### Without ARR Integration
 

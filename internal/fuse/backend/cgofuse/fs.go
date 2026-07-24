@@ -14,9 +14,9 @@ import (
 
 	cgofuse "github.com/winfsp/cgofuse/fuse"
 
-	"github.com/javi11/altmount/internal/fuse/backend"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
-	"github.com/javi11/altmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/spf13/afero"
 )
 

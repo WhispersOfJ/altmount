@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/javi11/altmount/internal/testsupport/fakepool"
-	"github.com/javi11/altmount/internal/testsupport/segments"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/fakepool"
+	"github.com/WhispersOfJ/bearmount/internal/testsupport/segments"
 )
 
 // disconnect_storm_test.go pins the post-S9 invariant for HTTP-client

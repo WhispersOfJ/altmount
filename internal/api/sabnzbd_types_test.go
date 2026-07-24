@@ -3,11 +3,10 @@ package api
 import (
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/stretchr/testify/assert"
 )
-
 
 func TestToSABnzbdHistorySlot(t *testing.T) {
 	t.Run("basic path assignment", func(t *testing.T) {
@@ -90,7 +89,7 @@ func TestMarkHistorySlotMissing(t *testing.T) {
 
 func TestCalculateHistoryStoragePath(t *testing.T) {
 	cfg := &config.Config{
-		MountPath: "/mnt/altmount",
+		MountPath: "/mnt/bearmount",
 		SABnzbd: config.SABnzbdConfig{
 			CompleteDir: "complete",
 			Categories: []config.SABnzbdCategory{

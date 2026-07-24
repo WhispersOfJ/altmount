@@ -1,11 +1,11 @@
 services:
-  altmount:
+  bearmount:
     extra_hosts:
       - "host.docker.internal:host-gateway" # Optional if you rclone is outside the container
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: altmount
+    container_name: bearmount
     environment:
       - PUID=1000
       - PGID=1000

@@ -1,4 +1,4 @@
-# AltMount Documentation
+# BearMount Documentation
 
 This documentation site is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 

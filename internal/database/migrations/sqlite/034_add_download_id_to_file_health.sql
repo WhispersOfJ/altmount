@@ -24,5 +24,5 @@ DROP INDEX idx_import_history_trim_vpath;
 -- +goose Down
 DROP INDEX IF EXISTS idx_file_health_download_id;
 -- SQLite does not support dropping columns easily, but we can do it if needed.
--- However, standard SQLite migrations in AltMount leave columns alone in Down migrations or recreate the table.
+-- However, standard SQLite migrations in BearMount leave columns alone in Down migrations or recreate the table.
 -- Since this is a simple addition, we can just drop the index.

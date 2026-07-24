@@ -17,15 +17,15 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/arrs"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	apputils "github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/javi11/altmount/internal/arrs"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/httpclient"
-	"github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	apputils "github.com/javi11/altmount/internal/utils"
 )
 
 // getDefaultCategory returns the Default category from config or a fallback
@@ -48,7 +48,7 @@ func (s *Server) getDefaultCategory() config.SABnzbdCategory {
 }
 
 // qf returns a request parameter from the query string, falling back to the
-// form body when absent. AltMount historically read auth/mode from the query
+// form body when absent. BearMount historically read auth/mode from the query
 // string only; some SABnzbd clients (e.g. Sportarr) send these as multipart
 // form fields, which is also valid per the SABnzbd API. Query takes precedence
 // so existing query-string clients (Sonarr/Radarr) are unaffected.
@@ -370,7 +370,7 @@ func (s *Server) handleSABnzbdAddFile(c *fiber.Ctx) error {
 
 	// Build category path and create temporary file with category subdirectory
 	tempDir := os.TempDir()
-	uploadDir := filepath.Join(tempDir, "altmount-uploads")
+	uploadDir := filepath.Join(tempDir, "bearmount-uploads")
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		return s.writeSABnzbdErrorFiber(c, "Failed to create upload directory")
 	}
@@ -405,7 +405,7 @@ func (s *Server) handleSABnzbdAddFile(c *fiber.Ctx) error {
 	if movie := c.FormValue("movie"); movie != "" {
 		metadata["movie_title"] = movie
 	}
-	
+
 	var metadataJSON *string
 	if len(metadata) > 0 {
 		if b, err := json.Marshal(metadata); err == nil {
@@ -453,7 +453,7 @@ func (s *Server) handleSABnzbdAddUrl(c *fiber.Ctx) error {
 	if err != nil {
 		return s.writeSABnzbdErrorFiber(c, "Failed to build NZB download request")
 	}
-	req.Header.Set("User-Agent", "altmount")
+	req.Header.Set("User-Agent", "bearmount")
 	resp, err := httpclient.NewLong().Do(req)
 	if err != nil {
 		return s.writeSABnzbdErrorFiber(c, "Failed to download NZB from URL")
@@ -478,7 +478,7 @@ func (s *Server) handleSABnzbdAddUrl(c *fiber.Ctx) error {
 
 	// Create temporary file with category path
 	tempDir := os.TempDir()
-	uploadDir := filepath.Join(tempDir, "altmount-uploads")
+	uploadDir := filepath.Join(tempDir, "bearmount-uploads")
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		return s.writeSABnzbdErrorFiber(c, "Failed to create upload directory")
 	}
@@ -1113,7 +1113,7 @@ func (s *Server) handleSABnzbdStatus(c *fiber.Ctx) error {
 	cfg := s.configManager.GetConfig()
 	targetPath := cfg.MountPath
 	if targetPath == "" {
-		targetPath = filepath.Join(os.TempDir(), "altmount-uploads")
+		targetPath = filepath.Join(os.TempDir(), "bearmount-uploads")
 	}
 	diskFree, diskTotal := getDiskSpace(targetPath)
 
@@ -1244,7 +1244,7 @@ func (s *Server) handleSABnzbdVersion(c *fiber.Ctx) error {
 	return s.writeSABnzbdResponseFiber(c, response)
 }
 
-// parseSABnzbdPriority converts SABnzbd priority string to AltMount priority.
+// parseSABnzbdPriority converts SABnzbd priority string to BearMount priority.
 // SABnzbd numeric values: 2=Force, 1=High, 0=Normal, -1=Low, -2=Paused.
 func (s *Server) parseSABnzbdPriority(priority string) database.QueuePriority {
 	switch strings.ToLower(priority) {
@@ -1374,7 +1374,7 @@ func (s *Server) ensureCategoryDirectories(category string) error {
 	}
 
 	// Create in temp path
-	tempDir := filepath.Join(os.TempDir(), "altmount-uploads", categoryPath)
+	tempDir := filepath.Join(os.TempDir(), "bearmount-uploads", categoryPath)
 	if err := os.MkdirAll(tempDir, 0755); err != nil {
 		return fmt.Errorf("failed to create temp directory: %w", err)
 	}
@@ -1422,7 +1422,7 @@ func (s *Server) calculateItemBasePath() string {
 
 // calculateHistoryStoragePath calculates the final storage path to report to SABnzbd history for Sonarr/Radarr.
 //
-// The second return value reports whether the path that altmount is about to
+// The second return value reports whether the path that bearmount is about to
 // hand back to the ARR client exists on disk. Callers should treat items
 // where exists=false as failed downloads (see markHistorySlotMissing), to
 // stop Sonarr/Radarr from looping on FileNotFoundException for items whose

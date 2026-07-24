@@ -1,16 +1,16 @@
 ---
 title: NNTP Providers Configuration
-description: Configure multiple Usenet NNTP providers in AltMount for maximum completion rates, failover, and load balancing.
-keywords: [altmount, nntp, usenet, providers, configuration, failover, load balancing, completion]
+description: Configure multiple Usenet NNTP providers in BearMount for maximum completion rates, failover, and load balancing.
+keywords: [bearmount, nntp, usenet, providers, configuration, failover, load balancing, completion]
 ---
 
 # NNTP Providers Configuration
 
-NNTP providers are the backbone of AltMount - they provide access to Usenet newsgroups for downloading content. This guide covers configuring multiple providers for optimal performance and reliability.
+NNTP providers are the backbone of BearMount - they provide access to Usenet newsgroups for downloading content. This guide covers configuring multiple providers for optimal performance and reliability.
 
 ## Overview
 
-AltMount supports multiple NNTP providers with automatic failover and load balancing. You can add as many providers as you want for maximum reliability and performance. Having multiple providers ensures:
+BearMount supports multiple NNTP providers with automatic failover and load balancing. You can add as many providers as you want for maximum reliability and performance. Having multiple providers ensures:
 
 - **Redundancy**: If one provider is down, others continue working
 - **Load Distribution**: Downloads spread across providers for better performance
@@ -22,10 +22,10 @@ AltMount supports multiple NNTP providers with automatic failover and load balan
 
 ### Provider Configuration via Web Interface
 
-Configure NNTP providers through the AltMount web interface:
+Configure NNTP providers through the BearMount web interface:
 
 ![Providers Overview](/images/config-providers.png)
-_AltMount web interface showing configured providers with status indicators_
+_BearMount web interface showing configured providers with status indicators_
 
 ### Adding a New Provider
 
@@ -91,7 +91,7 @@ The `inflight_requests` parameter controls **NNTP pipelining** — the number of
 
 Without pipelining, each NNTP command follows a strict request-response cycle: send a command, wait for the full response, then send the next command. Each round-trip adds network latency, which limits throughput — especially on high-latency connections.
 
-With pipelining enabled (`inflight_requests` > 1), AltMount sends multiple NNTP commands (e.g., `BODY` requests to download article segments) on the same connection without waiting for each response. The server processes and responds to them in order, and AltMount reads the responses as they arrive. This hides network latency and significantly improves download throughput.
+With pipelining enabled (`inflight_requests` > 1), BearMount sends multiple NNTP commands (e.g., `BODY` requests to download article segments) on the same connection without waiting for each response. The server processes and responds to them in order, and BearMount reads the responses as they arrive. This hides network latency and significantly improves download throughput.
 
 | Value | Behavior                                                                                               | Use Case                                                                           |
 | ----- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
@@ -152,7 +152,7 @@ _Security options in the provider configuration dialog_
 **Security Recommendations:**
 
 1. **Use TLS/SSL encryption**: ✅ Always enable for security
-   - Encrypts all data between AltMount and your provider
+   - Encrypts all data between BearMount and your provider
    - Protects your credentials and download activity
    - Standard on port 563
 
@@ -182,7 +182,7 @@ _Max Connections setting in the provider configuration_
 
 ### Provider Priority and Backup Strategy
 
-AltMount automatically manages provider selection with intelligent failover:
+BearMount automatically manages provider selection with intelligent failover:
 
 **Primary Provider Selection:**
 
@@ -208,7 +208,7 @@ AltMount automatically manages provider selection with intelligent failover:
 
 After configuring providers, test the connections:
 
-1. **Start AltMount** with your configuration
+1. **Start BearMount** with your configuration
 2. **Check the logs** for connection status
 3. **Use the web interface** to verify provider status
 

@@ -44,6 +44,15 @@ jobs:
             goarch: arm64
             runner: ubuntu-latest
             cc: zig cc -target aarch64-linux-musl
+          - goos: linux
+            goarch: 386
+            runner: ubuntu-latest
+            cc: zig cc -target x86-linux-musl
+          - goos: linux
+            goarch: arm
+            goarm: '7'
+            runner: ubuntu-latest
+            cc: zig cc -target arm-linux-musleabihf
           # macOS builds
           - goos: darwin
             goarch: amd64
@@ -58,6 +67,14 @@ jobs:
             goarch: amd64
             runner: ubuntu-latest
             cc: zig cc -target x86_64-windows-gnu
+          - goos: windows
+            goarch: 386
+            runner: ubuntu-latest
+            cc: zig cc -target x86-windows-gnu
+          - goos: windows
+            goarch: arm64
+            runner: ubuntu-latest
+            cc: zig cc -target aarch64-windows-gnu
     steps:
       - uses: mlugg/setup-zig@v2
         if: matrix.cc != ''
@@ -89,6 +106,7 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
+          GOARM: ${{ matrix.goarm }}
           CGO_ENABLED: 1
           CC: ${{ matrix.cc }}
         run: |
@@ -100,9 +118,9 @@ jobs:
           go build \
             -trimpath \
             -tags=cli \
-            -ldflags="-s -w -X 'github.com/javi11/altmount/internal/version.Version=${{ inputs.version }}' -X 'github.com/javi11/altmount/internal/version.GitCommit=${{ inputs.commit }}' -X 'github.com/javi11/altmount/internal/version.Timestamp=${{ steps.ts.outputs.timestamp }}'" \
-            -o "altmount-cli-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}" \
-            ./cmd/altmount/main.go
+            -ldflags="-s -w -X 'github.com/WhispersOfJ/bearmount/internal/version.Version=${{ inputs.version }}' -X 'github.com/WhispersOfJ/bearmount/internal/version.GitCommit=${{ inputs.commit }}' -X 'github.com/WhispersOfJ/bearmount/internal/version.Timestamp=${{ steps.ts.outputs.timestamp }}'" \
+            -o "bearmount-cli-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}" \
+            ./cmd/bearmount/main.go
 
       - name: Create archive
         run: |
@@ -111,8 +129,8 @@ jobs:
             EXT=".exe"
           fi
 
-          BINARY_NAME="altmount-cli-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}"
-          ARCHIVE_NAME="altmount-cli_v${{ inputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}"
+          BINARY_NAME="bearmount-cli-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}"
+          ARCHIVE_NAME="bearmount-cli_v${{ inputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}"
 
           if [ "${{ matrix.goos }}" = "windows" ]; then
             zip "${ARCHIVE_NAME}.zip" "$BINARY_NAME"
@@ -125,7 +143,7 @@ jobs:
         with:
           name: cli-${{ matrix.goos }}-${{ matrix.goarch }}
           path: |
-            altmount-cli_v${{ inputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}.*
+            bearmount-cli_v${{ inputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}.*
           retention-days: 1
 
   create-universal-darwin:
@@ -154,23 +172,23 @@ jobs:
       - name: Extract binaries
         run: |
           cd artifacts
-          tar -xzf altmount-cli_v${{ inputs.version }}_darwin_amd64.tar.gz
-          tar -xzf altmount-cli_v${{ inputs.version }}_darwin_arm64.tar.gz
+          tar -xzf bearmount-cli_v${{ inputs.version }}_darwin_amd64.tar.gz
+          tar -xzf bearmount-cli_v${{ inputs.version }}_darwin_arm64.tar.gz
 
       - name: Create universal binary
         run: |
           lipo -create \
-            artifacts/altmount-cli-darwin-amd64 \
-            artifacts/altmount-cli-darwin-arm64 \
-            -output altmount-cli-darwin-universal
+            artifacts/bearmount-cli-darwin-amd64 \
+            artifacts/bearmount-cli-darwin-arm64 \
+            -output bearmount-cli-darwin-universal
 
-          tar -czf "altmount-cli_v${{ inputs.version }}_darwin_universal.tar.gz" altmount-cli-darwin-universal
+          tar -czf "bearmount-cli_v${{ inputs.version }}_darwin_universal.tar.gz" bearmount-cli-darwin-universal
 
       - name: Upload universal darwin artifact
         uses: actions/upload-artifact@v6
         with:
           name: cli-darwin-universal
-          path: altmount-cli_v${{ inputs.version }}_darwin_universal.tar.gz
+          path: bearmount-cli_v${{ inputs.version }}_darwin_universal.tar.gz
           retention-days: 1
 
   publish:
@@ -194,7 +212,7 @@ jobs:
       - name: Create checksums
         run: |
           cd artifacts
-          sha512sum altmount-cli_v${{ inputs.version }}_*.* > checksums-cli.txt
+          sha512sum bearmount-cli_v${{ inputs.version }}_*.* > checksums-cli.txt
           cat checksums-cli.txt
 
       - name: Upload combined artifacts (when not publishing to release)
@@ -203,7 +221,7 @@ jobs:
         with:
           name: cli-release-bundle
           path: |
-            artifacts/altmount-cli_v${{ inputs.version }}_*.*
+            artifacts/bearmount-cli_v${{ inputs.version }}_*.*
             artifacts/checksums-cli.txt
           retention-days: 7
 
@@ -213,7 +231,7 @@ jobs:
         with:
           tag_name: ${{ inputs.release-tag }}
           files: |
-            artifacts/altmount-cli_v${{ inputs.version }}_*.*
+            artifacts/bearmount-cli_v${{ inputs.version }}_*.*
             artifacts/checksums-cli.txt
           draft: false
           prerelease: ${{ inputs.prerelease }}

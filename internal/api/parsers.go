@@ -84,7 +84,7 @@ func ParseTimeParamFiber(c *fiber.Ctx, param string) (*time.Time, error) {
 	return nil, &ValidationError{Message: "Invalid time format for parameter: " + param}
 }
 
-// validateAPIKey validates the API key using AltMount's authentication system
+// validateAPIKey validates the API key using BearMount's authentication system
 // First checks if there's a key_override in config (must be exactly 32 characters)
 // Then falls back to checking the database
 func (s *Server) validateAPIKey(c *fiber.Ctx, apiKey string) bool {

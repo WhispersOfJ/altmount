@@ -1,6 +1,6 @@
-# AltMount Docker Configuration
+# BearMount Docker Configuration
 
-This directory contains Docker configurations for running AltMount in containerized environments using LinuxServer.io patterns.
+This directory contains Docker configurations for running BearMount in containerized environments using LinuxServer.io patterns.
 
 ## Files
 
@@ -20,7 +20,7 @@ The containers follow the standard LinuxServer.io pattern:
 
 ```bash
 docker run -d \
-  --name altmount \
+  --name bearmount \
   -e PUID=1000 \
   -e PGID=1000 \
   -p 8080:8080 \
@@ -28,7 +28,7 @@ docker run -d \
   -v /path/to/metadata:/metadata \
   -v /var/run/docker.sock:/var/run/docker.sock \
   --group-add 999 \
-  your-registry/altmount:latest
+  your-registry/bearmount:latest
 ```
 
 ### Environment Variables
@@ -52,18 +52,18 @@ root/
 └── etc/
     └── s6-overlay/
         └── s6-rc.d/
-            ├── svc-altmount/
+            ├── svc-bearmount/
             │   ├── run        # Main service script
             │   └── type       # Service type (longrun)
             └── user/
                 └── contents.d/
-                    └── svc-altmount  # Service dependency
+                    └── svc-bearmount  # Service dependency
 ```
 
 The service script is minimal and follows LinuxServer.io patterns:
 ```bash
 #!/usr/bin/with-contenv bash
-exec s6-setuidgid abc /app/altmount serve --config=/config/config.yaml
+exec s6-setuidgid abc /app/bearmount serve --config=/config/config.yaml
 ```
 
 ## Troubleshooting
@@ -79,7 +79,7 @@ If you encounter permission issues:
 
 2. **Check container logs** for s6-overlay initialization:
    ```bash
-   docker logs altmount
+   docker logs bearmount
    ```
 
 3. **Verify PUID/PGID values** match your host system:
@@ -98,9 +98,9 @@ If you encounter permission issues:
 ```yaml
 version: '3.8'
 services:
-  altmount:
-    image: your-registry/altmount:latest
-    container_name: altmount
+  bearmount:
+    image: your-registry/bearmount:latest
+    container_name: bearmount
     environment:
       - PUID=1000
       - PGID=1000
@@ -119,14 +119,14 @@ services:
 
 ### Development Build (includes frontend build)
 ```bash
-docker build -f docker/Dockerfile -t altmount:dev .
+docker build -f docker/Dockerfile -t bearmount:dev .
 ```
 
 ### CI Build (expects pre-built frontend in frontend/dist)
 ```bash
 # Build frontend first
 cd frontend && bun run build && cd ..
-docker build -f docker/Dockerfile.ci -t altmount:ci .
+docker build -f docker/Dockerfile.ci -t bearmount:ci .
 ```
 
 ## Health Check

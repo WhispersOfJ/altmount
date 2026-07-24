@@ -1,12 +1,12 @@
-// Package api provides the AltMount REST API.
+// Package api provides the BearMount REST API.
 //
-//	@title			AltMount API
+//	@title			BearMount API
 //	@version		1.0
-//	@description	REST API for AltMount — Usenet WebDAV server with NZB queue, health monitoring, ARR integration, FUSE/rclone mounting, and Stremio addon.
-//	@termsOfService	http://altmount.kipsilabs.top
+//	@description	REST API for BearMount — Usenet WebDAV server with NZB queue, health monitoring, ARR integration, FUSE/rclone mounting, and Stremio addon.
+//	@termsOfService	https://github.com/WhispersOfJ/bearmount
 //
-//	@contact.name	AltMount
-//	@contact.url	https://github.com/javi11/altmount/issues
+//	@contact.name	BearMount
+//	@contact.url	https://github.com/WhispersOfJ/bearmount/issues
 //
 //	@license.name	MIT
 //

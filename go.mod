@@ -1,4 +1,4 @@
-module github.com/javi11/altmount
+module github.com/WhispersOfJ/bearmount
 
 go 1.26.0
 

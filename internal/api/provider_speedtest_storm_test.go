@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/pool"
 	"github.com/javi11/nntppool/v4"
 )
 

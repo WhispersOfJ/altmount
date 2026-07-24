@@ -14,14 +14,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	internalerrors "github.com/WhispersOfJ/bearmount/internal/errors"
+	"github.com/WhispersOfJ/bearmount/internal/httpclient"
+	importerutils "github.com/WhispersOfJ/bearmount/internal/importer/utils"
+	"github.com/WhispersOfJ/bearmount/internal/importer/utils/nzbtrim"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfile"
+	"github.com/WhispersOfJ/bearmount/internal/nzblnk"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/database"
-	internalerrors "github.com/javi11/altmount/internal/errors"
-	"github.com/javi11/altmount/internal/httpclient"
-	importerutils "github.com/javi11/altmount/internal/importer/utils"
-	"github.com/javi11/altmount/internal/importer/utils/nzbtrim"
-	"github.com/javi11/altmount/internal/nzbfile"
-	"github.com/javi11/altmount/internal/nzblnk"
 )
 
 // removeQueueNzbFiles deletes the on-disk NZB files for every non-empty path.
@@ -631,7 +631,7 @@ func (s *Server) handleUploadToQueue(c *fiber.Ctx) error {
 
 	// Create temporary directory for upload
 	tempDir := os.TempDir()
-	uploadDir := filepath.Join(tempDir, "altmount-uploads")
+	uploadDir := filepath.Join(tempDir, "bearmount-uploads")
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		return RespondInternalError(c, "Failed to create upload directory", err.Error())
 	}
@@ -772,7 +772,7 @@ func (s *Server) handleUploadNZBLnk(c *fiber.Ctx) error {
 
 		// Create temp file for the NZB
 		tempDir := os.TempDir()
-		uploadDir := filepath.Join(tempDir, "altmount-uploads")
+		uploadDir := filepath.Join(tempDir, "bearmount-uploads")
 		if err := os.MkdirAll(uploadDir, 0755); err != nil {
 			result.ErrorMessage = "Failed to create upload directory"
 			results = append(results, result)
@@ -934,7 +934,7 @@ func (s *Server) handleSearchNZBByName(c *fiber.Ctx) error {
 		})
 	}
 
-	uploadDir := filepath.Join(os.TempDir(), "altmount-uploads")
+	uploadDir := filepath.Join(os.TempDir(), "bearmount-uploads")
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		return RespondInternalError(c, "Failed to create upload directory", err.Error())
 	}

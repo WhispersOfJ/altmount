@@ -47,7 +47,7 @@ const IMPORT_SECTIONS = {
 	nzbdav: {
 		title: "From NZBDav",
 		description:
-			"Import your existing NZBDav database, then migrate arr library symlinks to point at AltMount.",
+			"Import your existing NZBDav database, then migrate arr library symlinks to point at BearMount.",
 		icon: Database,
 	},
 	directory: {
@@ -751,7 +751,7 @@ function NzbDavImportSection() {
 	const handleClearAllMigrations = async () => {
 		const total = importStatus?.migration_stats?.total ?? 0;
 		const confirmed = window.confirm(
-			`Delete ALL ${total} NZBDav migration row(s)?\n\nThis will force a full re-import of every blob on the next scan. Use this only if you've deleted the imported files from AltMount and want to start over.`,
+			`Delete ALL ${total} NZBDav migration row(s)?\n\nThis will force a full re-import of every blob on the next scan. Use this only if you've deleted the imported files from BearMount and want to start over.`,
 		);
 		if (!confirmed) return;
 		try {
@@ -810,7 +810,7 @@ function NzbDavImportSection() {
 				<ol className="list-decimal space-y-1.5 pl-5 text-sm">
 					<li>Import the files</li>
 					<li className="font-semibold text-warning">Backup library symlinks (very important)</li>
-					<li>Make sure AltMount mount is there</li>
+					<li>Make sure BearMount mount is there</li>
 					<li>Run the symlink migration</li>
 				</ol>
 			</div>
@@ -1122,7 +1122,7 @@ function NzbDavImportTabContent({
 								<span>
 									<strong>{importStatus?.migration_stats?.total}</strong> migration row(s) exist
 									from previous imports. Clear all to force a full re-import (use after deleting the
-									imported files from AltMount).
+									imported files from BearMount).
 								</span>
 							</div>
 							<button
@@ -1569,7 +1569,7 @@ function NzbdavPhase2Section({
 				migrationStats={migrationStats}
 				intro={
 					<p>
-						Rewrite your arr library symlinks from the nzbdav mount to AltMount. Available once the
+						Rewrite your arr library symlinks from the nzbdav mount to BearMount. Available once the
 						import queue drains. Run a <strong>dry run</strong> first to preview changes, then
 						apply.
 					</p>
@@ -1587,8 +1587,8 @@ function MigrateSymlinksSection() {
 			<SymlinkMigrationForm
 				intro={
 					<p>
-						Use this if you've already imported NZBs (either through AltMount or a previous NZBDav
-						setup) and just need to rewrite your arr library symlinks to point at AltMount. Only
+						Use this if you've already imported NZBs (either through BearMount or a previous NZBDav
+						setup) and just need to rewrite your arr library symlinks to point at BearMount. Only
 						rows already marked as imported will be matched.
 					</p>
 				}

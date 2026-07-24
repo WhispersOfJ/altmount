@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/version"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/version"
 )
 
 // insideContainer reports whether the current process is running inside a
@@ -31,8 +31,8 @@ func insideContainer() bool {
 
 const (
 	ghAPIBase   = "https://api.github.com"
-	ghRepoOwner = "javi11"
-	ghRepoName  = "altmount"
+	ghRepoOwner = "WhispersOfJ"
+	ghRepoName  = "bearmount"
 )
 
 // isDockerAvailable checks if the docker.sock and docker binary are present.
@@ -268,4 +268,3 @@ func (s *Server) handleApplyUpdate(c *fiber.Ctx) error {
 			"")
 	}
 }
-

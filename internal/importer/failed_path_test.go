@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -51,7 +51,7 @@ func newFailedFolderTestService(t *testing.T) (*Service, string) {
 		log: slog.Default(),
 		configGetter: func() *config.Config {
 			return &config.Config{
-				Database: config.DatabaseConfig{Path: filepath.Join(configDir, "altmount.db")},
+				Database: config.DatabaseConfig{Path: filepath.Join(configDir, "bearmount.db")},
 			}
 		},
 	}
@@ -115,7 +115,7 @@ func TestMoveToFailedFolder_CategoryTraversalContained(t *testing.T) {
 	// failedRoot's parent is the temp configDir - traversing up from
 	// failedRoot with enough ".." would otherwise land back inside it, so
 	// use a category that reliably escapes to configDir's own parent.
-	maliciousCategory := "../../../../../../../../tmp/altmount-test-escape-marker"
+	maliciousCategory := "../../../../../../../../tmp/bearmount-test-escape-marker"
 
 	item := &database.ImportQueueItem{
 		ID:       1,
@@ -124,7 +124,7 @@ func TestMoveToFailedFolder_CategoryTraversalContained(t *testing.T) {
 	}
 	require.NoError(t, s.MoveToFailedFolder(context.Background(), item))
 
-	assert.NoDirExists(t, "/tmp/altmount-test-escape-marker",
+	assert.NoDirExists(t, "/tmp/bearmount-test-escape-marker",
 		"a traversal category must not create a real directory outside the failed-NZB tree")
 	// The sanitizer rejects the whole category on any ".." segment, so this
 	// falls back to the plain (uncategorized) failed directory.

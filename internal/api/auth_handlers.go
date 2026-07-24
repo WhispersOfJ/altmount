@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/database"
 )
 
 // AuthResponse represents authentication response data

@@ -18,7 +18,7 @@ func TestConfig_Validate_MountPaths(t *testing.T) {
 			name: "mount type fuse - ok",
 			config: &Config{
 				MountType: MountTypeFuse,
-				MountPath: "/mnt/remotes/altmount",
+				MountPath: "/mnt/remotes/bearmount",
 				Metadata: MetadataConfig{
 					RootPath: "/metadata",
 				},
@@ -48,7 +48,7 @@ func TestConfig_Validate_MountPaths(t *testing.T) {
 			name: "mount type rclone - ok",
 			config: &Config{
 				MountType: MountTypeRClone,
-				MountPath: "/mnt/remotes/altmount",
+				MountPath: "/mnt/remotes/bearmount",
 				Metadata: MetadataConfig{
 					RootPath: "/metadata",
 				},
@@ -189,7 +189,7 @@ func TestConfig_GetWebhookBaseURL(t *testing.T) {
 					Port: 8080,
 				},
 			},
-			expected: "http://altmount:8080",
+			expected: "http://bearmount:8080",
 		},
 		{
 			name: "default with port 8084",
@@ -201,7 +201,7 @@ func TestConfig_GetWebhookBaseURL(t *testing.T) {
 					Port: 8084,
 				},
 			},
-			expected: "http://altmount:8084",
+			expected: "http://bearmount:8084",
 		},
 	}
 
@@ -240,7 +240,7 @@ func TestConfig_GetDownloadClientBaseURL(t *testing.T) {
 					Port: 8080,
 				},
 			},
-			expected: "http://altmount:8080/sabnzbd",
+			expected: "http://bearmount:8080/sabnzbd",
 		},
 		{
 			name: "default with port 8084",
@@ -252,7 +252,7 @@ func TestConfig_GetDownloadClientBaseURL(t *testing.T) {
 					Port: 8084,
 				},
 			},
-			expected: "http://altmount:8084/sabnzbd",
+			expected: "http://bearmount:8084/sabnzbd",
 		},
 	}
 

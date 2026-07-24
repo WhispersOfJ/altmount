@@ -9,9 +9,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/fuse/backend"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/fuse/backend"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
 )
 
 // StreamTracker is the subset of stream tracking needed by the FUSE layer.
@@ -59,7 +59,7 @@ func resolveBackendType(cfgBackend string) backend.Type {
 	if cfgBackend != "" {
 		return backend.Type(cfgBackend)
 	}
-	if env := os.Getenv("ALTMOUNT_FUSE_BACKEND"); env != "" {
+	if env := os.Getenv("BEARMOUNT_FUSE_BACKEND"); env != "" {
 		return backend.Type(env)
 	}
 	return backend.DefaultType()
@@ -156,4 +156,3 @@ func (s *Server) ValidateMount() (bool, error) {
 		return false, fmt.Errorf("mount point not responding (stat timed out after 5s)")
 	}
 }
-

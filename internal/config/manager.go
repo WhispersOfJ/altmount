@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/go-viper/mapstructure/v2"
-	"github.com/javi11/altmount/internal/utils"
 	"github.com/javi11/nntppool/v4"
 	"github.com/jinzhu/copier"
 	"github.com/robfig/cron/v3"
@@ -20,7 +20,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const MountProvider = "altmount"
+const MountProvider = "bearmount"
 const DefaultCategoryName = "Default"
 const DefaultCategoryDir = "complete"
 
@@ -172,7 +172,7 @@ type StremioConfig struct {
 	// Set to 0 to disable expiry (cache forever). Defaults to 24 hours.
 	NzbTTLHours int `yaml:"nzb_ttl_hours" mapstructure:"nzb_ttl_hours" json:"nzb_ttl_hours,omitempty"`
 	// BaseURL is the public base URL used when building Stremio stream links
-	// (e.g. "https://altmount.example.com"). Falls back to the auto-detected
+	// (e.g. "https://bearmount.example.com"). Falls back to the auto-detected
 	// request origin when not set.
 	BaseURL string `yaml:"base_url" mapstructure:"base_url" json:"base_url,omitempty"`
 	// Prowlarr configures the Prowlarr indexer used by the Stremio addon to search for NZBs.
@@ -191,7 +191,7 @@ type DatabaseConfig struct {
 	// Path is the SQLite database file path (sqlite only).
 	Path string `yaml:"path" mapstructure:"path" json:"path"`
 	// DSN is the PostgreSQL connection string (postgres only).
-	// Example: "postgres://user:password@localhost:5432/altmount?sslmode=disable"
+	// Example: "postgres://user:password@localhost:5432/bearmount?sslmode=disable"
 	DSN string `yaml:"dsn" mapstructure:"dsn" json:"dsn,omitempty"`
 }
 
@@ -303,21 +303,21 @@ type ImportConfig struct {
 	// end-to-end at the same time. 0 = unlimited. NNTP connection use is
 	// balanced automatically: imports share the pool's full capacity and
 	// yield to streams (priority lane + adaptive connection budget).
-	MaxConcurrentImports               int            `yaml:"max_concurrent_imports" mapstructure:"max_concurrent_imports" json:"max_concurrent_imports"`
-	MaxDownloadPrefetch                int            `yaml:"max_download_prefetch" mapstructure:"max_download_prefetch" json:"max_download_prefetch"`
-	SegmentSamplePercentage            int            `yaml:"segment_sample_percentage" mapstructure:"segment_sample_percentage" json:"segment_sample_percentage"`
-	ReadTimeoutSeconds                 int            `yaml:"read_timeout_seconds" mapstructure:"read_timeout_seconds" json:"read_timeout_seconds"`
-	IsoAnalyzeTimeoutSeconds           *int           `yaml:"iso_analyze_timeout_seconds" mapstructure:"iso_analyze_timeout_seconds" json:"iso_analyze_timeout_seconds,omitempty"`
-	ImportStrategy                     ImportStrategy `yaml:"import_strategy" mapstructure:"import_strategy" json:"import_strategy"`
-	ImportDir                          *string        `yaml:"import_dir" mapstructure:"import_dir" json:"import_dir,omitempty"`
-	WatchDir                           *string        `yaml:"watch_dir" mapstructure:"watch_dir" json:"watch_dir,omitempty"`
-	WatchIntervalSeconds               *int           `yaml:"watch_interval_seconds" mapstructure:"watch_interval_seconds" json:"watch_interval_seconds,omitempty"`
-	AllowNestedRarExtraction           *bool          `yaml:"allow_nested_rar_extraction" mapstructure:"allow_nested_rar_extraction" json:"allow_nested_rar_extraction,omitempty"`
-	ExpandBlurayIso                    *bool          `yaml:"expand_bluray_iso" mapstructure:"expand_bluray_iso" json:"expand_bluray_iso,omitempty"`
-	RenameToNzbName                    *bool          `yaml:"rename_to_nzb_name" mapstructure:"rename_to_nzb_name" json:"rename_to_nzb_name,omitempty"`
-	FilterSampleFiles                  *bool          `yaml:"filter_sample_files" mapstructure:"filter_sample_files" json:"filter_sample_files,omitempty"`
-	FailedItemRetentionHours           *int           `yaml:"failed_item_retention_hours" mapstructure:"failed_item_retention_hours" json:"failed_item_retention_hours,omitempty"`
-	HistoryRetentionDays               *int           `yaml:"history_retention_days" mapstructure:"history_retention_days" json:"history_retention_days,omitempty"`
+	MaxConcurrentImports     int            `yaml:"max_concurrent_imports" mapstructure:"max_concurrent_imports" json:"max_concurrent_imports"`
+	MaxDownloadPrefetch      int            `yaml:"max_download_prefetch" mapstructure:"max_download_prefetch" json:"max_download_prefetch"`
+	SegmentSamplePercentage  int            `yaml:"segment_sample_percentage" mapstructure:"segment_sample_percentage" json:"segment_sample_percentage"`
+	ReadTimeoutSeconds       int            `yaml:"read_timeout_seconds" mapstructure:"read_timeout_seconds" json:"read_timeout_seconds"`
+	IsoAnalyzeTimeoutSeconds *int           `yaml:"iso_analyze_timeout_seconds" mapstructure:"iso_analyze_timeout_seconds" json:"iso_analyze_timeout_seconds,omitempty"`
+	ImportStrategy           ImportStrategy `yaml:"import_strategy" mapstructure:"import_strategy" json:"import_strategy"`
+	ImportDir                *string        `yaml:"import_dir" mapstructure:"import_dir" json:"import_dir,omitempty"`
+	WatchDir                 *string        `yaml:"watch_dir" mapstructure:"watch_dir" json:"watch_dir,omitempty"`
+	WatchIntervalSeconds     *int           `yaml:"watch_interval_seconds" mapstructure:"watch_interval_seconds" json:"watch_interval_seconds,omitempty"`
+	AllowNestedRarExtraction *bool          `yaml:"allow_nested_rar_extraction" mapstructure:"allow_nested_rar_extraction" json:"allow_nested_rar_extraction,omitempty"`
+	ExpandBlurayIso          *bool          `yaml:"expand_bluray_iso" mapstructure:"expand_bluray_iso" json:"expand_bluray_iso,omitempty"`
+	RenameToNzbName          *bool          `yaml:"rename_to_nzb_name" mapstructure:"rename_to_nzb_name" json:"rename_to_nzb_name,omitempty"`
+	FilterSampleFiles        *bool          `yaml:"filter_sample_files" mapstructure:"filter_sample_files" json:"filter_sample_files,omitempty"`
+	FailedItemRetentionHours *int           `yaml:"failed_item_retention_hours" mapstructure:"failed_item_retention_hours" json:"failed_item_retention_hours,omitempty"`
+	HistoryRetentionDays     *int           `yaml:"history_retention_days" mapstructure:"history_retention_days" json:"history_retention_days,omitempty"`
 	// DamagePolicy governs standalone video files whose fast-fail sweep finds
 	// SMALL confirmed damage (within the playback padding caps, see
 	// internal/holes): "tolerant" (default) imports them as degraded so
@@ -349,22 +349,22 @@ type RepairConfig struct {
 
 // HealthConfig represents health checker configuration
 type HealthConfig struct {
-	Enabled                             *bool        `yaml:"enabled" mapstructure:"enabled" json:"enabled,omitempty"`
-	LibraryDir                          *string      `yaml:"library_dir" mapstructure:"library_dir" json:"library_dir,omitempty"`
-	CleanupOrphanedMetadata             *bool        `yaml:"cleanup_orphaned_metadata" mapstructure:"cleanup_orphaned_metadata" json:"cleanup_orphaned_metadata,omitempty"`
-	CheckIntervalSeconds                int          `yaml:"check_interval_seconds" mapstructure:"check_interval_seconds" json:"check_interval_seconds,omitempty"`
-	MaxConnectionsForHealthChecks       int          `yaml:"max_connections_for_health_checks" mapstructure:"max_connections_for_health_checks" json:"max_connections_for_health_checks,omitempty"`
-	CheckBatchSize                      int          `yaml:"check_batch_size" mapstructure:"check_batch_size" json:"check_batch_size,omitempty"`
-	MaxConcurrentJobs                   int          `yaml:"max_concurrent_jobs" mapstructure:"max_concurrent_jobs" json:"max_concurrent_jobs,omitempty"`
-	SegmentSamplePercentage             int          `yaml:"segment_sample_percentage" mapstructure:"segment_sample_percentage" json:"segment_sample_percentage,omitempty"`
-	MaxRetries                          int          `yaml:"max_retries" mapstructure:"max_retries" json:"max_retries"`
-	LibrarySyncIntervalMinutes          int          `yaml:"library_sync_interval_minutes" mapstructure:"library_sync_interval_minutes" json:"library_sync_interval_minutes,omitempty"`
-	LibrarySyncConcurrency              int          `yaml:"library_sync_concurrency" mapstructure:"library_sync_concurrency" json:"library_sync_concurrency,omitempty"`
-	ResolveRepairOnImport               *bool        `yaml:"resolve_repair_on_import" mapstructure:"resolve_repair_on_import" json:"resolve_repair_on_import,omitempty"`
-	VerifyData                          *bool        `yaml:"verify_data" mapstructure:"verify_data" json:"verify_data,omitempty"`
-	CheckAllSegments                    *bool        `yaml:"check_all_segments" mapstructure:"check_all_segments" json:"check_all_segments,omitempty"`
-	ReadTimeoutSeconds                  int          `yaml:"read_timeout_seconds" mapstructure:"read_timeout_seconds" json:"read_timeout_seconds,omitempty"`
-	AcceptableMissingSegmentsPercentage float64      `yaml:"acceptable_missing_segments_percentage" mapstructure:"acceptable_missing_segments_percentage" json:"acceptable_missing_segments_percentage"`
+	Enabled                             *bool   `yaml:"enabled" mapstructure:"enabled" json:"enabled,omitempty"`
+	LibraryDir                          *string `yaml:"library_dir" mapstructure:"library_dir" json:"library_dir,omitempty"`
+	CleanupOrphanedMetadata             *bool   `yaml:"cleanup_orphaned_metadata" mapstructure:"cleanup_orphaned_metadata" json:"cleanup_orphaned_metadata,omitempty"`
+	CheckIntervalSeconds                int     `yaml:"check_interval_seconds" mapstructure:"check_interval_seconds" json:"check_interval_seconds,omitempty"`
+	MaxConnectionsForHealthChecks       int     `yaml:"max_connections_for_health_checks" mapstructure:"max_connections_for_health_checks" json:"max_connections_for_health_checks,omitempty"`
+	CheckBatchSize                      int     `yaml:"check_batch_size" mapstructure:"check_batch_size" json:"check_batch_size,omitempty"`
+	MaxConcurrentJobs                   int     `yaml:"max_concurrent_jobs" mapstructure:"max_concurrent_jobs" json:"max_concurrent_jobs,omitempty"`
+	SegmentSamplePercentage             int     `yaml:"segment_sample_percentage" mapstructure:"segment_sample_percentage" json:"segment_sample_percentage,omitempty"`
+	MaxRetries                          int     `yaml:"max_retries" mapstructure:"max_retries" json:"max_retries"`
+	LibrarySyncIntervalMinutes          int     `yaml:"library_sync_interval_minutes" mapstructure:"library_sync_interval_minutes" json:"library_sync_interval_minutes,omitempty"`
+	LibrarySyncConcurrency              int     `yaml:"library_sync_concurrency" mapstructure:"library_sync_concurrency" json:"library_sync_concurrency,omitempty"`
+	ResolveRepairOnImport               *bool   `yaml:"resolve_repair_on_import" mapstructure:"resolve_repair_on_import" json:"resolve_repair_on_import,omitempty"`
+	VerifyData                          *bool   `yaml:"verify_data" mapstructure:"verify_data" json:"verify_data,omitempty"`
+	CheckAllSegments                    *bool   `yaml:"check_all_segments" mapstructure:"check_all_segments" json:"check_all_segments,omitempty"`
+	ReadTimeoutSeconds                  int     `yaml:"read_timeout_seconds" mapstructure:"read_timeout_seconds" json:"read_timeout_seconds,omitempty"`
+	AcceptableMissingSegmentsPercentage float64 `yaml:"acceptable_missing_segments_percentage" mapstructure:"acceptable_missing_segments_percentage" json:"acceptable_missing_segments_percentage"`
 	// ExcludedCategories lists SABnzbd category names whose files must never be
 	// registered for health checking by the library-sync discovery pass. Matching
 	// is by the category's configured directory under CompleteDir and is
@@ -456,7 +456,7 @@ type ArrsConfig struct {
 	QueueCleanupGracePeriodMinutes int                  `yaml:"queue_cleanup_grace_period_minutes" mapstructure:"queue_cleanup_grace_period_minutes" json:"queue_cleanup_grace_period_minutes,omitempty"`
 
 	// QueueCleanupMaxFailures is the per-target failure circuit breaker. After
-	// AltMount has acted on the same target (a Radarr movie or Sonarr/Whisparr
+	// BearMount has acted on the same target (a Radarr movie or Sonarr/Whisparr
 	// episode that keeps failing import) this many times — via queue cleanup,
 	// health-repair re-searches or the partial-pack reconcile — it gives up:
 	// it blocklists without re-searching and unmonitors the item in the *arr so it
@@ -466,7 +466,7 @@ type ArrsConfig struct {
 	// QueueCleanupRules matches an *arr status message for a stuck/failed import and
 	// decides the action (remove / blocklist / blocklist+search). This is the single
 	// message-rule list for queue cleanup; ghost/empty-folder detection runs alongside
-	// it in the same pass. Only items owned by AltMount's download client are touched
+	// it in the same pass. Only items owned by BearMount's download client are touched
 	// (see issue #523).
 	QueueCleanupRules []StuckCleanupRule `yaml:"queue_cleanup_rules,omitempty" mapstructure:"queue_cleanup_rules" json:"queue_cleanup_rules,omitempty"`
 
@@ -635,7 +635,7 @@ func (c *Config) GetWebhookBaseURL() string {
 	}
 	host := c.WebDAV.Host
 	if host == "" {
-		host = "altmount"
+		host = "bearmount"
 	}
 	return fmt.Sprintf("http://%s:%d", host, c.WebDAV.Port)
 }
@@ -647,7 +647,7 @@ func (c *Config) GetDownloadClientBaseURL() string {
 	}
 	host := c.WebDAV.Host
 	if host == "" {
-		host = "altmount"
+		host = "bearmount"
 	}
 	return fmt.Sprintf("http://%s:%d/sabnzbd", host, c.WebDAV.Port)
 }
@@ -1480,23 +1480,23 @@ func DefaultConfig(configDir ...string) *Config {
 
 	// If a config directory is provided, use it
 	if len(configDir) > 0 && configDir[0] != "" {
-		dbPath = filepath.Join(configDir[0], "altmount.db")
+		dbPath = filepath.Join(configDir[0], "bearmount.db")
 		metadataPath = filepath.Join(configDir[0], "metadata")
-		logPath = filepath.Join(configDir[0], "altmount.log")
+		logPath = filepath.Join(configDir[0], "bearmount.log")
 		rclonePath = configDir[0]
 		cachePath = filepath.Join(configDir[0], "cache")
 		backupPath = filepath.Join(configDir[0], "backups")
 	} else if isRunningInDocker() {
-		dbPath = "/config/altmount.db"
+		dbPath = "/config/bearmount.db"
 		metadataPath = "/metadata"
-		logPath = "/config/altmount.log"
+		logPath = "/config/bearmount.log"
 		rclonePath = "/config"
 		cachePath = "/config/cache"
 		backupPath = "/config/backups"
 	} else {
-		dbPath = "./altmount.db"
+		dbPath = "./bearmount.db"
 		metadataPath = "./metadata"
-		logPath = "./altmount.log"
+		logPath = "./bearmount.log"
 		rclonePath = "."
 		cachePath = "./cache"
 		backupPath = "./backups"
@@ -1868,7 +1868,7 @@ func LoadConfig(configFile string) (*Config, error) {
 	// derive log file path from config file location
 	if configFile != "" && !viper.IsSet("log.file") {
 		configDir := filepath.Dir(configFile)
-		config.Log.File = filepath.Join(configDir, "altmount.log")
+		config.Log.File = filepath.Join(configDir, "bearmount.log")
 	}
 
 	// If cache_dir was not explicitly set or is empty, derive it from config file location

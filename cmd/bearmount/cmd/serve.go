@@ -11,21 +11,21 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/frontend"
+	"github.com/WhispersOfJ/bearmount/internal/api"
+	"github.com/WhispersOfJ/bearmount/internal/arrs"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/health"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem/segcache"
+	"github.com/WhispersOfJ/bearmount/internal/pool"
+	"github.com/WhispersOfJ/bearmount/internal/progress"
+	"github.com/WhispersOfJ/bearmount/internal/rclone"
+	"github.com/WhispersOfJ/bearmount/internal/slogutil"
+	"github.com/WhispersOfJ/bearmount/internal/stremio"
+	"github.com/WhispersOfJ/bearmount/internal/webdav"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
-	"github.com/javi11/altmount/frontend"
-	"github.com/javi11/altmount/internal/api"
-	"github.com/javi11/altmount/internal/arrs"
-	"github.com/javi11/altmount/internal/stremio"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/health"
-	"github.com/javi11/altmount/internal/metadata"
-	"github.com/javi11/altmount/internal/nzbfilesystem/segcache"
-	"github.com/javi11/altmount/internal/pool"
-	"github.com/javi11/altmount/internal/progress"
-	"github.com/javi11/altmount/internal/rclone"
-	"github.com/javi11/altmount/internal/slogutil"
-	"github.com/javi11/altmount/internal/webdav"
 	"github.com/spf13/cobra"
 )
 
@@ -36,8 +36,8 @@ var frontendBuildPath = "/app/frontend/dist"
 func init() {
 	serveCmd := &cobra.Command{
 		Use:   "serve",
-		Short: "Start the AltMount WebDAV server",
-		Long:  `Start the AltMount WebDAV server using configuration from YAML file.`,
+		Short: "Start the BearMount WebDAV server",
+		Long:  `Start the BearMount WebDAV server using configuration from YAML file.`,
 		RunE:  runServe,
 	}
 
@@ -240,7 +240,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	// 9. Create HTTP server
 	customServer := createHTTPServer(apiServer, app, webdavHandler, streamHandler, cfg.WebDAV.Port, configManager.GetConfigGetter())
 
-	logger.Info("AltMount server started",
+	logger.Info("BearMount server started",
 		"port", cfg.WebDAV.Port,
 		"webdav_path", "/webdav",
 		"api_path", "/api",
@@ -361,7 +361,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	}
 	logger.InfoContext(ctx, "Server shutdown completed")
 
-	logger.InfoContext(ctx, "AltMount server shutdown completed successfully")
+	logger.InfoContext(ctx, "BearMount server shutdown completed successfully")
 	return nil
 }
 
@@ -438,4 +438,3 @@ func waitForHTTPServer(ctx context.Context, port int) error {
 		}
 	}
 }
-

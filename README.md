@@ -1,7 +1,7 @@
-# AltMount
+# BearMount
 
 <p align="center">
-  <img src="./docs/static/img/logo.png" alt="AltMount Logo" width="150" height="150" />
+  <img src="./docs/static/img/logo.png" alt="BearMount Logo" width="150" height="150" />
 </p>
 
 A WebDAV server backed by NZB/Usenet that provides seamless access to Usenet content through standard WebDAV protocols.
@@ -14,7 +14,7 @@ A WebDAV server backed by NZB/Usenet that provides seamless access to Usenet con
 
 ## 📖 Documentation
 
-**[View Full Documentation →](https://javi11.github.io/altmount/)**
+**[View Full Documentation →](https://whispersofj.github.io/bearmount/)**
 
 Complete setup guides, configuration options, API reference, and troubleshooting information.
 
@@ -24,11 +24,11 @@ Complete setup guides, configuration options, API reference, and troubleshooting
 
 ```bash
 services:
-  altmount:
+  bearmount:
     extra_hosts:
       - "host.docker.internal:host-gateway" # Optional if you rclone is outside the container
-    image: ghcr.io/javi11/altmount:latest
-    container_name: altmount
+    image: ghcr.io/WhispersOfJ/bearmount:latest
+    container_name: bearmount
     environment:
       - PUID=1000
       - PGID=1000
@@ -56,20 +56,20 @@ services:
 ### CLI Installation
 
 ```bash
-go install github.com/javi11/altmount@latest
-altmount serve --config config.yaml
+go install github.com/WhispersOfJ/bearmount@latest
+bearmount serve --config config.yaml
 ```
 
 ## Windows: Enable Long Path Support
 
-The Windows AltMount binaries are built with a long-path-aware manifest, which
+The Windows BearMount binaries are built with a long-path-aware manifest, which
 opts the process in to paths longer than the legacy `MAX_PATH` (260 character)
 limit. However, Windows also requires the matching system-wide setting to be
 enabled before long paths actually work — without it, you may see errors like
 `The filename or extension is too long` when accessing deeply nested releases.
 
 Enable it once per machine in an **elevated PowerShell** prompt (Run as
-administrator), then restart AltMount:
+administrator), then restart BearMount:
 
 ```powershell
 New-ItemProperty `
@@ -84,19 +84,19 @@ Equivalent via Group Policy: `Computer Configuration → Administrative Template
 → System → Filesystem → Enable Win32 long paths`.
 
 This setting requires Windows 10 version 1607 (build 14393) or newer. A reboot
-is not strictly required, but any already-running process — including AltMount
+is not strictly required, but any already-running process — including BearMount
 and your file manager — needs to be restarted to pick up the change.
 
 ## Links
 
-- 📚 [Documentation](https://altmount.kipsilabs.top)
-- 🐛 [Issues](https://github.com/javi11/altmount/issues)
-- 💬 [Discussions](https://github.com/javi11/altmount/discussions)
+- 📚 [Documentation](https://whispersofj.github.io/bearmount)
+- 🐛 [Issues](https://github.com/WhispersOfJ/bearmount/issues)
+- 💬 [Discussions](https://github.com/WhispersOfJ/bearmount/discussions)
 - 🎮 [Discord](https://discord.gg/vCWwuvm3F3)
 
 ## Contributing
 
-See the [Development Guide](https://altmount.kipsilabs.top/docs/Development/setup). Development/setup for information on setting up a development environment and contributing to the project.
+See the [Development Guide](https://whispersofj.github.io/bearmount/docs/Development/setup). Development/setup for information on setting up a development environment and contributing to the project.
 
 ## License
 

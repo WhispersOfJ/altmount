@@ -1,12 +1,12 @@
 ---
 title: API Endpoints
-description: REST API reference for AltMount — authentication, NZB queue management, configuration, and status endpoints.
-keywords: [altmount, api, rest, endpoints, nzb, queue, authentication, reference]
+description: REST API reference for BearMount — authentication, NZB queue management, configuration, and status endpoints.
+keywords: [bearmount, api, rest, endpoints, nzb, queue, authentication, reference]
 ---
 
 # API Endpoints
 
-AltMount provides a comprehensive REST API for programmatic integration and automation. The interactive API reference — with a built-in request explorer — is available in the sidebar under **API Reference**.
+BearMount provides a comprehensive REST API for programmatic integration and automation. The interactive API reference — with a built-in request explorer — is available in the sidebar under **API Reference**.
 
 ## Authentication
 
@@ -24,12 +24,12 @@ Almost every endpoint under `/api/*` requires a **JWT** issued by `POST /api/aut
 
 ```bash
 # 1. Log in and store the cookie
-curl -c cookies.txt -X POST 'http://altmount.local:8585/api/auth/login' \
+curl -c cookies.txt -X POST 'http://bearmount.local:8585/api/auth/login' \
   -H 'Content-Type: application/json' \
   -d '{"username":"admin","password":"yourpassword"}'
 
 # 2. Reuse the cookie on subsequent requests
-curl -b cookies.txt -X POST 'http://altmount.local:8585/api/health/bulk/restart' \
+curl -b cookies.txt -X POST 'http://bearmount.local:8585/api/health/bulk/restart' \
   -H 'Content-Type: application/json' \
   -d '{"ids":[0]}'
 ```
@@ -37,12 +37,12 @@ curl -b cookies.txt -X POST 'http://altmount.local:8585/api/health/bulk/restart'
 **Option B — extract the token and send it as a Bearer header:**
 
 ```bash
-TOKEN=$(curl -s -i -X POST 'http://altmount.local:8585/api/auth/login' \
+TOKEN=$(curl -s -i -X POST 'http://bearmount.local:8585/api/auth/login' \
   -H 'Content-Type: application/json' \
   -d '{"username":"admin","password":"yourpassword"}' \
   | awk -F'[=;]' '/^[Ss]et-[Cc]ookie: JWT=/ {print $2}')
 
-curl -X POST 'http://altmount.local:8585/api/health/bulk/restart' \
+curl -X POST 'http://bearmount.local:8585/api/health/bulk/restart' \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: application/json' \
   -d '{"ids":[0]}'
@@ -64,7 +64,7 @@ For everything else (queue, health, files, config, providers, system, FUSE, user
 
 ### Stremio addon
 
-The Stremio addon is **not** authenticated with the API key. It uses a separate `download_key` (the SHA-256 of your API key) embedded in the URL: `/stremio/:key/manifest.json` and `/stremio/:key/stream/:type/:id.json`. The exact key is shown in the AltMount UI on the Stremio configuration page.
+The Stremio addon is **not** authenticated with the API key. It uses a separate `download_key` (the SHA-256 of your API key) embedded in the URL: `/stremio/:key/manifest.json` and `/stremio/:key/stream/:type/:id.json`. The exact key is shown in the BearMount UI on the Stremio configuration page.
 
 ## Endpoint Categories
 

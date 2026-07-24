@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/javi11/altmount/internal/arrs/clients"
-	"github.com/javi11/altmount/internal/arrs/data"
-	"github.com/javi11/altmount/internal/arrs/failures"
-	"github.com/javi11/altmount/internal/arrs/instances"
-	"github.com/javi11/altmount/internal/arrs/model"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/clients"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/data"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/failures"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/instances"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/model"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"golang.org/x/sync/singleflight"
 	"golift.io/starr"
 	"golift.io/starr/lidarr"
@@ -772,7 +772,7 @@ func (m *Manager) triggerRadarrRescanByPath(ctx context.Context, client *radarr.
 						sceneName = movie.MovieFile.SceneName
 					} else {
 						// Re-added movie holds a DIFFERENT healthy file. Deleting it would
-						// destroy a good file; report satisfied so the redundant AltMount copy
+						// destroy a good file; report satisfied so the redundant BearMount copy
 						// is cleaned up without any delete against Radarr.
 						slog.InfoContext(ctx, "Radarr TMDB-id fallback found a different healthy file; not deleting",
 							"instance", instanceName, "tmdb_id", metadata.Movie.TmdbId,

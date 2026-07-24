@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/usenet"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/usenet"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

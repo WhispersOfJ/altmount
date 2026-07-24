@@ -1,6 +1,6 @@
-# AltMount Frontend Development Standards
+# BearMount Frontend Development Standards
 
-Comprehensive coding standards and best practices for the AltMount React + TypeScript frontend.
+Comprehensive coding standards and best practices for the BearMount React + TypeScript frontend.
 
 ## React Best Practices
 
@@ -688,7 +688,7 @@ function useUpdateConfig() {
 }
 ```
 
-### Component Structure for AltMount
+### Component Structure for BearMount
 
 ```tsx
 // ✅ Follow established patterns
@@ -966,7 +966,7 @@ All REST API endpoints use a unified response format. Use the response builder f
 **Response Builder Functions:**
 
 ```go
-import "github.com/javi11/altmount/internal/api"
+import "github.com/WhispersOfJ/bearmount/internal/api"
 
 // ✅ Good: Use response builders
 func (s *Server) handleGetItem(c *fiber.Ctx) error {

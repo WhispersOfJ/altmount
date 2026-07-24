@@ -1,4 +1,4 @@
-# Multi-stage build for AltMount - Multi-platform optimized
+# Multi-stage build for BearMount - Multi-platform optimized
 # This is the self-contained development/local build Dockerfile
 # For CI builds, use Dockerfile.ci which expects pre-built frontend assets
 # Use buildkit syntax for advanced features
@@ -69,8 +69,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build,sharing=locked \
     --mount=type=cache,target=/tmp/go-build-cache,sharing=locked \
     CGO_ENABLED=1 GOOS=linux \
     go build -a \
-    -ldflags "-linkmode external -extldflags \"-static\" -X 'github.com/javi11/altmount/internal/version.Version=${VERSION}' -X 'github.com/javi11/altmount/internal/version.GitCommit=${COMMIT}' -X 'github.com/javi11/altmount/internal/version.Timestamp=${BUILD_TIMESTAMP}'" \
-    -o altmount cmd/altmount/main.go
+    -ldflags "-linkmode external -extldflags \"-static\" -X 'github.com/WhispersOfJ/bearmount/internal/version.Version=${VERSION}' -X 'github.com/WhispersOfJ/bearmount/internal/version.GitCommit=${COMMIT}' -X 'github.com/WhispersOfJ/bearmount/internal/version.Timestamp=${BUILD_TIMESTAMP}'" \
+    -o bearmount cmd/bearmount/main.go
 
 # Final stage - use custom base image with pre-installed packages
 ARG TARGETARCH
@@ -90,7 +90,7 @@ ENV PGID=${PGID}
 WORKDIR /app
 
 # Copy web binary from builder
-COPY --from=backend-builder /app/altmount /app/altmount
+COPY --from=backend-builder /app/bearmount /app/bearmount
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
 # Install required packages for runtime (mime-support already in custom-base)
@@ -125,7 +125,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Make binary executable
-RUN chmod +x /app/altmount
+RUN chmod +x /app/bearmount
 
 # Copy s6-overlay service configuration
 COPY docker/root/ /
@@ -145,6 +145,6 @@ HEALTHCHECK --interval=5s --timeout=10s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/live || exit 1
 
 # Labels
-LABEL org.opencontainers.image.source="https://github.com/javi11/altmount"
+LABEL org.opencontainers.image.source="https://github.com/WhispersOfJ/bearmount"
 LABEL build_version="version: Build-date:- ${VERSION}  ${BUILD_DATE}"
 LABEL maintainer="javi11"

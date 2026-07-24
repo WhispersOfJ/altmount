@@ -11,11 +11,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/javi11/altmount/internal/arrs/clients"
-	"github.com/javi11/altmount/internal/arrs/failures"
-	"github.com/javi11/altmount/internal/arrs/instances"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/clients"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/failures"
+	"github.com/WhispersOfJ/bearmount/internal/arrs/instances"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
 	"golift.io/starr"
 )
 
@@ -46,7 +46,7 @@ type Worker struct {
 	lastGhostSweep time.Time
 	ghostSweepMu   sync.Mutex
 
-	// breaker counts how many times AltMount has acted on a given target (an
+	// breaker counts how many times BearMount has acted on a given target (an
 	// episode/movie/album/book that keeps failing import), keyed by a stable
 	// identity that survives re-grabs. The tracker is shared with the scanner so
 	// queue-cleanup actions and repair re-triggers accumulate one combined count.
@@ -236,7 +236,7 @@ func (w *Worker) captureSportarrIndexer(ctx context.Context, downloadID, indexer
 }
 
 // checkGhostByImportHistory checks if a queue item has already been imported
-// by looking up AltMount's import history. Returns true if confirmed ghost
+// by looking up BearMount's import history. Returns true if confirmed ghost
 // (i.e., the file has been moved to the library).
 func (w *Worker) checkGhostByImportHistory(ctx context.Context, outputPath string, cfg *config.Config, instanceName, title string) bool {
 	if outputPath == "" {

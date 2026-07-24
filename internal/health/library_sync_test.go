@@ -9,10 +9,10 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/metadata"
-	metapb "github.com/javi11/altmount/internal/metadata/proto"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/metadata"
+	metapb "github.com/WhispersOfJ/bearmount/internal/metadata/proto"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -30,7 +30,7 @@ func TestSyncLibrary_WorkerPool(t *testing.T) {
 		t.Skip("symlinks not supported on Windows")
 	}
 	// Setup temporary directory for metadata
-	tempDir, err := os.MkdirTemp("", "altmount_test_metadata")
+	tempDir, err := os.MkdirTemp("", "bearmount_test_metadata")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 

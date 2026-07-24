@@ -12,13 +12,13 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/WhispersOfJ/bearmount/internal/api"
+	"github.com/WhispersOfJ/bearmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/internal/webdav/propfind"
 	"github.com/go-pkgz/auth/v2/token"
-	"github.com/javi11/altmount/internal/api"
-	"github.com/javi11/altmount/internal/config"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
-	"github.com/javi11/altmount/internal/utils"
-	"github.com/javi11/altmount/internal/webdav/propfind"
 )
 
 // Handler provides WebDAV functionality as an HTTP handler

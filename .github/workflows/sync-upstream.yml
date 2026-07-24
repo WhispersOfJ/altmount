@@ -35,7 +35,7 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.name "altmount-fixes-sync[bot]"
+          git config user.name "bearmount-fixes-sync[bot]"
           git config user.email "actions@users.noreply.github.com"
 
       - name: Fetch upstream

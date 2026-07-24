@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/javi11/altmount/internal/config"
+	"github.com/WhispersOfJ/bearmount/internal/config"
 )
 
 type Config struct {

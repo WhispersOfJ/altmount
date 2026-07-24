@@ -1,12 +1,12 @@
 ---
 title: Development Setup
-description: Set up a local development environment for contributing to AltMount's Go backend and React frontend.
-keywords: [altmount, development, setup, contributing, go, react, local environment]
+description: Set up a local development environment for contributing to BearMount's Go backend and React frontend.
+keywords: [bearmount, development, setup, contributing, go, react, local environment]
 ---
 
 # Development Setup
 
-This guide will help you set up a development environment for AltMount.
+This guide will help you set up a development environment for BearMount.
 
 ## Prerequisites
 
@@ -25,8 +25,8 @@ Before you begin, ensure you have the following installed on your system:
 ## Project Structure
 
 ```
-altmount/
-├── cmd/altmount/          # Main application entry point
+bearmount/
+├── cmd/bearmount/          # Main application entry point
 ├── internal/              # Internal Go packages
 ├── frontend/              # React frontend application
 ├── docs/                  # Documentation
@@ -40,8 +40,8 @@ altmount/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/javi11/altmount.git
-cd altmount
+git clone https://github.com/WhispersOfJ/bearmount.git
+cd bearmount
 ```
 
 ### 2. Install Dependencies
@@ -65,11 +65,11 @@ This command will:
 
 ### 4. Run the Server
 
-To start the AltMount server in development mode:
+To start the BearMount server in development mode:
 
 ```bash
 make
-go run ./cmd/altmount serve --config=./config.yaml
+go run ./cmd/bearmount serve --config=./config.yaml
 ```
 
 The server will start on the default port (8080) and you can access the web interface at `http://localhost:8080`.
@@ -164,7 +164,7 @@ server:
   host: "localhost"
 
 database:
-  path: "./altmount.db"
+  path: "./bearmount.db"
 # Add your specific configuration here
 ```
 
@@ -181,7 +181,7 @@ For full development, you'll need both the backend and frontend running:
 ```bash
 # In project root
 make
-go run ./cmd/altmount serve --config=./config.yaml
+go run ./cmd/bearmount serve --config=./config.yaml
 ```
 
 ### Terminal 2 - Frontend
@@ -244,7 +244,7 @@ bun run check
 
 ```bash
 # Build binary
-go build -o altmount ./cmd/altmount
+go build -o bearmount ./cmd/bearmount
 
 # Or use the Makefile
 make build
@@ -265,10 +265,10 @@ If you prefer to develop using Docker:
 
 ```bash
 # Build the development image
-docker build -f docker/Dockerfile -t altmount:dev .
+docker build -f docker/Dockerfile -t bearmount:dev .
 
 # Run the container
-docker run -p 8080:8080 -v $(pwd)/config.yaml:/app/config.yaml altmount:dev
+docker run -p 8080:8080 -v $(pwd)/config.yaml:/app/config.yaml bearmount:dev
 ```
 
 ## Troubleshooting
@@ -284,11 +284,11 @@ docker run -p 8080:8080 -v $(pwd)/config.yaml:/app/config.yaml altmount:dev
 
 - Check the [Troubleshooting Guide](../5. Troubleshooting/common-issues.md)
 - Review the [API Documentation](../4. API/endpoints.md)
-- Open an issue on [GitHub](https://github.com/javi11/altmount/issues)
+- Open an issue on [GitHub](https://github.com/WhispersOfJ/bearmount/issues)
 
 ## Contributing
 
-When contributing to AltMount:
+When contributing to BearMount:
 
 1. Fork the repository
 2. Create a feature branch

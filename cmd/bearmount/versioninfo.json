@@ -19,16 +19,16 @@
     "FileSubType": "00"
   },
   "StringFileInfo": {
-    "Comments": "AltMount - Usenet content mounting and streaming",
-    "CompanyName": "AltMount",
-    "FileDescription": "AltMount CLI",
+    "Comments": "BearMount - Usenet content mounting and streaming",
+    "CompanyName": "BearMount",
+    "FileDescription": "BearMount CLI",
     "FileVersion": "0.1.0",
-    "InternalName": "altmount",
+    "InternalName": "bearmount",
     "LegalCopyright": "",
     "LegalTrademarks": "",
-    "OriginalFilename": "altmount.exe",
+    "OriginalFilename": "bearmount.exe",
     "PrivateBuild": "",
-    "ProductName": "AltMount",
+    "ProductName": "BearMount",
     "ProductVersion": "0.1.0",
     "SpecialBuild": ""
   },
@@ -38,5 +38,5 @@
       "CharsetID": "04B0"
     }
   },
-  "ManifestPath": "altmount.exe.manifest"
+  "ManifestPath": "bearmount.exe.manifest"
 }

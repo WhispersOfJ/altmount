@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/importer"
 	"github.com/gofiber/fiber/v2"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/importer"
 )
 
 // handleStartManualScan handles POST /import/scan

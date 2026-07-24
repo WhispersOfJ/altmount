@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"sync/atomic"
 
-	"github.com/javi11/altmount/internal/auth"
-	"github.com/javi11/altmount/internal/database"
-	"github.com/javi11/altmount/internal/nzbfilesystem"
-	"github.com/javi11/altmount/internal/utils"
+	"github.com/WhispersOfJ/bearmount/internal/auth"
+	"github.com/WhispersOfJ/bearmount/internal/database"
+	"github.com/WhispersOfJ/bearmount/internal/nzbfilesystem"
+	"github.com/WhispersOfJ/bearmount/internal/utils"
 	"github.com/spf13/afero"
 )
 
@@ -112,7 +112,6 @@ func (h *StreamHandler) authenticate(r *http.Request) (*database.User, bool) {
 		"remote_addr", r.RemoteAddr)
 	return nil, false
 }
-
 
 // GetHTTPHandler returns an http.Handler that serves files from NzbFilesystem
 // This handler:

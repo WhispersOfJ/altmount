@@ -1,12 +1,12 @@
 ---
 title: ARR Integration
-description: Integrate AltMount as a SABnzbd-compatible download client with Sonarr, Radarr, and other ARR applications.
-keywords: [altmount, sonarr, radarr, sabnzbd, arr, integration, download client, usenet]
+description: Integrate BearMount as a SABnzbd-compatible download client with Sonarr, Radarr, and other ARR applications.
+keywords: [bearmount, sonarr, radarr, sabnzbd, arr, integration, download client, usenet]
 ---
 
 # ARR Integration
 
-AltMount acts as a SABnzbd-compatible download client for Sonarr and Radarr. This guide walks through the full setup process for seamless integration with your media management applications.
+BearMount acts as a SABnzbd-compatible download client for Sonarr and Radarr. This guide walks through the full setup process for seamless integration with your media management applications.
 
 ## Prerequisites
 
@@ -14,11 +14,11 @@ Before configuring ARR integration, make sure the following are in place:
 
 1. **SABnzbd compatibility enabled** -- set `sabnzbd.enabled: true` in your config
 2. **ARRs service enabled** -- set `arrs.enabled: true`
-3. **At least one NNTP provider configured** -- AltMount needs a working Usenet connection
+3. **At least one NNTP provider configured** -- BearMount needs a working Usenet connection
 
 ## Step 1: Configure SABnzbd Categories
 
-Set up categories in your AltMount config that match your ARR setup. Each category needs a `type` field indicating which ARR it belongs to:
+Set up categories in your BearMount config that match your ARR setup. Each category needs a `type` field indicating which ARR it belongs to:
 
 ```yaml
 sabnzbd:
@@ -34,7 +34,7 @@ The category names should match what you configure in Sonarr/Radarr as the downl
 
 ## Step 2: Add ARR Instances
 
-Navigate to the ARR settings page in the AltMount web UI. Add each Sonarr and Radarr instance with:
+Navigate to the ARR settings page in the BearMount web UI. Add each Sonarr and Radarr instance with:
 
 ![ARR integration settings showing Radarr/Sonarr instance configuration](/images/config-arrs.png)
 
@@ -43,7 +43,7 @@ Navigate to the ARR settings page in the AltMount web UI. Add each Sonarr and Ra
 
 ## Step 3: Register as Download Client
 
-AltMount can automatically register itself as a SABnzbd download client in your Sonarr/Radarr instances.
+BearMount can automatically register itself as a SABnzbd download client in your Sonarr/Radarr instances.
 
 **Via the web UI:** Click the "Register Download Client" button on the ARR settings page.
 
@@ -54,7 +54,7 @@ curl -X POST http://localhost:8080/api/arrs/download-client/register \
   -H "Authorization: Bearer <token>"
 ```
 
-This tells Sonarr/Radarr to send NZBs to AltMount using the SABnzbd API protocol.
+This tells Sonarr/Radarr to send NZBs to BearMount using the SABnzbd API protocol.
 
 ## Step 4: Register Webhooks
 
@@ -71,7 +71,7 @@ curl -X POST http://localhost:8080/api/arrs/webhook/register \
 
 ## Step 5: Configure Import Strategy
 
-AltMount supports three import strategies. Choose the one that best fits your setup:
+BearMount supports three import strategies. Choose the one that best fits your setup:
 
 ### Import Strategy Comparison
 
@@ -81,7 +81,7 @@ AltMount supports three import strategies. Choose the one that best fits your se
 | ARR integration   | ARR reads directly from mount                          | ARR imports from symlink directory                                                                            | ARR imports `.strm` files                                                                                       |
 | Docker setup      | Simplest — only mount path needed                      | Requires shared volumes for import dir + mount                                                                | Requires shared volume for STRM output dir                                                                      |
 | Best for          | Simple setups without no debrid program like dechyparr | Most ARR setups (recommended)                                                                                 | Emby/Jellyfin full stream speed                                                                                 |
-| File management   | Files managed through AltMount only                    | ARR manages library, AltMount manages metadata                                                                | Player resolves `.strm` URL at playback time                                                                    |
+| File management   | Files managed through BearMount only                    | ARR manages library, BearMount manages metadata                                                                | Player resolves `.strm` URL at playback time                                                                    |
 | Health monitoring | Metadata-only sync (fast)                              | Full sync with library directory                                                                              | Full sync with library directory                                                                                |
 | Limitations       | Slower arr imports due to the need of mount refreshing | Symlinks can become broken when the original file is replaced if health monitoring is not properly configured | STRM files can become broken when the original file is replaced if health monitoring is not properly configured |
 
@@ -91,16 +91,16 @@ For ARR integration, the **SYMLINK** import strategy is recommended. This create
 
 ```yaml
 # Root-level mount path (NOT inside import section)
-mount_path: /mnt/remotes/altmount
+mount_path: /mnt/remotes/bearmount
 import:
   import_strategy: SYMLINK
-  import_dir: /mnt/symlinks/altmount
+  import_dir: /mnt/symlinks/bearmount
 ```
 
 - `mount_path` -- **root-level config field** — the path where the WebDAV/FUSE content is mounted, as seen by the ARR apps
-- `import_dir` -- the directory where AltMount creates symlinks for completed downloads. Must be accessible by Sonarr/Radarr
+- `import_dir` -- the directory where BearMount creates symlinks for completed downloads. Must be accessible by Sonarr/Radarr
 
-> **Note:** `mount_path` is a root-level configuration field, not nested inside `import`. Both AltMount and your ARR apps must be able to reach `import_dir` and `mount_path`. In Docker, this typically means shared volumes.
+> **Note:** `mount_path` is a root-level configuration field, not nested inside `import`. Both BearMount and your ARR apps must be able to reach `import_dir` and `mount_path`. In Docker, this typically means shared volumes.
 
 ### NONE (Direct Access) Strategy
 
@@ -118,19 +118,19 @@ No `import_dir` or `mount_path` is needed. Media is accessed directly via the mo
 Creates `.strm` files that contain WebDAV URLs. Useful when your media player can resolve HTTP URLs directly:
 
 ```yaml
-# Replace with your actual AltMount hostname/port if changed
-mount_path: http://altmount:8080
+# Replace with your actual BearMount hostname/port if changed
+mount_path: http://bearmount:8080
 
 import:
   import_strategy: STRM
-  import_dir: /mnt/strm/altmount
+  import_dir: /mnt/strm/bearmount
 ```
 
 ### Example Docker Volume Setup (SYMLINK)
 
 ```yaml
 services:
-  altmount:
+  bearmount:
     volumes:
       - /mnt/mnt:rshared
 
@@ -139,20 +139,20 @@ services:
       - /mnt/mnt
 ```
 
-With this layout, both containers see the same paths, so `import_dir: /mnt/symlinks/altmount` and `mount_path: /mnt/remotes/altmount` will work correctly.
+With this layout, both containers see the same paths, so `import_dir: /mnt/symlinks/bearmount` and `mount_path: /mnt/remotes/bearmount` will work correctly.
 
 ### Common Import Strategy Issues
 
 - **Symlinks failing**: Ensure both `import_dir` and `mount_path` resolve to valid paths inside all containers. If symlinks point to paths that don't exist inside the ARR container, imports will fail silently.
 - **Extra path segments** (e.g., `../complete/..` appearing in paths): This usually means `mount_path` doesn't match the actual mount point inside the container. Double-check your Docker volume mappings.
-- **STRM files not playing**: The WebDAV URL in the `.strm` file must be reachable from the media player. If using Docker, ensure the player can reach AltMount's hostname and port.
+- **STRM files not playing**: The WebDAV URL in the `.strm` file must be reachable from the media player. If using Docker, ensure the player can reach BearMount's hostname and port.
 
 ## Step 6: Configure Queue Cleanup
 
-AltMount can automatically monitor ARR queues and clean up stuck or failed imports to keep
+BearMount can automatically monitor ARR queues and clean up stuck or failed imports to keep
 things tidy. One pass covers all *arr types (Radarr, Sonarr, Whisparr, Lidarr, Readarr,
 Sportarr): it removes ghost/empty-folder entries (already imported, or the source path is
-gone) and applies your message rules to stuck imports. Only queue items owned by AltMount's
+gone) and applies your message rules to stuck imports. Only queue items owned by BearMount's
 download client are ever touched.
 
 ```yaml
@@ -181,15 +181,15 @@ arrs:
 | `queue_cleanup_enabled`              | Enable or disable automatic queue cleanup                                                                                                             |
 | `queue_cleanup_interval_seconds`     | How often to check ARR queues (in seconds)                                                                                                            |
 | `queue_cleanup_grace_period_minutes` | Minimum age (in minutes) a stuck/failed item must persist before it is cleaned up (default: 5). Ghost/empty-folder removal is immediate.              |
-| `webhook_base_url`                   | Base URL ARRs use to reach AltMount for webhooks (default: `http://<host>:<port>`)                                                                    |
+| `webhook_base_url`                   | Base URL ARRs use to reach BearMount for webhooks (default: `http://<host>:<port>`)                                                                    |
 | `queue_cleanup_rules`                | Message rules for stuck imports. Each rule has a `message` substring (case-insensitive), an `enabled` boolean, and an `action`: `remove`, `blocklist`, or `blocklist_search`. |
 
 ## Verifying the Setup
 
 After completing the steps above:
 
-1. Send a test NZB from Sonarr or Radarr to AltMount
-2. Check the AltMount queue page to confirm the NZB was received
+1. Send a test NZB from Sonarr or Radarr to BearMount
+2. Check the BearMount queue page to confirm the NZB was received
 3. Once processed, verify that Sonarr/Radarr picks up the import via webhook
 
 You can also check the integration health via API:
@@ -205,9 +205,9 @@ curl http://localhost:8080/api/arrs/health \
 
 If the connection test in Sonarr/Radarr fails:
 
-1. **Verify network connectivity** between ARR and AltMount containers
-2. **Check SABnzbd API is enabled** in AltMount config
-3. **Confirm the host and port** match your AltMount instance
+1. **Verify network connectivity** between ARR and BearMount containers
+2. **Check SABnzbd API is enabled** in BearMount config
+3. **Confirm the host and port** match your BearMount instance
 4. **Check firewall rules** if running on separate hosts
 
 ### Imports Not Detected
@@ -237,4 +237,4 @@ With ARR integration configured:
 
 ---
 
-ARR integration enables fully automated media management with AltMount acting as your primary download client. Combined with health monitoring, you can achieve a self-healing media collection that automatically repairs corruption and maintains high availability.
+ARR integration enables fully automated media management with BearMount acting as your primary download client. Combined with health monitoring, you can achieve a self-healing media collection that automatically repairs corruption and maintains high availability.

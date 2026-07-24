@@ -248,7 +248,7 @@ export function StremioConfigSection({
 							<input
 								type="url"
 								className="input w-full min-w-0 max-w-full"
-								placeholder="https://altmount.example.com"
+								placeholder="https://bearmount.example.com"
 								value={formData.base_url ?? ""}
 								disabled={isReadOnly}
 								onChange={(e) => update({ base_url: e.target.value })}
