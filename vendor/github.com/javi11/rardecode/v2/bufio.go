@@ -1,0 +1,367 @@
+package rardecode
+
+import (
+	"bytes"
+	"errors"
+	"io"
+	"io/fs"
+)
+
+const (
+	maxSfxSize   = 0x100000 // maximum number of bytes to read when searching for RAR signature
+	sigPrefix    = "Rar!\x1A\x07"
+	sigPrefixLen = len(sigPrefix)
+
+	maxEmptyReads = 100
+
+	minBufSize     = 32
+	defaultBufSize = 4096
+)
+
+var (
+	ErrNoSig        = errors.New("rardecode: RAR signature not found")
+	ErrNegativeRead = errors.New("rardecode: negative read from Reader")
+)
+
+type bufVolumeReader struct {
+	r   io.Reader
+	sr  io.Seeker
+	ra  io.ReaderAt // non-nil when r implements io.ReaderAt (e.g. *os.File)
+	buf []byte
+	i   int
+	n   int
+	off int64
+	err error
+	ver int
+}
+
+func (br *bufVolumeReader) readErr() error {
+	err := br.err
+	br.err = nil
+	return err
+}
+
+func (br *bufVolumeReader) fill() error {
+	if br.err != nil {
+		return br.readErr()
+	}
+	br.i = 0
+	if br.ra != nil {
+		// Use ReadAt for precise positioning — reads exactly at br.off without
+		// touching the OS file position or requiring a prior Seek.
+		n, err := br.ra.ReadAt(br.buf, br.off)
+		br.n = n
+		if n > 0 {
+			return nil
+		}
+		if err == io.EOF {
+			return io.EOF
+		}
+		return err
+	}
+	// Streaming fallback (non-ReaderAt sources: pipes, network, bytes.Reader etc.)
+	for i := 0; i < maxEmptyReads; i++ {
+		br.n, br.err = br.r.Read(br.buf)
+		if br.n > 0 {
+			return nil
+		}
+		if br.n < 0 {
+			return ErrNegativeRead
+		}
+		if br.err != nil {
+			return br.readErr()
+		}
+	}
+	return io.ErrNoProgress
+}
+
+func (br *bufVolumeReader) canSeek() bool {
+	return br.sr != nil || br.ra != nil
+}
+
+// seekInBuffer moves the read position to offset if it lies within the
+// currently buffered window, avoiding a refetch. Returns false otherwise.
+// offset == end (one past the last buffered byte) is deliberately in range:
+// it leaves the buffer empty and the next fill() reads at that position,
+// which is correct for both ReaderAt sources (fill reads at br.off) and
+// Seeker/stream sources (the stream already sits at end after the last fill).
+func (br *bufVolumeReader) seekInBuffer(offset int64) bool {
+	start := br.off - int64(br.i)
+	end := start + int64(br.n)
+	if offset < start || offset > end {
+		return false
+	}
+	br.i = int(offset - start)
+	br.off = offset
+	return true
+}
+
+func (br *bufVolumeReader) seek(offset int64) error {
+	if br.seekInBuffer(offset) {
+		return nil
+	}
+	// When ReaderAt is available, seeking is free — just update the logical offset.
+	if br.ra != nil {
+		br.i = 0
+		br.n = 0
+		br.off = offset
+		return nil
+	}
+	if br.sr == nil {
+		return fs.ErrInvalid
+	}
+	_, err := br.sr.Seek(offset, io.SeekStart)
+	if err != nil {
+		return err
+	}
+	br.i = 0
+	br.n = 0
+	br.off = offset
+	return nil
+}
+
+func (br *bufVolumeReader) Read(p []byte) (int, error) {
+	if br.i == br.n {
+		err := br.fill()
+		if err != nil {
+			return 0, err
+		}
+	}
+	n := copy(p, br.buf[br.i:br.n])
+	br.i += n
+	br.off += int64(n)
+	return n, nil
+}
+
+func (br *bufVolumeReader) ReadByte() (byte, error) {
+	if br.i == br.n {
+		err := br.fill()
+		if err != nil {
+			return 0, err
+		}
+	}
+	c := br.buf[br.i]
+	br.i++
+	br.off++
+	return c, nil
+}
+
+func (br *bufVolumeReader) Discard(n int64) error {
+	buffered := int64(br.n - br.i)
+	if buffered >= n {
+		br.i += int(n)
+		br.off += n
+		return nil
+	}
+	// empty buffer
+	n -= buffered
+	br.i = 0
+	br.n = 0
+	br.off += buffered
+
+	// Fast path: when io.ReaderAt is available, skipping data costs zero syscalls —
+	// just advance the logical offset. Next fill() will ReadAt at the new position.
+	if br.ra != nil {
+		br.off += n
+		return nil
+	}
+
+	// Optimization: prefer seeking for large discards
+	// This is especially beneficial when skipping large files in metadata-only mode
+	if br.sr != nil {
+		_, err := br.sr.Seek(n, io.SeekCurrent)
+		if err != nil {
+			return err
+		}
+		br.off += n
+		return nil
+	}
+
+	// For non-seekable streams, use io.CopyN but prefer larger buffer for big skips
+	// This reduces the number of syscalls for large discards
+	if n > 1<<20 { // 1MB threshold
+		// Use a larger temporary buffer for more efficient discarding
+		const largeDiscardBufSize = 1 << 16 // 64KB
+		buf := make([]byte, largeDiscardBufSize)
+		for n > 0 {
+			toRead := min(n, int64(len(buf)))
+			read, err := io.ReadFull(br.r, buf[:toRead])
+			br.off += int64(read)
+			n -= int64(read)
+			if err != nil {
+				if err == io.EOF || err == io.ErrUnexpectedEOF {
+					// Partial read at end is acceptable
+					return nil
+				}
+				return err
+			}
+		}
+		return nil
+	}
+
+	// For smaller discards, use standard io.CopyN
+	written, err := io.CopyN(io.Discard, br.r, n)
+	br.off += written
+	return err
+}
+
+func (br *bufVolumeReader) writeToN(w io.Writer, n int64) (int64, error) {
+	if n == 0 {
+		return 0, nil
+	}
+	var err error
+	todo := n
+	startOffset := br.off
+	for todo != 0 && err == nil {
+		if br.i == br.n {
+			err = br.fill()
+			if err != nil {
+				break
+			}
+		}
+		buf := br.buf[br.i:br.n]
+		if todo > 0 && todo < int64(len(buf)) {
+			buf = buf[:todo]
+		}
+		var l int
+		l, err = w.Write(buf)
+		br.i += l
+		br.off += int64(l)
+		if todo > 0 {
+			todo -= int64(l)
+		}
+	}
+	if todo < 0 && err == io.EOF {
+		err = nil
+	}
+	return br.off - startOffset, nil
+}
+
+// findSig searches for the RAR signature and version at the beginning of a file.
+// It searches no more than maxSfxSize bytes from the file start.
+func (br *bufVolumeReader) findSig() (int, error) {
+	for br.off <= maxSfxSize {
+		if br.i == br.n {
+			err := br.fill()
+			if err != nil {
+				return 0, err
+			}
+		}
+		n := bytes.IndexByte(br.buf[br.i:br.n], sigPrefix[0])
+		if n < 0 {
+			// Signature byte not found in current buffer, skip entire remaining buffer
+			br.off += int64(br.n - br.i)
+			br.i = br.n
+			continue
+		}
+		br.i += n
+		br.off += int64(n)
+		// ensure enough bytes available in buffer
+		buffered := br.n - br.i
+		if buffered < sigPrefixLen+2 {
+			br.n = copy(br.buf, br.buf[br.i:br.n])
+			br.i = 0
+			var l int
+			var err error
+			if br.ra != nil {
+				// The underlying stream position is never advanced when reading
+				// via ReadAt, so refill at the logical offset of the buffer end.
+				l, err = br.ra.ReadAt(br.buf[br.n:], br.off+int64(br.n))
+				if l >= sigPrefixLen+2-buffered {
+					err = nil
+				} else if err == io.EOF {
+					err = io.ErrUnexpectedEOF
+				}
+			} else {
+				l, err = io.ReadAtLeast(br.r, br.buf[br.n:], sigPrefixLen+2-buffered)
+			}
+			br.n += l
+			if err != nil {
+				if errors.Is(err, io.ErrUnexpectedEOF) {
+					err = ErrNoSig
+				}
+				return 0, err
+			}
+		}
+		if !bytes.HasPrefix(br.buf[br.i:br.n], []byte(sigPrefix)) {
+			br.i++
+			br.off++
+			continue
+		}
+		br.i += sigPrefixLen
+		br.off += int64(sigPrefixLen)
+
+		ver := int(br.buf[br.i])
+		if ver == 0 {
+			br.i++
+			br.off++
+		} else if br.buf[br.i+1] == 0 {
+			br.i += 2
+			br.off += 2
+		} else {
+			continue
+		}
+		return ver, nil
+	}
+	return 0, ErrNoSig
+}
+
+func (br *bufVolumeReader) Reset(r io.Reader) error {
+	br.r = r
+	br.sr, _ = r.(io.Seeker)
+	br.ra, _ = r.(io.ReaderAt)
+	br.i = 0
+	br.n = 0
+	br.off = 0
+	br.err = nil
+
+	// Fast path: when io.ReaderAt is available, fill the whole buffer at offset 0
+	// and parse the signature from it. This avoids the up-to-1MB linear scan done
+	// by findSig() for standard archives, and leaves the remaining bytes buffered
+	// so the archive header reads that follow need no additional ReadAt calls.
+	if br.ra != nil {
+		err := br.fill()
+		if err == nil && br.n >= sigPrefixLen+1 && bytes.HasPrefix(br.buf[:br.n], []byte(sigPrefix)) {
+			ver := int(br.buf[sigPrefixLen])
+			if ver == 0 {
+				br.i = sigPrefixLen + 1
+				br.off = int64(br.i)
+				br.ver = ver
+				return nil
+			} else if br.n >= sigPrefixLen+2 && br.buf[sigPrefixLen+1] == 0 {
+				br.i = sigPrefixLen + 2
+				br.off = int64(br.i)
+				br.ver = ver
+				return nil
+			}
+		}
+		// Fall through to streaming findSig if fast path fails (SFX archives, etc.).
+		// The already-buffered bytes are kept so findSig rescans them in place.
+	}
+
+	ver, err := br.findSig()
+	if err != nil {
+		if errors.Is(err, io.EOF) {
+			return ErrNoSig
+		}
+		return err
+	}
+	br.ver = ver
+	return nil
+}
+
+func newBufVolumeReader(r io.Reader, size int) (*bufVolumeReader, error) {
+	if size == 0 {
+		size = defaultBufSize
+	} else {
+		size = max(minBufSize, size)
+	}
+	br := &bufVolumeReader{
+		buf: make([]byte, size),
+	}
+	err := br.Reset(r)
+	if err != nil {
+		return nil, err
+	}
+	return br, nil
+}
