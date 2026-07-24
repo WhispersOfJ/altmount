@@ -1074,6 +1074,23 @@ func (s *Server) handleDeleteItem(c *fiber.Ctx) error {
 
 **Note**: SABnzbd API handlers (`sabnzbd_handlers.go`) use a different response format for API compatibility with SABnzbd clients and should NOT use these builders.
 
+### Path Safety
+
+Any new code that builds a filesystem path from client- or poster-reachable input (a queue
+item's `Category`, an NZB-embedded filename/subpath) must sanitize it first with
+`internal/importer/utils/path_sanitize.go`'s `SanitizePathSegment` — don't hand-roll another
+traversal check. See its doc comment and `path_sanitize_test.go` for the exact contract
+(rejects `..`/`.`/empty segments, returns `""` rather than a partially-cleaned path).
+
 ---
+
+## Backend/CI/Git ops gotchas
+
+- `gh repo rename <new> --repo <owner>/<old>` does NOT update the local clone's remote URL - run `git remote set-url origin <new-url>` after.
+- GitHub push protection scans the whole pushed commit range, not just the diff - a secret introduced then deleted in a later commit still blocks the push until removed from history (safe to `git reset --soft`+recommit if nothing was pushed yet).
+- `.gitignore`'s broad patterns (`*debug*`, `go.work`, `.env`, `coverage.*`) can silently drop legitimate files from a large generated tree like `vendor/` with no error from `git add` - verify with `find <dir> -type f | wc -l` vs `git ls-files <dir> | wc -l` after regenerating.
+- Before waiting on a `gh run list`/`gh pr checks` result, copy the exact full SHA from a prior command's output - a truncated/guessed SHA silently matches nothing and a wait-loop "succeeds" instantly for the wrong reason.
+- A curl-piped install script's checksum can fail transiently - `gh release download <tag> --repo <owner>/<repo> --pattern <glob>` is a reliable fallback to get the same binary.
+- `gh api -X PUT repos/<owner>/<repo>/private-vulnerability-reporting` and `gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow` are the API calls for enabling those repo settings when a fork/rename didn't carry them over.
 
 This document should be updated as the project evolves and new patterns emerge.
