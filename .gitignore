@@ -49,3 +49,8 @@ build-test-image.sh
 # CodeGraph
 /.codegraph/
 
+# Broad patterns above (*debug*, go.work*, .env, coverage.*, etc.) can match legitimate
+# filenames inside third-party vendored packages (e.g. golift.io/starr/debuglog/), silently
+# dropping them from git and breaking `go build -mod=vendor` - never let them touch vendor/.
+!vendor/**
+
